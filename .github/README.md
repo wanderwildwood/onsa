@@ -35,3 +35,9 @@ These features might change over time and I am not sure if this list will always
 This app is translated at: <a href="https://translate.codeberg.org/projects/tuner/">
 translate.codeberg.org</a>.
 
+
+# Support
+
+This is free software and it stays free; there is nothing here to buy. If you would like to
+send something somewhere anyway, there are some llamas in Hot Springs, North Carolina who go
+through a great deal of hay: <https://hotspringsllamas.org/donate/>
