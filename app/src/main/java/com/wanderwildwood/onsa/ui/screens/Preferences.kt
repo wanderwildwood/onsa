@@ -40,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanderwildwood.onsa.R
-import com.wanderwildwood.onsa.preferences.NightMode
 import com.wanderwildwood.onsa.ui.misc.TunerScaffoldWithoutBottomBar
 import com.wanderwildwood.onsa.ui.misc.rememberNumberFormatter
 import com.wanderwildwood.onsa.ui.notes.asAnnotatedString
@@ -54,12 +53,6 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import androidx.compose.ui.platform.LocalResources
 import com.wanderwildwood.onsa.ui.preferences.LanguageSelections
-
-private fun appearanceSummary(mode: NightMode, context: Context) = when (mode) {
-    NightMode.Auto -> context.getString(R.string.system_appearance)
-    NightMode.Off -> context.getString(R.string.light_appearance)
-    NightMode.On -> context.getString(R.string.dark_appearance)
-}
 
 @Composable
 fun Preferences(
@@ -109,7 +102,6 @@ fun Preferences(
                 SimplePreference(
                     name = stringResource(id = R.string.language),
                     supporting = { Text(stringResource(selectedLocale.resId))},
-                    iconId = R.drawable.language_24px,
                     modifier = Modifier.clickable { onLanguageClicked() }
                 )
             }
@@ -123,8 +115,7 @@ fun Preferences(
                 SwitchPreference(
                     name = stringResource(id = R.string.keep_screen_on),
                     checked = screenAlwaysOn,
-                    onCheckChange = { pref.writeScreenAlwaysOn(it) },
-                    iconId = R.drawable.ic_screen_on
+                    onCheckChange = { pref.writeScreenAlwaysOn(it) }
                 )
             }
 
@@ -160,7 +151,6 @@ fun Preferences(
                             }
                         Text(summary)
                     },
-                    iconId = R.drawable.ic_frequency_a,
                     modifier = Modifier.clickable { onReferenceFrequencyClicked() }
                 )
             }
@@ -188,7 +178,6 @@ fun Preferences(
                         }
                         Text(summary)
                     },
-                    iconId = R.drawable.ic_temperament,
                     modifier = Modifier.clickable { onTemperamentClicked() }
                 )
             }
@@ -201,8 +190,7 @@ fun Preferences(
                     value = toleranceInCents.toFloat(),
                     valueRange = 1f..20f,
                     steps = 18,
-                    onValueChange = { pref.writeToleranceInCents(it.roundToInt()) },
-                    iconId = R.drawable.ic_tolerance
+                    onValueChange = { pref.writeToleranceInCents(it.roundToInt()) }
                 )
             }
             item {
@@ -214,8 +202,7 @@ fun Preferences(
                             enharmonicVariant = if (it) 1 else 0
                         )
                         pref.writeNotePrintOptions(newNotePrintOptions)
-                    },
-                    iconId = R.drawable.ic_prefer_flat
+                    }
                 )
             }
             item {
@@ -227,7 +214,6 @@ fun Preferences(
                         }
                         Text(summary)
                     },
-                    iconId = R.drawable.ic_solfege,
                     modifier = Modifier.clickable { onNotationClicked() }
                 )
             }
@@ -239,8 +225,7 @@ fun Preferences(
                     value = sensitivity.toFloat(),
                     valueRange = 0f..100f,
                     steps = 99,
-                    onValueChange = { pref.writeSensitivity(it.roundToInt()) },
-                    iconId = R.drawable.ic_harmonic_energy
+                    onValueChange = { pref.writeSensitivity(it.roundToInt()) }
                 )
             }
             item {
@@ -254,8 +239,7 @@ fun Preferences(
                 SwitchPreference(
                     name = stringResource(id = R.string.scientific_mode),
                     checked = scientificMode,
-                    onCheckChange = { pref.writeScientificMode(it) },
-                    iconId = R.drawable.ic_baseline_developer_board
+                    onCheckChange = { pref.writeScientificMode(it) }
                 )
             }
             item {
@@ -270,14 +254,12 @@ fun Preferences(
                     value = numMovingAverage.toFloat(),
                     valueRange = 1f..15f,
                     steps = 13,
-                    onValueChange = { pref.writeNumMovingAverage(it.roundToInt()) },
-                    iconId = R.drawable.ic_moving_average
+                    onValueChange = { pref.writeNumMovingAverage(it.roundToInt()) }
                 )
             }
             item {
                 SimplePreference(
                     name = stringResource(id = R.string.stretch_tuning),
-                    iconId = R.drawable.ic_stretch,
                     supporting = {
                         Text(musicalScale.stretchTuning.name.value(context))
                     },
@@ -302,8 +284,7 @@ fun Preferences(
                     value = windowSizeExponent.toFloat(),
                     valueRange = 7f..15f,
                     steps = 7,
-                    onValueChange = { pref.writeWindowSize(it.roundToInt()) },
-                    iconId = R.drawable.ic_window_size
+                    onValueChange = { pref.writeWindowSize(it.roundToInt()) }
                 )
             }
             item {
@@ -311,7 +292,6 @@ fun Preferences(
                 SimplePreference(
                     name = stringResource(id = R.string.windowing_function),
                     supporting = stringResource(id = windowingFunction.stringResourceId),
-                    iconId = R.drawable.ic_window_function,
                     modifier = Modifier.clickable { onWindowingFunctionClicked() }
                 )
             }
@@ -326,8 +306,7 @@ fun Preferences(
                     ),
                     valueRange = 0f..80f,
                     steps = 15,
-                    onValueChange = { pref.writeOverlap(it.roundToInt()) },
-                    iconId = R.drawable.ic_window_overlap
+                    onValueChange = { pref.writeOverlap(it.roundToInt()) }
                 )
             }
             item {
@@ -338,8 +317,7 @@ fun Preferences(
                     supporting = stringResource(id = R.string.seconds, pitchHistoryDuration),
                     valueRange = 0.25f..10f,
                     steps = 38, // maybe better have progressive stps?
-                    onValueChange = { pref.writePitchHistoryDuration(it) },
-                    iconId = R.drawable.ic_duration
+                    onValueChange = { pref.writePitchHistoryDuration(it) }
                 )
             }
             item {
@@ -358,8 +336,7 @@ fun Preferences(
                     supporting = summary,
                     valueRange = 1f..12f,
                     steps = 10,
-                    onValueChange = { pref.writePitchHistoryNumFaultyValues(it.roundToInt()) },
-                    iconId = R.drawable.ic_jump
+                    onValueChange = { pref.writePitchHistoryNumFaultyValues(it.roundToInt()) }
                 )
             }
             item {
@@ -373,8 +350,7 @@ fun Preferences(
                         stringResource(R.string.capture_duration, duration),
                     valueRange = 0f..5f,
                     steps = 4,
-                    onValueChange = { pref.writeWaveWriterDurationInSeconds(it.roundToInt()) },
-                    iconId = R.drawable.ic_mic
+                    onValueChange = { pref.writeWaveWriterDurationInSeconds(it.roundToInt()) }
                 )
             }
             item {
@@ -388,21 +364,18 @@ fun Preferences(
                 SwitchPreference(
                     name = stringResource(id = R.string.display_on_lock_screen),
                     checked = displayOnLockScreen,
-                    onCheckChange = { pref.writeDisplayOnLockScreen(it) },
-                    iconId = R.drawable.ic_lock
+                    onCheckChange = { pref.writeDisplayOnLockScreen(it) }
                 )
             }
             item {
                 SimplePreference(
                     name = stringResource(id = R.string.reset_all_settings),
-                    iconId = R.drawable.ic_reset,
                     modifier = Modifier.clickable { onResetClicked() }
                 )
             }
             item {
                 SimplePreference(
                     name = stringResource(id = R.string.about),
-                    iconId = R.drawable.ic_info,
                     modifier = Modifier.clickable { onAboutClicked() }
                 )
             }

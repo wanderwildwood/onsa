@@ -29,7 +29,6 @@ import androidx.navigation.navigation
 import com.wanderwildwood.onsa.preferences.PreferenceResources
 import com.wanderwildwood.onsa.temperaments.TemperamentResources
 import com.wanderwildwood.onsa.ui.preferences.AboutDialog
-import com.wanderwildwood.onsa.ui.preferences.AppearanceDialog
 import com.wanderwildwood.onsa.ui.preferences.LanguageDialog
 import com.wanderwildwood.onsa.ui.preferences.NotationDialog
 import com.wanderwildwood.onsa.ui.preferences.ResetDialog
@@ -52,7 +51,6 @@ fun NavGraphBuilder.preferenceGraph(
             Preferences(
                 viewModel = viewModel,
                 onNavigateUpClicked = onNavigateUpClicked,
-                onAppearanceClicked = { controller.navigate(AppearanceDialogRoute) },
                 onLanguageClicked = { controller.navigate(LanguageDialogRoute) },
                 onReferenceFrequencyClicked = {
                     controller.navigate(
@@ -71,14 +69,6 @@ fun NavGraphBuilder.preferenceGraph(
             )
         }
 
-        dialog<AppearanceDialogRoute> {
-            val appearance by preferences.appearance.collectAsStateWithLifecycle()
-            AppearanceDialog(
-                appearance = appearance,
-                onAppearanceChanged = { preferences.writeAppearance(it) },
-                onDismiss = { controller.navigateUp() }
-            )
-        }
         dialog<LanguageDialogRoute> {
             LanguageDialog(
                 onDismiss = { controller.navigateUp()}
@@ -131,8 +121,6 @@ fun NavGraphBuilder.preferenceGraph(
 data object PreferencesGraphRoute
 @Serializable
 data object PreferencesRoute
-@Serializable
-data object AppearanceDialogRoute
 @Serializable
 data object LanguageDialogRoute
 @Serializable

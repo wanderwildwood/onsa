@@ -104,17 +104,14 @@ val MaterialTheme.tunerTypography: TunerTypography
 val tunerTypography = TunerTypography()
 
 /**
- * [darkTheme], [dynamicColor] and [blackNightMode] are still accepted and are all ignored.
+ * There is one appearance, so this takes no arguments about which one.
  *
- * They are kept so the settings screens and previews that pass them still compile, and
- * because removing a parameter that a fork's callers set is a change with no upside. There
- * is one appearance, and it is this one.
+ * It briefly kept the ignored darkTheme/dynamicColor/blackNightMode parameters so callers
+ * would still compile. Nothing passes them any more, and a parameter that is accepted and
+ * ignored is a promise the code does not keep.
  */
 @Composable
 fun TunerTheme(
-    @Suppress("UNUSED_PARAMETER") darkTheme: Boolean = false,
-    @Suppress("UNUSED_PARAMETER") dynamicColor: Boolean = false,
-    @Suppress("UNUSED_PARAMETER") blackNightMode: Boolean = false,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(

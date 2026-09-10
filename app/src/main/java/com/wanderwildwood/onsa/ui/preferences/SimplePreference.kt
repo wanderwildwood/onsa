@@ -36,7 +36,6 @@ import com.wanderwildwood.onsa.ui.theme.TunerTheme
 @Composable
 fun SimplePreference(
     name: String,
-    @Suppress("UNUSED_PARAMETER") @DrawableRes iconId: Int,
     modifier: Modifier = Modifier,
     supporting: String? = null
 ) {
@@ -47,10 +46,9 @@ fun SimplePreference(
         supportingContent = supporting?.let {{
             Text(it)
         }},
-        // No icon. The house style keeps settings rows to the label and its value: on a
+        // No icon. The house style keeps a settings row to its label and its value: on a
         // 4.3" panel with sixteen greys an icon beside every row costs a column of width
-        // and renders a small glyph as a smudge. `iconId` is still accepted so the twenty
-        // or so call sites need not all change, and is deliberately unused.
+        // and renders a small glyph as a smudge.
         modifier = modifier
     )
 }
@@ -58,7 +56,6 @@ fun SimplePreference(
 @Composable
 fun SimplePreference(
     name: String,
-    @Suppress("UNUSED_PARAMETER") @DrawableRes iconId: Int,
     supporting: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -67,10 +64,9 @@ fun SimplePreference(
             Text(name)
         },
         supportingContent = supporting,
-        // No icon. The house style keeps settings rows to the label and its value: on a
+        // No icon. The house style keeps a settings row to its label and its value: on a
         // 4.3" panel with sixteen greys an icon beside every row costs a column of width
-        // and renders a small glyph as a smudge. `iconId` is still accepted so the twenty
-        // or so call sites need not all change, and is deliberately unused.
+        // and renders a small glyph as a smudge.
         modifier = modifier
     )
 }
@@ -83,7 +79,6 @@ private fun SimplePreferencePreview() {
         Column(modifier = Modifier.fillMaxSize()) {
             SimplePreference(
                 name = "My preference",
-                iconId = R.drawable.ic_harmonic_energy,
                 supporting = "Extra text"
             )
             HorizontalDivider()

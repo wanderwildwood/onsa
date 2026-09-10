@@ -28,7 +28,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,7 +56,6 @@ import com.wanderwildwood.onsa.navigation.mainGraph
 import com.wanderwildwood.onsa.navigation.temperamentEditorGraph
 import com.wanderwildwood.onsa.navigation.TemperamentEditorGraphRoute
 import com.wanderwildwood.onsa.navigation.stretchTuningEditorGraph
-import com.wanderwildwood.onsa.preferences.NightMode
 import com.wanderwildwood.onsa.preferences.PreferenceResources
 import com.wanderwildwood.onsa.preferences.migrateFromV6
 import com.wanderwildwood.onsa.stretchtuning.StretchTuning
@@ -114,16 +112,8 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
         }
 
         setContent {
-            val appearance by pref.appearance.collectAsStateWithLifecycle()
-            TunerTheme(
-                darkTheme = when (appearance.mode) {
-                    NightMode.Auto -> isSystemInDarkTheme()
-                    NightMode.Off -> false
-                    NightMode.On -> true
-                },
-                dynamicColor = appearance.useSystemColorAccents,
-                blackNightMode = appearance.blackNightEnabled
-            ) {
+            // No appearance to resolve. The panel has one, and TunerTheme is it.
+            TunerTheme {
                 val controller = rememberNavController()
 
                 // handle incoming intents for loading instruments

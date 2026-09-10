@@ -21,6 +21,7 @@ package com.wanderwildwood.onsa.ui.preferences
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import com.mudita.mmd.components.slider.SliderMMD
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -45,7 +46,6 @@ fun SliderPreference(
     valueRange: ClosedFloatingPointRange<Float>,
     steps: Int,
     onValueChange: (newValue: Float) -> Unit,
-    @DrawableRes iconId: Int,
     modifier: Modifier = Modifier,
     supporting: String? = null
 ) {
@@ -56,7 +56,7 @@ fun SliderPreference(
         supportingContent = supporting?.let {{
             Column {
                 Text(it)
-                Slider(
+                SliderMMD(
                     value = value,
                     onValueChange = onValueChange,
                     valueRange = valueRange,
@@ -69,9 +69,9 @@ fun SliderPreference(
 //                )
             }
         }},
-        leadingContent = {
-            Icon(ImageVector.vectorResource(id = iconId), null)
-        },
+        // No icon. The house style keeps a settings row to its label and its value: on a
+        // 4.3" panel an icon beside every row costs a column of width and renders a small
+        // glyph as a smudge.
         modifier = modifier
     )
 }
@@ -88,7 +88,6 @@ private fun SliderPreferencePreview() {
                 steps = 9,
                 name = "My preference",
                 onValueChange = { value = it },
-                iconId = R.drawable.ic_harmonic_energy,
                 supporting = "Extra text $value"
             )
             HorizontalDivider()

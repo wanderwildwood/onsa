@@ -43,7 +43,6 @@ fun SwitchPreference(
     name: String,
     checked: Boolean,
     onCheckChange: (checked: Boolean) -> Unit,
-    @Suppress("UNUSED_PARAMETER") @DrawableRes iconId: Int,
     modifier: Modifier = Modifier,
     supporting: String? = null
 ) {
@@ -54,10 +53,9 @@ fun SwitchPreference(
         supportingContent = supporting?.let {{
             Text(it)
         }},
-        // No icon. The house style keeps settings rows to the label and its value: on a
+        // No icon. The house style keeps a settings row to its label and its value: on a
         // 4.3" panel with sixteen greys an icon beside every row costs a column of width
-        // and renders a small glyph as a smudge. `iconId` is still accepted so the twenty
-        // or so call sites need not all change, and is deliberately unused.
+        // and renders a small glyph as a smudge.
         trailingContent = {
             Switch(checked = checked, onCheckedChange = onCheckChange)
         },
@@ -75,7 +73,6 @@ private fun SwitchPreferencePreview() {
                 name = "My preference",
                 checked = checked,
                 onCheckChange = { checked = it},
-                iconId = R.drawable.ic_harmonic_energy,
                 supporting = null // "Extra text"
             )
             HorizontalDivider()
