@@ -1,0 +1,9 @@
+v7.0.0:
+- Neuer UI Unterbau (jetpack compose)
+- (Hoffentlich) verbessertes Erkennen von Noten in einigen Grenzfällen.
+- Benutzerdefinierte Stimmungen.
+
+v7.1.0:
+- Korrektur um Einstellungen in Android 15 richtig anzuzeigen.
+- Aktivieren des Edge-to-Edge Modus (was bedeutet, dass z.B. Listen bis unter
+  die Navigationsleiste angezeigt werden).

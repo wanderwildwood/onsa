@@ -1,0 +1,4 @@
+v9.0.0:
+- Initial support of stretch tuning (predefined tables required).
+- Option for Helmholtz numbered octave representation.
+

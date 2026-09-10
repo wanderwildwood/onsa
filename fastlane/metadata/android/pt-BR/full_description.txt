@@ -1,0 +1,9 @@
+Aplicativo para afinação de instrumentos musicais com as seguintes funções:
+    * Detecção da afinação baseada em autocorrelação e no espectro FFT.
+    * Melhoria na precisão a partir da avaliação da fase do espectro e do ajuste polinomial.
+    * Visualização da variação da afinação no tempo.
+    * Base de dados comportando alguns instrumentos básicos (teclado, violão, baixo, violino...)
+    * Suporte a instrumentos customizados.
+    * Suporte a diferentes tipos de temperamento musical, como: Igual, Justo, Werckmeister, Kirnberger,...
+    * Suporte a temperamentos EDO 17, 19, ..., 41, 53.
+    * Configurações científicas, como: tamanho da janela FFT, tipo de janela FFT, sobreposição e outros.

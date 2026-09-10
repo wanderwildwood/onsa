@@ -1,0 +1,9 @@
+Aplicación de afinador para afinar instrumentos musicales con características como:
+    * Detectar el tono basándose en la autocorrelación y el espectro FFT.
+    * Mejora de la precisión mediante la evaluación de la información de fase del espectro y el ajuste polinómico.
+    * Mostrar cómo cambia el tono a lo largo del tiempo.
+    * Base de datos básica de instrumentos (cromático, guitarra, bajo, violín, …)
+    * Soporte para instrumentos personalizados.
+    * Varios temperamentos como igual, justo, Werckmeister, Kirnberger, …
+    * Temperamentos que no son de 12 tonos (EDO 17, 19, …, 41, 53)
+    * Ajustes científicos como el tamaño de la ventana FFT, el tipo de ventana FFT, el solapamiento y más.

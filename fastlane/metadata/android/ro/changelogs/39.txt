@@ -1,0 +1,4 @@
+v7.0.0:
+- Un nou backend pentru UI (jetpack compose).
+- Îmbunătățit detecția notelor pentru unele cazuri particulare.
+- Temperamente definite de utilizator.

@@ -1,0 +1,6 @@
+v6.1.0:
+- Un instrument personalizat fără coarde devine cromatic având doar istoric de înălțimi
+
+v6.0.0:
+- Îmbunătățirea detecției notelor prin evaluarea mai bună a armonicelor superioare.
+- O grămadă de refacere a codului intern.

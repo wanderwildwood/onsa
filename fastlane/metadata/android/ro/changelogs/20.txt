@@ -1,0 +1,7 @@
+v5.0.0:
+- Imbunătățire afișare etichete grafic
+- Suport pentru scările care nu au 12 note (capabilități microtonale)
+
+v.5.0.1:
+- Suprascrie corect fișierele de scene
+- Actualizare traducere în franceză (mulțumită lui Glandos)

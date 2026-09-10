@@ -1,0 +1,4 @@
+v6.5.0:
+- Opción para la notación de Helmholtz
+- Interruptores de Material3 en las preferencias
+- Temperamento mesotónico de 1/4 de coma extendido

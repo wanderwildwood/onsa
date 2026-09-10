@@ -1,0 +1,11 @@
+v6.6.2:
+- Actualizar las traducciones al chino.
+
+v6.6.1:
+- Usar internamente un rango de sensibilidad más adecuado.
+
+v6.6.0:
+- Corrección: El afinador a veces dejaba de afinar después de cambiar los ajustes.
+- Introducir la opción de sensibilidad para detener la afinación con señales bajas.
+- Eliminar la opción de ruido máximo en favor de la opción de sensibilidad.
+- Afinación más fiable para algunos casos extremos.

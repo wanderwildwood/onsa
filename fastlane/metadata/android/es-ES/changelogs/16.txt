@@ -1,0 +1,7 @@
+v3.0.0:
+- Afinaciones personalizadas
+- Mejoras en la interfaz de usuario
+
+v3.1.0
+- Afinaciones para viola, violonchelo y contrabajo
+- Opción de preferir bemoles (en lugar de sostenidos)

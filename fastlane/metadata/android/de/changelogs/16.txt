@@ -1,0 +1,7 @@
+v3.0.0:
+- Benutzerdefinierte Stimmungen
+- UI-Verbesserungen
+
+v3.1.0:
+- Stimmungen für Bratsche, Cello, Bass.
+- Einstellung zum Bevorzugen von b über #

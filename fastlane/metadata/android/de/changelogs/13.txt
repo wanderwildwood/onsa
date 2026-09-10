@@ -1,0 +1,8 @@
+v2.0.0:
+- Einfacher Modus
+- UI Verbesserungen
+
+v2.0.1:
+- Fix: Konfigurationsänderungen (z.B. Drehung) führten dazu, dass das UI doppelt geladen wurde
+- Fix: Umschalten zwischen einfachem/wissenschaftlichen Modus hielt manchmal die Stimmung an
+- Anderes Icon für zentriere-zu-aktueller-Note

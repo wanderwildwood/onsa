@@ -1,0 +1,20 @@
+v7.0.0:
+- Un nou backend pentru UI (jetpack compose).
+- Îmbunătățit detecția notelor pentru unele cazuri particulare.
+- Temperamente definite de utilizator.
+
+v7.1.0:
+- Reparat afișarea preferințelor corect pe Android 15.
+- Activează modul margine-la-margine (însemnând că listele de
+  exemple sunt afișate până jos, în spatele barei de navigație).
+
+v7.1.1:
+- Reparat o crăpăciune la detecția frecvențelor joase.
+
+v7.1.2:
+- Reparat comportamentul preferinței pentru diezi/bemoli
+  pentru gamele ce nu au 12 tonuri.
+
+v7.1.3:
+- Reparat conflict legat de separatorul zecimal la setarea
+  frecvenței de referință.

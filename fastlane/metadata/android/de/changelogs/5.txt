@@ -1,0 +1,14 @@
+v1.1.0:
+- Anpassung der Grundeinstellungen
+- Option um Einstellungen zurücksetzen zu können
+- "Über"-Abschnitt in Einstellungen
+
+v1.1.1:
+- Laden der korrekten Einstallungen beim App Start
+
+v1.2.0:
+- Deutsche Übersetzung
+
+v1.2.1:
+- Anzeigen der 5 Cent Toleranz
+- Hochgestellte Zahlen für Noten anstatt von ' und ,

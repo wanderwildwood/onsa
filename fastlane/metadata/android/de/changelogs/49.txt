@@ -1,0 +1,2 @@
+v9.1.1:
+- Korrektur: Zentrieren zur richtigen Stelle in der Noten-Ansicht, im chromatischen Modus.

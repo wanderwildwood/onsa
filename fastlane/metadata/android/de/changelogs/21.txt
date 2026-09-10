@@ -1,0 +1,10 @@
+v5.0.1:
+- Korrektes Überschreiben von Szenen-Dateien.
+- Aktualisierung der Französchen Übersetzungen (Dank geht an Glandos)
+
+v5.1.0:
+- Verbessertes App Icon
+- Verbesserte Benennung von Noten für Nicht-12-Ton-Temperamente
+- Tschechische Übersetzungen (Dank geht an rockconqueror)
+- Spezielle Einstellung um Töne aufnehmen und in Wave-Datei speichen zu können
+- Erhöhung des Ziel SDKs auf 33

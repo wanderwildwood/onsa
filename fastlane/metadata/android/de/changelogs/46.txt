@@ -1,0 +1,3 @@
+v8.2.0:
+- Leicht angepasste Strategie, wenn das Signal sehr ähnlich bleibt.
+- Option um Referenzfrequenz im entsprechenden Dialog erkennen zu lassen.

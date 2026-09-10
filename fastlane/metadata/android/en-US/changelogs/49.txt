@@ -1,0 +1,2 @@
+v9.1.1:
+- Fix scrolling to correct note in strings view when in chromatic mode.

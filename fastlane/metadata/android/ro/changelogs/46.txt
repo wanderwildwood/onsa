@@ -1,0 +1,3 @@
+v8.2.0:
+- O strategie ușor diferită de acordare când semnalul rămâne foarte similar.
+- Opțiune pentru detecția frecvenței de referință în dialogul de notă de referință.

@@ -1,0 +1,7 @@
+v2.0.1:
+- Reparat: Schimbările de configurație (ex: rotație) încărcau interfața de 2 ori
+- Reparat: Comutarea între modul simplu și științific uneori opreau indicatorul de acordaj
+- Folosește pictogramă de notă centrat pe nota curentă în loc de pictogramă de derulare sus/jos
+
+v2.1.0:
+- Adăugat vioară

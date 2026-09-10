@@ -1,0 +1,3 @@
+v5.0.0:
+- Imbunătățire afișare etichete grafic
+- Suport pentru scările care nu au 12 note (capabilități microtonale)

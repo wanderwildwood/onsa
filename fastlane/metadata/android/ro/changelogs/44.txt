@@ -1,0 +1,5 @@
+v8.0.0:
+- Îmbunătățiri ale numelor notelor în temperamente diferite
+  (strică compatibilitatea cu versiunile anterioare)
+- Traducere în poloneză și ungurește (mulțumită lui Omikorin și meskobalasz)
+- Mai multe temepratmente EDO

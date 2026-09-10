@@ -1,0 +1,3 @@
+v6.0.0:
+- Detección de notas mejorada mediante una mejor evaluación de los armónicos superiores.
+- Gran cantidad de refactorización interna.

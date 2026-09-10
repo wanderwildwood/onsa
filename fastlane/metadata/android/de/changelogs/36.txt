@@ -1,0 +1,2 @@
+v6.8.0:
+- Icons für Tar, Setar und Kamancheh (Dank geht an ahangarha)

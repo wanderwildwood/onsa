@@ -1,0 +1,3 @@
+v8.2.0:
+- Slightly different tuning strategy when signal stays very similar.
+- Option to detect the reference frequency in the reference note dialog.

@@ -1,0 +1,8 @@
+v2.0.0:
+- Introducir modo simple
+- Otras mejoras en la interfaz de usuario
+
+v2.0.1:
+- Corrección: Los cambios de configuración (p. ej., la rotación) cargaban la interfaz de usuario dos veces
+- Corrección: Cambiar entre el modo simple y científico a veces detenía el afinador
+- Usar el icono de nota centrada a la actual en lugar del icono de desplazar hacia arriba/abajo

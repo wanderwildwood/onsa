@@ -1,0 +1,6 @@
+v5.2.0:
+- Fix: Schließen der App, wenn "Zurück" gedrückt wird.
+- Fußleiste mit Schnelleinstellungen
+
+v5.3.0:
+- Solfege Notation

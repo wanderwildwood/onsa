@@ -1,0 +1,8 @@
+v3.1.0
+- Acordaje pentru violă, violoncel și contrabas
+- Opțiune de preferință pentru bemoli (în loc de diezi)
+
+v3.2.0
+- Temperamente diferite pentru 12 tonuri
+- Nota de referință poate fi diferită de la¹, ceea ce înseamnă transpoziție ușoară
+- Opțiune de a deselecta instrumentele ce vor fi partajate

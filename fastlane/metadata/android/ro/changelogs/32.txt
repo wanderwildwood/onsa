@@ -1,0 +1,5 @@
+v6.6.0:
+- Reparat: Acordorul uneori se oprește după schimbarea setărilor.
+- Introdus setări de sensibilitate pentru a ignora acordarea semnalelor slabe.
+- Elimină opțiunea pentru zgomot maxim în favoarea opțiunii de sensibilitate.
+- Acordare mai stabilă pentru unele cazuri particulare.

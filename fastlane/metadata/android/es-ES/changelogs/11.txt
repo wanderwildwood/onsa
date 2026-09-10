@@ -1,0 +1,4 @@
+v1.4.0:
+- Añadir modo simple
+- Indicador de color cuando está afinado
+- Añadir ajuste de tolerancia para estar afinado

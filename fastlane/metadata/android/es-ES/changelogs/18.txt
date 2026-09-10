@@ -1,0 +1,5 @@
+v4.0.0:
+- Usar principalmente la tematización MaterialYou
+- Icono dinámico de la aplicación para Android 13
+- Establecer el color de la barra de estado según el color de fondo de la aplicación
+- Traducciones al francés (gracias a Glandos)

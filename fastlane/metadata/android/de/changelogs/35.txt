@@ -1,0 +1,3 @@
+v6.7.0:
+- 1/5 Komma Mitteltönige Stimmung
+- Anzeigen von einer Gleitkommastelle für Frequenzen im wissenschaftlichen Modus

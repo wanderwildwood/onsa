@@ -1,0 +1,9 @@
+v6.3.0:
+- Anzeigen der aktuellen Abweichung der Zielnote in Cent
+
+v6.1.0:
+- Benutzerdefinierte Instrumente ohne Saiten werden als chromatische Instrumente nur mit Tonhistorie interpretiert
+
+v6.0.0:
+- Verbessertes Erkennen von Noten durch Auswertung von Höherharmonischen.
+- Interne Umstrukturierungen.

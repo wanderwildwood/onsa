@@ -1,0 +1,10 @@
+v.5.1.0:
+- Pictogramă refactorizată
+- Refectorizare nume note pentru temperamentele cu note diferite de 12
+- Traducere în cehă (mulțumită lui rockconqueror)
+- Setare specială pentru a captura sunetul și a-l salva în fișier wave
+- Crește nivelul SDK minim la 33
+
+v5.2.0:
+- Reparat: Închide aplicația la apăsarea tastei înapoi
+- Bară de jos cu setări rapide

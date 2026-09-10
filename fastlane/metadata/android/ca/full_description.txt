@@ -1,0 +1,9 @@
+Aplicació per a afinar instruments musicals amb funcions com:
+    * Detecció de tonalitat segons autocorrelació i espectre d'FFT.
+    * Millora de la precisió avaluant la informació de l'espectre de fase i l'ajust polinomial.
+    * Mostra com la tonalitat varia amb el temps.
+    * Base de dades bàsica d'instruments (cromàtic, guitarra, baix, violí...)
+    * Suport per a instruments personalitzats
+    * Diversos temperaments com l'igual, just, Werckmeister, Kirnberger...
+    * Temperaments diferents dels de 12 tons (EDO 17, 19, …, 41, 53)
+    * Configuracions científiques com la mida de la finestra d'FFT, el seu tipus, superposició i més.

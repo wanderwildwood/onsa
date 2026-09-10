@@ -1,0 +1,8 @@
+v3.1.0:
+- Afinacions per a viola, violoncel i contrabaix
+- Opció de preferència plana (en lloc de corba)
+
+v3.2.0:
+- Diferents temperaments de 12 tons
+- La nota de referència no ha de ser un La4, la qual cosa facilita la transposició
+- Opció per a desseleccionar els instruments a compartir

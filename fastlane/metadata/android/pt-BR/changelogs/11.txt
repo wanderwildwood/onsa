@@ -1,0 +1,4 @@
+v1.4.0:
+- Modo simple adicionado
+- Mudança de cor para sinalizar afinação
+- Configuração para tolerância da afinação adicionada

@@ -1,0 +1,9 @@
+Aplicație de acordare pentru instrumentele muzicale cu funcții precum:
+    * Detectarea înălțimii bazată pe autocorelare și spectru FFT;
+    * Îmbunătățirea acurateții prin evaluarea fazei spectrului și aproximare polinomială;
+    * Afișarea schimbării înălțimii în funcție de timp;
+    * Bază de date cu instrumente de bază (cromatic, chitară, bas, vioară…);
+    * Suport pentru instrumente personalizate;
+    * Suport pentru mai multe temperamente (bine temperat, just, Werckmeister, Kirnberger…);
+    * Temperamente diferite de 12 tonuri (EDO 17, 19, …, 41, 53);
+    * Setări științifice precum mărimea ferestrei FFT, tip fereastră FFT, suprapunere și mai multe.

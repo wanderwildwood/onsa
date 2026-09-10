@@ -1,0 +1,4 @@
+v6.5.0:
+- Option for Helmholtz notation
+- Material3 switches in preferences
+- Extended 1/4-comma meantone tuning

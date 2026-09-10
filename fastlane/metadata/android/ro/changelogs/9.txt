@@ -1,0 +1,8 @@
+v1.3.0:
+- Control cu atingere pentru grafice
+- Animație mai rapidă pentru focalizarea pe un nou ton
+- Găsire vârf frecvență ușor adaptată
+- Nu căuta noi tonuri dacă zgomotul este prea mare
+- Folosește plurale în descrierile preferințelor
+- Indicație vizuală suplimentară atunci când nicio înălțime nu a fost detectată după un timp
+- Actualizat la SDK minim 31

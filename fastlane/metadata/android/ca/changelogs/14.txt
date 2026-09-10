@@ -1,0 +1,7 @@
+v2.0.1:
+- Esmena: Els canvis de configuració (p. ex. rotació) carregaven la IU dues vegades
+- Esmena: El canvi entre el mode científic/simple de vegades aturava l'afinador
+- Usa la icona per centrar la nota a l'actual en lloc de la icona de desplaçament amunt/avall
+
+v2.1.0:
+- Afegit el violí

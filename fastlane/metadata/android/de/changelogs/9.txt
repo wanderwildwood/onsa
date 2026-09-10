@@ -1,0 +1,8 @@
+v1.3.0:
+- Touch-Interaktion in Diagrammen
+- Schnellere Animation zur Fokussierung auf neuen Ton
+- Leicht angepasster Algorithmus zum Finden von Frequenzspitzen
+- Vermeide Suche nach neuen Tönen, wenn Rauschen zu hoch ist
+- Verwendung von Plural in Einstellungen
+- Visuelles Feedback, wenn nach einiger Zeit kein eindeutiger Ton gefunden werden konnte
+- Aktualisierung auf Ziel sdk 31

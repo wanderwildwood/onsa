@@ -1,0 +1,2 @@
+v6.8.0:
+- Pictograme pentru Tar, Setar și Kamancheh (mulțumită lui ahangarha)

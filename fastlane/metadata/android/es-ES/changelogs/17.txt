@@ -1,0 +1,8 @@
+v3.1.0
+- Afinaciones para viola, violonchelo y contrabajo
+- Opción de preferir bemoles (en lugar de sostenidos)
+
+v3.2.0
+- Diferentes temperamentos de 12 tonos
+- La nota de referencia no tiene que ser LA4, lo que facilita la transposición
+- Opción de deseleccionar instrumentos para no compartirlos

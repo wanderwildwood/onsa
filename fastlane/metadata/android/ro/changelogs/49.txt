@@ -1,0 +1,2 @@
+v9.1.1:
+- Reparat centrarea pe nota corectă în secțiunea de coarde în modul cromatic.

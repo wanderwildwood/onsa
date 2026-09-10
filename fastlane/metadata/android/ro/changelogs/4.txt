@@ -1,0 +1,10 @@
+v1.1.0:
+- Adaptează setările implicite
+- Adaugă opțiune pentru a reseta setările
+- Adaugă secțiune „Despre” în setări
+
+v1.1.1
+- Încarcă setarea corectă la pornirea aplicației
+
+v1.2.0:
+- Traducere în germană

@@ -1,0 +1,17 @@
+v1.2.0:
+- Traducere în germană
+
+v1.2.1:
+- Afișează toleranță de 5 cenți
+- Indice numeric pentru note în loc de ' și ,
+
+v1.2.2:
+- Adăugat preferință pentru a ține ecranul aprins
+- Făcut bara de stare să fie mereu neagră
+
+v1.2.3:
+- Corectat indicii pentru octave
+- Îmbunătățiri în aspectul preferințelor
+
+v1.2.4:
+- Îmbunătățiri în aspectul preferințelor

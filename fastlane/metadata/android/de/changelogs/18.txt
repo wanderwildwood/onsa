@@ -1,0 +1,5 @@
+v4.0.0:
+- Weitgehende Verwendung des MaterialYou Themas.
+- Dynamischer App-Icon für Android 13
+- Farbe der Statusleiste entspricht nun der App-Hintergrundfarbe.
+- Französische Übersetzung (Dank geht an Glandos)

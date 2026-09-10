@@ -1,0 +1,4 @@
+v1.4.0:
+- Afegit mode simple
+- Marca visual en estar afinat
+- Afegida configuració per a la tolerància d'afinació

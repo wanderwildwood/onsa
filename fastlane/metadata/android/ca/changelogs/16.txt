@@ -1,0 +1,7 @@
+v3.0.0:
+- Afinacions personalitzades
+- Millores de la IU
+
+v3.1.0:
+- Afinacions per a viola, violoncel i contrabaix
+- Opció de preferència plana (en lloc de corba)

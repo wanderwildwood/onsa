@@ -1,0 +1,4 @@
+v6.5.0:
+- Opțiune pentru notație Helmholtz
+- Comutatoare Material3 în preferințe
+- Acordare extinsă ton mediu de 1/4 comă

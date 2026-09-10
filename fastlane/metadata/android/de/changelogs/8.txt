@@ -1,0 +1,16 @@
+v1.2.0:
+- Deutsche Übersetzung
+
+v1.2.1:
+- Anzeigen der 5 Cent Toleranz
+- Hochgestellte Zahlen für Noten anstatt von ' und ,
+
+v1.2.2:
+- Einstellung um Bildschirm eingeschaltet zu halten
+- Statusleiste ist nun immer schwarz
+
+v1.2.3:
+- Korrekte Indices für Oktavdarstellung
+
+v1.2.4:
+- Verbesserungen in Dialog für Aussehenseinstellung

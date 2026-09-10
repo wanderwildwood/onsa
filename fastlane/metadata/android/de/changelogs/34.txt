@@ -1,0 +1,11 @@
+v6.6.2:
+- Aktualisierung der Chinesischen Übersetzung.
+
+v6.6.1:
+- Intern wird nun eine passendere Skala für die Empfindlichkeits-Einstellung verwendet.
+
+v6.6.0:
+- Fix: Stimmgerät stoppte manchmal nach Änderung von Einstellungen.
+- Einstellung für "Empfindlichkeit" um Stimmung bei schwachen Signalen zu pausieren.
+- Entfernen der "Maximales Rauschen"-Einstellung zu Gunsten der neuen "Empfindlichkeits"-Einstellung.
+- Zuverlässigere Stimmung für bestimmte Grenzfälle.

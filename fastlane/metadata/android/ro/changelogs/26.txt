@@ -1,0 +1,3 @@
+v6.0.0:
+- Îmbunătățirea detecției notelor prin evaluarea mai bună a armonicelor superioare.
+- O grămadă de refacere a codului intern.

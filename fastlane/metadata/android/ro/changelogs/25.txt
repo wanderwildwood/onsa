@@ -1,0 +1,7 @@
+v5.4.0:
+- Actualizare traducere în cehă (mulțumită lui elastic-rock)
+- Suport lingvistic per aplicație în Android 13 (mulțumită lui elastic-rock)
+- Opțiune pentru notația muzicală internațională.
+
+v5.3.0:
+- Notație Solfege

@@ -1,0 +1,4 @@
+v1.4.0:
+- Einfacher Modus
+- Farbige Rückmeldung, wenn gestimmt
+- Einstellung für Toleranz, wenn Ton als gestimmt gilt

@@ -1,0 +1,5 @@
+v6.8.1:
+- Schimbă setările audio interne pentru a putea suporta mai multe dispozitive.
+
+v6.8.0:
+- Pictograme pentru Tar, Setar și Kamancheh (mulțumită lui ahangarha)

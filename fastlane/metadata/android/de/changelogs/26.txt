@@ -1,0 +1,3 @@
+v6.0.0:
+- Verbessertes Erkennen von Noten durch Auswertung von Höherharmonischen.
+- Interne Umstrukturierungen.

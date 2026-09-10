@@ -1,0 +1,4 @@
+v1.4.0:
+- Adăugat mod simplu
+- Feedback colorat pentru indicarea acordului corect
+- Adăugat setare pentru toleranța indicației de acord corect

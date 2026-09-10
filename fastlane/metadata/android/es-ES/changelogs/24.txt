@@ -1,0 +1,6 @@
+v5.2.0:
+- Corrección: Cerrar la aplicación al presionar el botón de atrás
+- Barra inferior con ajustes rápidos
+
+v5.3.0:
+- Notación en solfeo

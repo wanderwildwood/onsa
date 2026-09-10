@@ -1,0 +1,10 @@
+v.5.0.1:
+- Sobrescribir correctamente los archivos de escenas
+- Actualizar las traducciones al francés (gracias a Glandos)
+
+v.5.1.0:
+- Refactorización del icono
+- Refactorización del nombre de las notas para temperamentos que no son de 12 tonos
+- Traducciones al checo (gracias a rockconqueror)
+- Ajuste especial para capturar sonido y guardarlo en formato wave
+- Aumentar el SDK objetivo a 33

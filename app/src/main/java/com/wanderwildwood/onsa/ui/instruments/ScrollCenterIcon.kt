@@ -1,0 +1,69 @@
+/*
+* Copyright 2024 Michael Moessner
+*
+* This file is part of Tuner.
+*
+* Tuner is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Tuner is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Tuner.  If not, see <http://www.gnu.org/licenses/>.
+*/
+package com.wanderwildwood.onsa.ui.instruments
+
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.ui.theme.TunerTheme
+
+/** Icon definition for centering to a given string.
+ * @param modifier Modifier.
+ * @param arrowColor Color of the icon arrows.
+ * @param stringColor Color of the string label shape.
+ */
+@Composable
+fun ScrollCenterIcon(
+    modifier: Modifier = Modifier,
+    arrowColor: Color = MaterialTheme.colorScheme.onSurface,
+    stringColor: Color = MaterialTheme.colorScheme.primary
+) {
+    Box(modifier = modifier) {
+        Icon(
+            ImageVector.vectorResource(id = R.drawable.ic_scroll_center_only_arrows),
+            contentDescription = null,
+            tint = arrowColor
+        )
+        Icon(
+            ImageVector.vectorResource(id = R.drawable.ic_scroll_center_only_string),
+            contentDescription = null,
+            tint = stringColor
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ScrollCenterIconPreview() {
+    TunerTheme {
+        ScrollCenterIcon(
+            arrowColor = MaterialTheme.colorScheme.onSurface,
+            stringColor = MaterialTheme.colorScheme.error
+        )
+    }
+}

@@ -1,0 +1,4 @@
+v6.5.0:
+- Einstellung für Helmholtz Notation
+- Material3 Schalter in Einstellungen
+- Erweiterte 1/4-Komma Mitteltönige Stimmung

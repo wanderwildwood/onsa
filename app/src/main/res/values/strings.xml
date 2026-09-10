@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tuning Fork</string>
+    <!--    <string name="percent">%d&#x200A;\%</string>-->
+    <string name="percent" translatable="false">%d %%</string>
+    <string name="hertz" translatable="false">%.0f Hz</string>
+    <string name="hertz_1f" translatable="false">%.1f Hz</string>
+    <string name="hertz_str" translatable="false">%s Hz</string>
+    <string name="seconds" translatable="false">%.2f s</string>
+    <string name="windowing_function">Windowing function</string>
+    <string name="window_hamming">Hamming window</string>
+    <string name="window_hann">Hann window</string>
+    <string name="no_window">No windowing function</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_appearance">Dark appearance</string>
+    <string name="light_appearance">Light appearance</string>
+    <string name="system_appearance">Appearance follows system settings</string>
+    <string name="dark_appearance_short">Dark</string>
+    <string name="light_appearance_short">Light</string>
+    <string name="system_appearance_short">Auto</string>
+    <string name="settings">Settings</string>
+    <string name="overlap">Window overlap</string>
+    <string name="window_size">Window size</string>
+    <string name="minimum_frequency">"Minimum frequency: "</string>
+    <string name="pitch_history_duration">Duration of pitch history</string>
+    <string name="pitch_history_num_faulty_values">Jump to new pitch</string>
+    <plurals name="pitch_history_num_faulty_values_summary">
+        <item quantity="one">Directly jump to new pitch result</item>
+        <item quantity="other">After %d similar pitch results</item>
+    </plurals>
+    <string name="num_moving_average">Moving average</string>
+    <plurals name="num_moving_average_summary">
+        <item quantity="one">No averaging</item>
+        <item quantity="other">Average over %d pitch results</item>
+    </plurals>
+    <string name="about">About</string>
+    <string name="about_message">Tuning Fork\nVersion: %s\nLicense: GPLv3 or later\n\nAfter Tuner by Michael Moessner\nhttps://codeberg.org/thetwom/Tuner\n\ngithub.com/wanderwildwood/onsa</string>
+    <string name="reset_all_settings">Reset all settings</string>
+    <string name="reset_settings_prompt">Do you really want to reset all settings?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="autocorrelation">autocorrelation</string>
+    <string name="pitch_history">pitch history</string>
+    <string name="spectrum">spectrum</string>
+    <string name="cent" translatable="false">%+d ¢</string>
+    <string name="cent_nosign" translatable="false">%d ¢</string>
+    <string name="cent_1f" translatable="false">%+.1f ¢</string>
+    <string name="keep_screen_on">Keep screen on</string>
+    <string name="display_on_lock_screen">Display on lock screen</string>
+    <string name="samples">samples</string>
+    <string name="scientific_mode">Scientific mode</string>
+    <string name="tolerance_in_cents">Tolerance</string>
+    <string name="tolerance_summary" translatable="false">±%d ¢</string>
+    <string name="expert">Expert</string>
+    <string name="basic">Basic</string>
+    <string name="others">Others</string>
+    <string name="chromatic">Chromatic</string>
+    <string name="guitar_eadgbe">6-string guitar</string>
+    <string name="bass_eadg">4-string bass</string>
+    <string name="bass_beadg">5-string bass</string>
+    <string name="ukulele_gcea">Ukulele</string>
+    <string name="c_note_name">C</string>
+    <string name="d_note_name">D</string>
+    <string name="e_note_name">E</string>
+    <string name="f_note_name">F</string>
+    <string name="g_note_name">G</string>
+    <string name="a_note_name">A</string>
+    <string name="b_note_name">B</string>
+    <string name="bflat_note_name">-</string>
+    <string name="c_solfege">Do</string>
+    <string name="d_solfege">Re</string>
+    <string name="e_solfege">Mi</string>
+    <string name="f_solfege">Fa</string>
+    <string name="g_solfege">Sol</string>
+    <string name="a_solfege">La</string>
+    <string name="b_solfege">Si</string>
+    <string name="c_note_international" translatable="false">C</string>
+    <string name="d_note_international" translatable="false">D</string>
+    <string name="e_note_international" translatable="false">E</string>
+    <string name="f_note_international" translatable="false">F</string>
+    <string name="g_note_international" translatable="false">G</string>
+    <string name="a_note_international" translatable="false">A</string>
+    <string name="b_note_international" translatable="false">B</string>
+    <string name="notation">Notation</string>
+    <string name="notation_regional">Regional</string>
+    <string name="notation_regional_description">C-D-E-…-B</string>
+    <string name="notation_solfege">Solfège</string>
+    <string name="notation_solfege_description">Do-Re-Mi-…-Si</string>
+    <string name="notation_international">International</string>
+    <string name="notation_international_description">C-D-E-…-B</string>
+    <string name="violin_gdae">Violin</string>
+    <string name="abort">Abort</string>
+    <string name="instrument_name">Instrument name</string>
+    <string name="add_note">Add note</string>
+    <string name="delete_note">Delete note</string>
+    <string name="lately_detected_notes">Lately detected tones</string>
+    <string name="done">Done</string>
+    <string name="edit_instrument">Edit instrument</string>
+    <string name="predefined_items">Default</string>
+    <string name="custom_item">Custom</string>
+    <string name="file_empty">File is empty: %s</string>
+    <string name="file_invalid">File is invalid: %s</string>
+    <plurals name="items_deleted">
+        <item quantity="one">%d item deleted</item>
+        <item quantity="other">%d items deleted</item>
+    </plurals>
+    <string name="undo">Undo</string>
+    <string name="pick_icon">Pick icon</string>
+    <string name="copy_extension">%s (copy)</string>
+    <string name="failed_to_archive_items">Failed to write items to file</string>
+    <plurals name="database_num_saved">
+        <item quantity="one">Writing %d item to \"%s\".</item>
+        <item quantity="other">Writing %d items to \"%s\".</item>
+    </plurals>
+    <string name="database_empty">There are no items which can be saved.</string>
+    <plurals name="load_instruments">
+        <item quantity="one">Loading %d instrument</item>
+        <item quantity="other">Loading %d instruments</item>
+    </plurals>
+    <plurals name="load_temperaments">
+        <item quantity="one">Loading %d temperament</item>
+        <item quantity="other">Loading %d temperaments</item>
+    </plurals>
+    <plurals name="load_stretch_tunings">
+        <item quantity="one">Loading %d stretch tuning</item>
+        <item quantity="other">Loading %d stretch tunings</item>
+    </plurals>
+    <string name="replace_current_list">Replace current list</string>
+    <string name="prepend_current_list">Prepend to current list</string>
+    <string name="append_current_list">Append to current list</string>
+    <string name="share">Share items</string>
+    <plurals name="sharing_num_items">
+        <item quantity="one">Sharing %d items</item>
+        <item quantity="other">Sharing %d items</item>
+    </plurals>
+    <string name="load_from_disk">Load items from file</string>
+    <string name="save_to_disk">Save items to file</string>
+    <string name="prefer_flat">Prefer \u266D over \u266F</string>
+    <string name="viola_cgda">Viola</string>
+    <string name="cello_cgda">Cello</string>
+    <string name="double_bass_eadg">Double bass</string>
+    <string name="equal_temperament_12" translatable="false">Equal temperament</string>
+    <string name="equal_temperament_12_desc" translatable="false">12 notes per octave</string>
+    <string name="equal_temperament_12_abbr" translatable="false">EDO 12</string>
+    <!--    <string name="equal_temperament_17">Equal temperament 17</string>-->
+<!--    <string name="equal_temperament_17_desc">17 notes per octave</string>-->
+<!--    <string name="equal_temperament_17_abbr">EDO 17</string>-->
+<!--    <string name="equal_temperament_19">Equal temperament 19</string>-->
+<!--    <string name="equal_temperament_19_desc">19 notes per octave</string>-->
+<!--    <string name="equal_temperament_19_abbr">EDO 19</string>-->
+<!--    <string name="equal_temperament_22">Equal temperament 22</string>-->
+<!--    <string name="equal_temperament_22_desc">22 notes per octave</string>-->
+<!--    <string name="equal_temperament_22_abbr">EDO 22</string>-->
+<!--    <string name="equal_temperament_24">Equal temperament 24</string>-->
+<!--    <string name="equal_temperament_24_desc">Quarter tone tuning</string>-->
+<!--    <string name="equal_temperament_24_abbr">EDO 24</string>-->
+<!--    <string name="equal_temperament_27">Equal temperament 27</string>-->
+<!--    <string name="equal_temperament_27_desc">27 notes per octave</string>-->
+<!--    <string name="equal_temperament_27_abbr">EDO 27</string>-->
+<!--    <string name="equal_temperament_29">Equal temperament 29</string>-->
+<!--    <string name="equal_temperament_29_desc">29 notes per octave</string>-->
+<!--    <string name="equal_temperament_29_abbr">EDO 29</string>-->
+<!--    <string name="equal_temperament_31">Equal temperament 31</string>-->
+<!--    <string name="equal_temperament_31_desc">31 notes per octave</string>-->
+<!--    <string name="equal_temperament_31_abbr">EDO 31</string>-->
+<!--    <string name="equal_temperament_41">Equal temperament 41</string>-->
+<!--    <string name="equal_temperament_41_desc">41 notes per octave</string>-->
+<!--    <string name="equal_temperament_41_abbr">EDO 41</string>-->
+<!--    <string name="equal_temperament_53">Equal temperament 53</string>-->
+<!--    <string name="equal_temperament_53_desc">53 notes per octave</string>-->
+<!--    <string name="equal_temperament_53_abbr">EDO 53</string>-->
+    <string name="equal_temperament_x">Equal temperament %d</string>
+    <string name="equal_temperament_x_desc">%d notes per octave</string>
+    <string name="equal_temperament_x_abbr">EDO %d</string>
+    <string name="pythagorean_tuning">Pythagorean tuning</string>
+    <string name="pythagorean_tuning_abbr">Pythagorean</string>
+    <string name="pure_tuning">Just tuning</string>
+    <string name="pure_tuning_desc">5-limit, asymmetric scale</string>
+    <string name="pure_tuning_abbr">Just</string>
+    <string name="quarter_comma_mean_tone">¼ comma meantone</string>
+    <string name="quarter_comma_mean_tone_desc">Pure major 3rds</string>
+    <string name="quarter_comma_mean_tone_abbr">¼ comma meantone</string>
+    <string name="third_comma_mean_tone">⅓ comma meantone</string>
+    <string name="third_comma_mean_tone_desc">Pure minor 3rds</string>
+    <string name="third_comma_mean_tone_abbr">⅓ comma meantone</string>
+    <string name="fifth_comma_mean_tone">⅕ comma meantone</string>
+    <string name="fifth_comma_mean_tone_desc">Pure diatonic semitones</string>
+    <string name="fifth_comma_mean_tone_abbr">⅕ comma meantone</string>
+    <string name="werckmeister_iii">Werckmeister III</string>
+    <string name="werckmeister_iii_desc">¼ comma divisions</string>
+    <string name="werckmeister_iii_abbr">Werckmeister III</string>
+    <string name="werckmeister_iv">Werckmeister IV</string>
+    <string name="werckmeister_iv_desc">⅓ comma divisions</string>
+    <string name="werckmeister_iv_abbr">Werckmeister IV</string>
+    <string name="werckmeister_v">Werckmeister V</string>
+    <string name="werckmeister_v_desc">Other ¼ comma divisions</string>
+    <string name="werckmeister_v_abbr">Werckmeister V</string>
+    <string name="werckmeister_vi">Werckmeister VI</string>
+    <string name="werckmeister_vi_desc">Septenarius</string>
+    <string name="werckmeister_vi_abbr">Werckmeister VI</string>
+    <string name="kirnberger1">Kirnberger I</string>
+    <string name="kirnberger1_desc">One syntonic comma</string>
+    <string name="kirnberger1_abbr">Kirnberger I</string>
+    <string name="kirnberger2">Kirnberger II</string>
+    <string name="kirnberger2_desc">½ syntonic comma divisions</string>
+    <string name="kirnberger2_abbr">Kirnberger II</string>
+    <string name="kirnberger3">Kirnberger III</string>
+    <string name="kirnberger3_desc">¼ syntonic comma divisions</string>
+    <string name="kirnberger3_abbr">Kirnberger III</string>
+    <string name="neidhardt1">Neidhardt 1</string>
+    <string name="neidhardt1_desc">For a village, 1732</string>
+    <string name="neidhardt1_abbr">Neidhardt 1</string>
+    <string name="neidhardt2">Neidhardt 2</string>
+    <string name="neidhardt2_desc">For a small town, 1732</string>
+    <string name="neidhardt2_abbr">Neidhardt 2</string>
+    <string name="neidhardt3">Neidhardt 3</string>
+    <string name="neidhardt3_desc">For a big city, 1732</string>
+    <string name="neidhardt3_abbr">Neidhardt 3</string>
+    <string name="valotti">Vallotti</string>
+    <string name="valotti_abbr">Vallotti</string>
+    <string name="young2">Young 2</string>
+    <string name="young2_abbr">Young 2</string>
+    <string name="reference_frequency">Reference frequency</string>
+    <string name="frequency">Frequency</string>
+    <string name="temperament">Temperament</string>
+    <string name="root_note">Key note</string>
+    <string name="test_tuning">Test tuning</string>
+    <string name="details">Details</string>
+    <string name="pythagorean_comma">%d\u2044%d pC</string>
+    <string name="syntonic_comma">%d\u2044%d sC</string>
+    <string name="schisma">%d\u2044%d sch</string>
+    <string name="plus_correction" translatable="false">" + "</string>
+    <string name="minus_correction" translatable="false">" - "</string>
+    <string name="pythagorean_comma_desc">pC: Pythagorean Comma, 531441\u2044524288\nsC: Syntonic Comma, 81\u204480\nsch: Schisma, 32805\u204432768</string>
+    <string name="circle_of_fifths">Circle of fifths</string>
+    <string name="set_default">Reset to default</string>
+    <string name="acknowledged">Acknowledged</string>
+    <string name="black_night_mode">Black background in dark mode</string>
+    <string name="system_color_accents">Color accents from system</string>
+    <string name="incorrect_temperament">Incompatible temperament!</string>
+    <string name="ok">OK</string>
+    <string name="new_temperament_requires_adapting_reference_note">New temperament requires adapting the reference note!</string>
+    <string name="comma_separator">,\ </string>
+    <string name="capture">Capture</string>
+    <string name="capture_duration">Capture duration: %d s</string>
+    <string name="no_capture_duration">Disable capturing</string>
+    <string name="sa_carnatic">Sa</string>
+    <string name="ri1_carnatic" translatable="false">Ri₁</string>
+    <string name="ri2_carnatic" translatable="false">Ri₂</string>
+    <string name="ga1_carnatic" translatable="false">Ga₁</string>
+    <string name="ga2_carnatic" translatable="false">Ga₂</string>
+    <string name="ma1_carnatic" translatable="false">Ma₁</string>
+    <string name="ma2_carnatic" translatable="false">Ma₂</string>
+    <string name="pa_carnatic" translatable="false">Pa</string>
+    <string name="dha1_carnatic" translatable="false">Dha₁</string>
+    <string name="dha2_carnatic" translatable="false">Dha₂</string>
+    <string name="ni1_carnatic" translatable="false">Ni₁</string>
+    <string name="ni2_carnatic" translatable="false">Ni₂</string>
+    <string name="notation_carnatic">Carnatic</string>
+    <string name="notation_carnatic_description">Sa-Ri₁-Ri₂-…-Ni₂</string>
+    <string name="sa_hindustani" translatable="false">Sa</string>
+    <string name="re1_hindustani" translatable="false">Re₁</string>
+    <string name="re2_hindustani" translatable="false">Re₂</string>
+    <string name="ga1_hindustani" translatable="false">Ga₁</string>
+    <string name="ga2_hindustani" translatable="false">Ga₂</string>
+    <string name="ma1_hindustani" translatable="false">Ma₁</string>
+    <string name="ma2_hindustani" translatable="false">Ma₂</string>
+    <string name="pa_hindustani" translatable="false">Pa</string>
+    <string name="dha1_hindustani" translatable="false">Dha₁</string>
+    <string name="dha2_hindustani" translatable="false">Dha₂</string>
+    <string name="ni1_hindustani" translatable="false">Ni₁</string>
+    <string name="ni2_hindustani" translatable="false">Ni₂</string>
+    <string name="notation_hindustani">Hindustani</string>
+    <string name="notation_hindustani_description">Sa-Re₁-Re₂-…-Ni₂</string>
+    <string name="ni_byzantine" translatable="false">Νη</string>
+    <string name="pa_byzantine" translatable="false">Πα</string>
+    <string name="vou_byzantine" translatable="false">Βου</string>
+    <string name="gha_byzantine" translatable="false">Γα</string>
+    <string name="dhi_byzantine" translatable="false">Δι</string>
+    <string name="ke_byzantine" translatable="false">Κε</string>
+    <string name="zo_byzantine" translatable="false">Ζω</string>
+    <string name="notation_byzantine">Byzantine</string>
+    <string name="notation_byzantine_description">Νη-Πα-Βου-…-Ζω</string>
+    <string name="helmholtz_notation">Helmholtz notation (C, … c\')</string>
+    <string name="extended_quarter_comma_mean_tone">Extended ¼ comma meantone</string>
+    <string name="extended_quarter_comma_mean_tone_desc">Pure major 3rds, 15 notes</string>
+    <string name="extended_quarter_comma_mean_tone_abbr">Extended ¼ comma meantone</string>
+    <string name="sensitivity">Sensitivity</string>
+    <string name="delete_items">Delete items</string>
+    <string name="database_empty_share">There are no items to share.</string>
+    <string name="audio_record_permission_rationale">Grant microphone access to start tuning.</string>
+    <string name="writing_wave_file">Writing wave file: %s</string>
+    <string name="failed_writing_wave_file">Did not write wave file.</string>
+    <string name="instruments">Instruments</string>
+    <string name="edit">Edit</string>
+    <string name="copy_">Copy</string>
+    <string name="delete">Delete</string>
+    <string name="temperaments">Temperaments</string>
+    <string name="save">Save</string>
+    <string name="temperament_editor">Edit temperament</string>
+    <string name="note_number">Number of notes</string>
+    <string name="cent_str">cent</string>
+    <string name="octave_offset">Octave offset</string>
+    <string name="ratio">ratio</string>
+    <string name="temperament_name">Temperament name</string>
+    <string name="temperament_abbreviation">Abbreviation</string>
+    <string name="temperament_description">Description</string>
+    <string name="decreasing_value_error">Value must be greater than the previous one.</string>
+    <string name="missing_note_name">Missing note name.</string>
+    <string name="missing_value">Missing cent or ratio value.</string>
+    <string name="duplicate_note_name">Duplicate note name.</string>
+    <string name="invalid_value">Invalid value.</string>
+    <string name="maximum_value_exceeded">Maximum value of %d exceeded.</string>
+    <string name="edo_temperaments">Equal temperaments</string>
+    <string name="other_temperaments">Other temperaments</string>
+    <string name="custom_temperaments">Custom temperaments</string>
+    <string name="notation_vietnamese">Vietnamese</string>
+    <string name="notation_vietnamese_description">Hò-Xư-Y-…-Phan</string>
+    <string name="c_note_vietnamese">Hò</string>
+    <string name="d_note_vietnamese">Xư</string>
+    <string name="e_note_vietnamese">Y</string>
+    <string name="f_note_vietnamese">Xang</string>
+    <string name="g_note_vietnamese">Xê</string>
+    <string name="a_note_vietnamese">Công</string>
+    <string name="b_note_vietnamese">Phan</string>
+    <string name="use_default">Use default</string>
+    <string name="detect_frequency">Detect frequency</string>
+    <string name="stretch">Stretch</string>
+    <string name="stretch_tuning">Stretch tuning</string>
+    <string name="no_stretch_tuning">No stretch tuning</string>
+    <string name="stretch_tuning_off">Stretch tuning is turned off.</string>
+    <string name="railsback">Railsback</string>
+    <string name="railsback_description">Railsback data (average)</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="stretch_tuning_editor">Edit stretch tuning</string>
+    <string name="stretch_tuning_info">Stretch tuning info</string>
+    <string name="stretched_frequency">Stretched frequency</string>
+    <string name="input_is_no_number">Input is no valid number.</string>
+    <string name="value_must_be_larger_zero">Value must be larger than zero.</string>
+    <string name="cent_symbol">¢</string>
+    <string name="cent_2f">%+.2f ¢</string>
+    <string name="hertz_2f">%.2f Hz</string>
+    <string name="stretched_frequencies_must_be_strictly_increasing">Stretched frequencies must be strictly increasing (previous value: %1$.2f Hz, this value: %2$.2f Hz).</string>
+    <string name="octave_notation_scientific">Scientific</string>
+    <string name="octave_notation_scientific_description">… C¹ C² C³ C⁴ …</string>
+    <string name="octave_notation_helmholtz">Helmholtz</string>
+    <string name="octave_notation_helmholtz_description">… C, C c c\' …</string>
+    <string name="octave_notation_helmholtz_numbered">Helmholtz numbered</string>
+    <string name="octave_notation_helmholtz_numbered_description">… C₁ C c c¹ …</string>
+    <string name="octave_representation">Octave representation</string>
+    <string name="language">Language</string>
+    <string name="english" translatable="false">English</string>
+    <string name="german" translatable="false">Deutsch</string>
+    <string name="system_default">System default</string>
+    <string name="french" translatable="false">Français</string>
+    <string name="hungarian" translatable="false">Magyar</string>
+    <string name="polish" translatable="false">Polski</string>
+    <string name="ukrainian" translatable="false">Українська</string>
+    <string name="simplified_chinese" translatable="false">简体中文</string>
+    <string name="romanian" translatable="false">Română</string>
+</resources>

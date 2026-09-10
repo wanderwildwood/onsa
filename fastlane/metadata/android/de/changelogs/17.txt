@@ -1,0 +1,8 @@
+v3.1.0
+- Stimmungen für Bratsche, Cello, Bass.
+- Einstellung zum Bevorzugen von b über #
+
+v3.2.0
+- Verschiedene 12-Ton Temperamente
+- Referenznote muss nicht mehr A4 sein, so dass Transponieren einfacher wird
+- Einstellung um die Auswahl bestimmter zu teilender Instrumente aufzuheben

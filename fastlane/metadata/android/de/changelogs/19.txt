@@ -1,0 +1,3 @@
+v5.0.0
+- Verbesserung des Aussehens von Beschriftungen in Diagrammen
+- Unterstützung von Stimmungen, welche nicht aus 12 Noten bestehen (Mikrotonale Fähigkeit)

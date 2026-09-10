@@ -1,0 +1,10 @@
+v5.1.0:
+- Verbessertes App Icon
+- Verbesserte Benennung von Noten für Nicht-12-Ton-Temperamente
+- Tschechische Übersetzungen (Dank geht an rockconqueror)
+- Spezielle Einstellung um Töne aufnehmen und in Wave-Datei speichen zu können
+- Erhöhung des Ziel SDKs auf 33
+
+v5.2.0:
+- Fix: Schließen der App, wenn "Zurück" gedrückt wird.
+- Fußleiste mit Schnelleinstellungen

@@ -1,0 +1,7 @@
+v3.0.0:
+- Acordaje personalizate
+- Îmbunătățiri UI
+
+v3.1.0
+- Acordaje pentru violă, violoncel și contrabas
+- Opțiune de preferință pentru bemoli (în loc de diezi)

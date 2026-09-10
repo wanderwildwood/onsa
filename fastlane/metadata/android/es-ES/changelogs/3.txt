@@ -1,0 +1,7 @@
+v1.1.0:
+- Adaptar los ajustes predeterminados
+- Añadir opción para restablecer los ajustes
+- Añadir sección "Acerca de" en los ajustes
+
+v1.1.1:
+- Cargar el ajuste correcto al iniciar la aplicación

@@ -1,0 +1,6 @@
+v6.1.0:
+- Un instrumento personalizado sin cuerdas se convierte en cromático solo con historial de tono
+
+v6.0.0:
+- Detección de notas mejorada mediante una mejor evaluación de los armónicos superiores.
+- Gran cantidad de refactorización interna.

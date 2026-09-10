@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A tuning fork: the thing itself, and the thing the app is named for.
+
+     Drawn to the five rules measured off the owner's own chanterelle in
+     kinokocho/tools/make-art.py: a thin line, one weight throughout, few strokes, crooked
+     rather than symmetrical, and no solid black.
+
+     Two strokes, and the tines are neither the same length nor quite parallel, because a
+     drawn pair never is. A perfectly symmetrical fork reads as a clipart glyph.
+
+     Everything sits inside the central 66 units the launcher mask is certain to keep. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- the fork: up one tine, round the yoke, down the other. One stroke. -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M45.4,26.8 C45.0,38.2 44.8,50.0 45.2,57.4 Q45.6,65.8 54.2,66.2 Q62.6,65.8 63.0,57.2 C63.3,49.0 63.0,37.0 62.6,25.4" />
+
+    <!-- the stem, hanging from the middle of the yoke -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M54.2,66.2 C54.5,72.4 54.4,78.0 54.0,83.2" />
+</vector>

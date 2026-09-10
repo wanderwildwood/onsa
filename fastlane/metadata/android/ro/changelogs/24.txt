@@ -1,0 +1,6 @@
+v5.2.0:
+- Reparat: Închide aplicația la apăsarea tastei înapoi
+- Bară de jos cu setări rapide
+
+v5.3.0:
+- Notație Solfege

@@ -1,0 +1,7 @@
+v5.4.0:
+- Actualizar las traducciones al checo (gracias a elastic-rock)
+- Soporte de idioma por aplicación en Android 13 (gracias a elastic-rock)
+- Opción para la notación de notas "Internacional".
+
+v5.3.0:
+- Notación en solfeo

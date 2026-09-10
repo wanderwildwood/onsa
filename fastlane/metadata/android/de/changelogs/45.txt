@@ -1,0 +1,10 @@
+v8.0.0:
+- Verbesserung von Benennung von Noten für bestimmte Stimmungen
+  (bricht Kompatibilität mit älteren Versionen)
+- Polnische und Ungarische Übersetzungen (Dank geht an Omikorin umd meskobalsz)
+- Mehr EDO Stimmungen.
+
+v8.1.0:
+- Vietnamesische Benennung von Noten.
+- Verbesserter Workflow für das Auswählen von Stimmungen
+- Einstellung, um Stimmgerät auf dem Sperrbildschirm anzeigen zu können (Dank geht an m0nkeyc0de)

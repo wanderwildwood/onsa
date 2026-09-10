@@ -1,0 +1,7 @@
+v5.0.0:
+- Mejorar la apariencia de las etiquetas de los gráficos
+- Soporte para escalas que no tienen 12 notas (capacidades de microafinación)
+
+v.5.0.1:
+- Sobrescribir correctamente los archivos de escenas
+- Actualizar las traducciones al francés (gracias a Glandos)
