@@ -80,6 +80,16 @@ fun EditableListItem(
     description: @Composable () -> Unit,
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
+    /**
+     * Whether this list keeps a column for the leading mark.
+     *
+     * The slot is 40dp plus a 16dp gap whether or not anything is drawn in it, which on a
+     * 480px screen is an eighth of the row. Worth it where the mark distinguishes one row
+     * from another - the instrument drawings do - and not worth it where every row carries
+     * the same glyph. The selection tick still appears either way; that is information
+     * rather than decoration, so it takes the space back only when it has something to say.
+     */
+    showIcon: Boolean = true,
     onOptionsClicked: (task: ListItemTask) -> Unit = { },
     isActive: Boolean = false,
     isSelected: Boolean = false,
@@ -105,22 +115,24 @@ fun EditableListItem(
                 .padding(vertical = 8.dp)
         ) {
             Spacer(Modifier.width(16.dp))
-            Box(modifier = Modifier.size(40.dp)) {
-                CompositionLocalProvider(LocalContentColor provides variantColor) {
-                    if (isSelected) {
-                        Icon(
-                            painter = painterResource(R.drawable.check_circle_24px),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 4.dp)
-                        )
-                    } else {
-                        icon()
+            if (showIcon || isSelected) {
+                Box(modifier = Modifier.size(40.dp)) {
+                    CompositionLocalProvider(LocalContentColor provides variantColor) {
+                        if (isSelected) {
+                            Icon(
+                                painter = painterResource(R.drawable.check_circle_24px),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 4.dp)
+                            )
+                        } else {
+                            icon()
+                        }
                     }
                 }
+                Spacer(Modifier.width(16.dp))
             }
-            Spacer(Modifier.width(16.dp))
             Column(
                 modifier = Modifier.weight(1f)
             ) {

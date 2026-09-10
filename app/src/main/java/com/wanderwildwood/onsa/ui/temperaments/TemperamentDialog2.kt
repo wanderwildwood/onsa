@@ -311,9 +311,14 @@ fun TemperamentsDialog2(
             snackbarHostState = snackbarHostState
         ) { item, itemInfo, itemModifier ->
             EditableListItem(
+                // Two lines, and no badge column. Every temperament here carried the same
+                // circled letter, and with it gone plus a second line the names finally
+                // fit: at one line on a 480px screen six rows all read "Equal temperame..."
+                // and were told apart only by the line beneath them.
+                showIcon = false,
                 title = { Text(
                     item.name.value(context),
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 ) },
                 description = { Text(

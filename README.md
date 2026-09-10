@@ -12,7 +12,7 @@ sixteen greys, a slow redraw, and is read at arm's length on a music stand.
 
 | | | | |
 |---|---|---|---|
-| ![Tuner](screenshots/01-tuner.png) | ![Instruments](screenshots/02-instruments.png) | ![Settings](screenshots/03-settings.png) | ![Strings](screenshots/04-strings.png) |
+| ![Tuner](screenshots/01-tuner.png) | ![Instruments](screenshots/02-instruments.png) | ![Temperaments](screenshots/03-temperaments.png) | ![Strings](screenshots/04-strings.png) |
 
 ## What it is
 
@@ -49,11 +49,10 @@ E Ink is a smear.
 **Larger plot type.** Upstream's 14sp is sized for a phone in the hand. This is read from a
 music stand.
 
-## Known rough edge
-
-The temperament list truncates its titles at this width — six rows all reading "Equal
-temperame…", told apart only by the line beneath. It works, but it is not good, and it is
-the next thing to fix.
+**Names that fit.** The temperament list gave every row the same circled letter and then had
+no width left for its title, so six rows read "Equal temperame…" and were told apart only by
+the line beneath. The badge column is gone there and the titles have two lines. The
+instrument list keeps its drawings, because a guitar and a violin are told apart by them.
 
 ## Building
 
