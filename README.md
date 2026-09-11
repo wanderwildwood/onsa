@@ -73,12 +73,6 @@ that is the substance of the app, and roughly ten thousand lines of it.
 The interface was already Jetpack Compose, so this is a re-clothing rather than a rebuild:
 the theme is [MMD](https://github.com/mudita/MMD), Mudita's E Ink component library.
 
-## Support
-
-This is free software and it stays free; there is nothing here to buy. If you would like to
-send something somewhere anyway, there are some llamas who go through a great deal of hay:
-<https://hotspringsllamas.org/donate/>
-
 ## Licence
 
 **GNU General Public License v3.0 or later.** See [LICENSE](LICENSE).
