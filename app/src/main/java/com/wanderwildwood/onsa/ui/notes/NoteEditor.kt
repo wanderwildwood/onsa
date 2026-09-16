@@ -21,6 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.menus.DropdownMenuItemMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteModifier
@@ -170,7 +173,7 @@ fun NoteEditor(
 //        expanded = baseMenuExpanded,
 //        onExpandedChange = { baseMenuExpanded = !baseMenuExpanded }
 //    ) {
-//        TextField(
+//        TextFieldMMD(
 //            value = base.toString(), // TODO: use notenameprinter info and more to resolve this value
 //            onValueChange = {},
 //            readOnly = true,
@@ -185,8 +188,8 @@ fun NoteEditor(
 //            onDismissRequest = { baseMenuExpanded = false}
 //        ) {
 //            BaseNote.entries.forEach {
-//                DropdownMenuItem(
-//                    text = { Text(it.toString()) },// TODO: use notenameprinter info and more to resolve this value
+//                DropdownMenuItemMMD(
+//                    text = { TextMMD(it.toString()) },// TODO: use notenameprinter info and more to resolve this value
 //                    onClick = {
 //                        onNoteChange(it, noteModifier)
 //                        baseMenuExpanded = false

@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -51,6 +50,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.takeOrElse
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
@@ -453,7 +453,7 @@ fun Note(
         createAnnotatedStringOfNote(properties, notePrintOptions, fontSizeResolved, fontWeightResolved, withOctave)
     }
 
-    Text(text = noteAsString, modifier = modifier, color = colorResolved)
+    TextMMD(text = noteAsString, modifier = modifier, color = colorResolved)
 }
 
 /** Note with enharmonic if it exists (prints something like e.g. C#/Db).
@@ -543,10 +543,10 @@ fun NoteWithEnharmonic(
                         properties != propertiesEnharmonic
         )
         if (printDefault) {
-            Text(text = noteAsString!!, color = colorResolved)
+            TextMMD(text = noteAsString!!, color = colorResolved)
         }
         if (printDefault && printEnharmonic) {
-            Text(
+            TextMMD(
                 text = "/",
                 Modifier.padding(horizontal = 4.dp),
                 fontWeight = fontWeight,
@@ -555,7 +555,7 @@ fun NoteWithEnharmonic(
             )
         }
         if (printEnharmonic) {
-            Text(text = noteAsStringEnharmonic!!, color = colorResolved)
+            TextMMD(text = noteAsStringEnharmonic!!, color = colorResolved)
         }
     }
 }

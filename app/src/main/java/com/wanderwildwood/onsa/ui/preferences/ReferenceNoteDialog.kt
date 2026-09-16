@@ -25,18 +25,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.FloatState
 import androidx.compose.runtime.derivedStateOf
@@ -60,6 +54,10 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.preferences.PreferenceResources
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
@@ -67,6 +65,7 @@ import com.wanderwildwood.onsa.ui.misc.rememberNumberFormatter
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions2
 import com.wanderwildwood.onsa.ui.notes.NoteSelector
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -155,10 +154,10 @@ fun ReferenceNoteDialog(
         onPauseOrDispose { frequencyDetector.stopFrequencyDetection() }
     }
 
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(
+            OutlinedButtonMMD(
                 onClick = {
                     val note = initialState.getNote(selectedNoteIndex + initialState.noteIndexBegin)
                     onReferenceNoteChange(
@@ -169,121 +168,127 @@ fun ReferenceNoteDialog(
                         )
                     )
                 },
-                enabled = validFrequencyString && validFrequencyPositive
-            ) {
-                Text(stringResource(id = R.string.done))
-            }
+                enabled = validFrequencyString && validFrequencyPositive,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.done)) }
         },
-        modifier = modifier,
         dismissButton = {
-            TextButton(
-                onClick = onDismiss
-            ) {
-                Text(stringResource(id = R.string.abort))
-            }
-        },
-        icon = {
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_frequency_a),
-                contentDescription = null
-            )
+            OutlinedButtonMMD(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.abort)) }
         },
         title = {
-            Text(stringResource(id = R.string.reference_frequency))
+            TextMMD(stringResource(id = R.string.reference_frequency))
         },
         text = {
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                warning?.let {
-                    Text(
-                        it,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp)
+            // Paged, not scrolled: MMD's list steps and stops, and brings its own rail.
+            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp)) {
+                item {
+                    warning?.let {
+                        TextMMD(
+                            it,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp)
+                        )
+                    }
+                }
+                item {
+                    NoteSelector(
+                        selectedIndex = selectedNoteIndex,
+                        musicalScale = initialState,
+                        notePrintOptions = notePrintOptions,
+                        fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                        onIndexChanged = { selectedNoteIndex = it }
                     )
                 }
-                NoteSelector(
-                    selectedIndex = selectedNoteIndex,
-                    musicalScale = initialState,
-                    notePrintOptions = notePrintOptions,
-                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
-                    onIndexChanged = { selectedNoteIndex = it }
-                )
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
-                TextField(
-                    value = frequencyAsString,
-                    onValueChange = { frequencyAsString = it },
-                    label = { Text(stringResource(id = R.string.frequency))},
-                    suffix = { Text(stringResource(id = R.string.hertz_str, ""))},
-                    isError = !(validFrequencyString && validFrequencyPositive),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth(),
-                    supportingText = if (!validFrequencyString) {
-                        { Text(stringResource(R.string.input_is_no_number))}
-                    } else if (!validFrequencyPositive) {
-                        { Text(stringResource(R.string.value_must_be_larger_zero))}
-                    } else {
-                        null
-                    }
-                )
-                if (permissionGranted) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    if (frequencyDetectorStarted) {
-                        Row {
-                            OutlinedButton(
-                                onClick = {
-                                    frequencyAsString = "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue)
-                                },
-                                modifier = Modifier.weight(1f),
-                                enabled = frequencyDetector.detectedFrequency.floatValue != 0f
-                            ) {
-                                Text(stringResource(
-                                    R.string.hertz_str,
-                                    "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue))
-                                )
-                            }
-                            IconButton(
-                                onClick = {
-                                    frequencyDetectorStarted = false
-                                    frequencyDetector.stopFrequencyDetection()
-                                }
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.close_24px),
-                                    contentDescription = "stop frequency detection"
-                                )
-                            }
+                item {
+                    Spacer(
+                        modifier = Modifier.height(8.dp)
+                    )
+                }
+                item {
+                    TextFieldMMD(
+                        value = frequencyAsString,
+                        onValueChange = { frequencyAsString = it },
+                        label = { TextMMD(stringResource(id = R.string.frequency))},
+                        suffix = { TextMMD(stringResource(id = R.string.hertz_str, ""))},
+                        isError = !(validFrequencyString && validFrequencyPositive),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        modifier = Modifier.fillMaxWidth(),
+                        supportingText = if (!validFrequencyString) {
+                            { TextMMD(stringResource(R.string.input_is_no_number))}
+                        } else if (!validFrequencyPositive) {
+                            { TextMMD(stringResource(R.string.value_must_be_larger_zero))}
+                        } else {
+                            null
                         }
-                    } else {
-                        OutlinedButton(
-                            onClick = {
-                                if (!frequencyDetectorStarted) {
-                                    frequencyDetectorStarted = true
-                                    frequencyDetector.startFrequencyDetection()
+                    )
+                }
+                item {
+                    if (permissionGranted) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        if (frequencyDetectorStarted) {
+                            Row {
+                                OutlinedButtonMMD(
+                                    onClick = {
+                                        frequencyAsString = "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue)
+                                    },
+                                    modifier = Modifier.weight(1f),
+                                    enabled = frequencyDetector.detectedFrequency.floatValue != 0f
+                                ) {
+                                    TextMMD(stringResource(
+                                        R.string.hertz_str,
+                                        "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue))
+                                    )
                                 }
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(stringResource(R.string.detect_frequency))
+                                IconButton(
+                                    onClick = {
+                                        frequencyDetectorStarted = false
+                                        frequencyDetector.stopFrequencyDetection()
+                                    }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.close_24px),
+                                        contentDescription = "stop frequency detection"
+                                    )
+                                }
+                            }
+                        } else {
+                            OutlinedButtonMMD(
+                                onClick = {
+                                    if (!frequencyDetectorStarted) {
+                                        frequencyDetectorStarted = true
+                                        frequencyDetector.startFrequencyDetection()
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                TextMMD(stringResource(R.string.detect_frequency))
+                            }
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedButton(
-                    onClick = {
-                        val note = initialState.temperament.noteNames(initialState.rootNote).defaultReferenceNote
-                        selectedNoteIndex = initialState.getNoteIndex2(note) - initialState.noteIndexBegin
-                        frequencyAsString = decimalFormat.format(PreferenceResources.ReferenceFrequencyDefault)
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                    ) {
-                    Text(stringResource(id = R.string.set_default))
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                item {
+                    OutlinedButtonMMD(
+                        onClick = {
+                            val note = initialState.temperament.noteNames(initialState.rootNote).defaultReferenceNote
+                            selectedNoteIndex = initialState.getNoteIndex2(note) - initialState.noteIndexBegin
+                            frequencyAsString = decimalFormat.format(PreferenceResources.ReferenceFrequencyDefault)
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                        ) {
+                        TextMMD(stringResource(id = R.string.set_default))
+                    }
                 }
             }
-        }
+        },
     )
 }
 

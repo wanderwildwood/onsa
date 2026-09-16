@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 
 /** General label definition with a background and a content.
@@ -77,7 +77,7 @@ private fun LabelPreview() {
 
         Label(
             content = {
-                Text(
+                TextMMD(
                     "Label $count",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(horizontal = 8.dp)

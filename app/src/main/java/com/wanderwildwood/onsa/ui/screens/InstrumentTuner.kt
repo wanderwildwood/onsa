@@ -19,7 +19,6 @@
 package com.wanderwildwood.onsa.ui.screens
 
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -32,8 +31,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -52,6 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.snackbar.SnackbarHostMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
@@ -146,7 +145,7 @@ fun InstrumentTuner(
 
     val musicalScale by data.musicalScale.collectAsStateWithLifecycle()
     val notePrintOptions by data.notePrintOptions.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostStateMMD() }
     val permissionGranted = rememberTunerAudioPermission(snackbarHostState)
 
     LifecycleResumeEffect(permissionGranted) {
@@ -167,7 +166,7 @@ fun InstrumentTuner(
         musicalScale = musicalScale,
         notePrintOptions = notePrintOptions,
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+            SnackbarHostMMD(hostState = snackbarHostState)
         },
         modifier = modifier
     ) { paddingValues ->
@@ -278,7 +277,7 @@ fun InstrumentTunerPortrait(
                     onStringClicked = { key, note -> data.onStringClicked(key, note) }
                 )
             }
-            AnimatedVisibility(data.selectedNoteKey != null) {
+            if (data.selectedNoteKey != null)  {
                 NoteLockedButton(
                     note = data.targetNoteForLockButton,
                     modifier = Modifier
@@ -293,7 +292,7 @@ fun InstrumentTunerPortrait(
                     onClick = { data.onClearFixedTargetClicked() }
                 )
             }
-            AnimatedVisibility(data.selectedNoteKey == null) {
+            if (data.selectedNoteKey == null)  {
                 Spacer(Modifier.height(tunerPlotStyle.margin))
             }
 
@@ -435,7 +434,7 @@ fun InstrumentTunerLandscape(
                 onStringClicked = { key, note -> data.onStringClicked(key, note) }
             )
 
-            AnimatedVisibility(data.selectedNoteKey != null) {
+            if (data.selectedNoteKey != null)  {
                 NoteLockedButton(
                     note = data.targetNoteForLockButton,
                     modifier = Modifier
@@ -449,7 +448,7 @@ fun InstrumentTunerLandscape(
                     onClick = { data.onClearFixedTargetClicked() }
                 )
             }
-            AnimatedVisibility(data.selectedNoteKey == null) {
+            if (data.selectedNoteKey == null)  {
                 Spacer(Modifier.height(tunerPlotStyle.margin))
             }
         }

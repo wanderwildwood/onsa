@@ -35,7 +35,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.plot.PlotWindowOutline
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
@@ -94,7 +94,7 @@ fun InstrumentButton(
             Column(
                 modifier = Modifier.padding(ButtonDefaults.ContentPadding)
             ) {
-                Text(
+                TextMMD(
                     name,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
@@ -103,7 +103,7 @@ fun InstrumentButton(
                     //color = MaterialTheme.colorScheme.primary
                 )
                 if (errorMessage != null) {
-                    Text(
+                    TextMMD(
                         errorMessage,
                         style = MaterialTheme.typography.labelMedium
                     )

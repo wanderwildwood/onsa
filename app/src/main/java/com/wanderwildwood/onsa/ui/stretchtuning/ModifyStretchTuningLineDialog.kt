@@ -4,11 +4,7 @@ import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,8 +19,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.misc.rememberNumberFormatter
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -85,10 +85,10 @@ fun ModifyStretchTuningLineDialog(
         value != null
     }}
 
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = onAbortClicked,
         confirmButton = {
-            TextButton(
+            OutlinedButtonMMD(
                 onClick = {
                     val unstretchedFrequency = numberFormat.toDoubleOrNull(
                         unstretchedFrequencyAsString
@@ -98,65 +98,56 @@ fun ModifyStretchTuningLineDialog(
                     ) ?: initialStretchInCents
                     onConfirmedClicked(unstretchedFrequency, stretchInCents, key)
                 },
-                enabled = validUnstretchedFrequencyString && validUnstretchedFrequencyPositive && validStretchInCents
-            ) {
-                Text(stringResource(id = R.string.done))
-            }
+                enabled = validUnstretchedFrequencyString && validUnstretchedFrequencyPositive && validStretchInCents,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.done)) }
         },
         dismissButton = {
-            TextButton(
-                onClick = onAbortClicked
-            ) {
-                Text(stringResource(id = R.string.abort))
-            }
-        },
-        modifier = modifier,
-        icon = {
-            Icon(
-                ImageVector.vectorResource(R.drawable.ic_stretch),
-                contentDescription="stretch"
-            )
+            OutlinedButtonMMD(
+                onClick = onAbortClicked,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.abort)) }
         },
         title = {
-            Text(stringResource(R.string.stretched_frequency))
+            TextMMD(stringResource(R.string.stretched_frequency))
         },
         text = {
             Column {
-                TextField(
+                TextFieldMMD(
                     value = unstretchedFrequencyAsString,
                     onValueChange = { unstretchedFrequencyAsString = it },
-                    label = { Text(stringResource(id = R.string.frequency))},
-                    suffix = { Text(stringResource(id = R.string.hertz_str, ""))},
+                    label = { TextMMD(stringResource(id = R.string.frequency))},
+                    suffix = { TextMMD(stringResource(id = R.string.hertz_str, ""))},
                     isError = !(validUnstretchedFrequencyString && validUnstretchedFrequencyPositive),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     maxLines = 1,
                     supportingText = if (!validUnstretchedFrequencyString) {
-                        { Text(stringResource(R.string.input_is_no_number))}
+                        { TextMMD(stringResource(R.string.input_is_no_number))}
                     } else if (!validUnstretchedFrequencyPositive) {
-                        { Text(stringResource(R.string.value_must_be_larger_zero))}
+                        { TextMMD(stringResource(R.string.value_must_be_larger_zero))}
                     } else {
                         null
                     }
                 )
-                TextField(
+                TextFieldMMD(
                     value = stretchInCentsAsString,
                     onValueChange = { stretchInCentsAsString = it },
-                    label = { Text(stringResource(id = R.string.stretch))},
-                    suffix = { Text(stringResource(id = R.string.cent_symbol))},
+                    label = { TextMMD(stringResource(id = R.string.stretch))},
+                    suffix = { TextMMD(stringResource(id = R.string.cent_symbol))},
                     isError = !(validStretchInCents),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     maxLines = 1,
                     supportingText = if (!validStretchInCents) {
-                        { Text(stringResource(R.string.input_is_no_number))}
+                        { TextMMD(stringResource(R.string.input_is_no_number))}
                     } else {
                         null
                     }
                 )
 
             }
-        }
+        },
     )
 }
 

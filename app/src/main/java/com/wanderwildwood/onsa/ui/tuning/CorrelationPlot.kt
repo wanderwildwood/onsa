@@ -20,7 +20,6 @@ package com.wanderwildwood.onsa.ui.tuning
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -34,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
@@ -154,7 +154,7 @@ fun CorrelationPlot(
             //val widthDp = with(LocalDensity.current) { w.toDp() }
             val text = if (x == 0f) "" else stringResource(id = R.string.hertz_1f, 1 / x)
             //val text = longestTick
-            Text(
+            TextMMD(
                 text,
                 modifier = m, //.width(widthDp).background(MaterialTheme.colorScheme.error),
                 textAlign = TextAlign.Center,
@@ -191,7 +191,7 @@ fun CorrelationPlot(
                     ) {markModifier ->
                         Label(
                             content = {
-                                Text(
+                                TextMMD(
                                     stringResource(id = R.string.hertz_1f, currentFrequency),
                                     style = frequencyMarkTextStyle,
                                     modifier = Modifier.padding(horizontal = 2.dp)

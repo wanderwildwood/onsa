@@ -18,8 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,10 +27,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,6 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.takeOrElse
 import androidx.compose.ui.unit.times
+import com.mudita.mmd.components.buttons.ButtonMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
@@ -173,11 +171,10 @@ fun NoteDetector(
                         )
                 ) {
                     note.note?.let {
-                        val animatedFontSize by animateFloatAsState(
-                            if (note.counter == counter) 1f else sizeFactorOlderNote,
-                            label = "note scaling",
-                            animationSpec = tween(500)
-                        )
+                        // An older note used to shrink over half a second. It is simply the
+                        // smaller size: a letter resizing on this panel is a smear, not a fade.
+                        val animatedFontSize =
+                            if (note.counter == counter) 1f else sizeFactorOlderNote
                         Note(
                             musicalNote = it,
                             fontSize = animatedFontSize * fontSizeResolved,
@@ -212,10 +209,10 @@ private fun NoteDetectorPreview() {
                 musicalScale = musicalScale,
                 fontSize = 30.sp
             )
-            Button(
+            ButtonMMD(
                 onClick = { state.hitNote(noteList.random()) }
             ) {
-                Text("Hit Note")
+                TextMMD("Hit Note")
             }
         }
     }

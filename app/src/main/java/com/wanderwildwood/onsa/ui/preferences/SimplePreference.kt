@@ -21,15 +21,15 @@ package com.wanderwildwood.onsa.ui.preferences
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 
@@ -41,10 +41,10 @@ fun SimplePreference(
 ) {
     ListItem(
         headlineContent = {
-            Text(name)
+            TextMMD(name)
         },
         supportingContent = supporting?.let {{
-            Text(it)
+            TextMMD(it)
         }},
         // No icon. The house style keeps a settings row to its label and its value: on a
         // 4.3" panel with sixteen greys an icon beside every row costs a column of width
@@ -61,7 +61,7 @@ fun SimplePreference(
 ) {
     ListItem(
         headlineContent = {
-            Text(name)
+            TextMMD(name)
         },
         supportingContent = supporting,
         // No icon. The house style keeps a settings row to its label and its value: on a
@@ -81,7 +81,7 @@ private fun SimplePreferencePreview() {
                 name = "My preference",
                 supporting = "Extra text"
             )
-            HorizontalDivider()
+            HorizontalDividerMMD()
         }
     }
 }

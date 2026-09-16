@@ -21,12 +21,10 @@ package com.wanderwildwood.onsa.ui.preferences
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import com.mudita.mmd.components.slider.SliderMMD
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -36,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 
@@ -51,11 +50,11 @@ fun SliderPreference(
 ) {
     ListItem(
         headlineContent = {
-            Text(name)
+            TextMMD(name)
         },
         supportingContent = supporting?.let {{
             Column {
-                Text(it)
+                TextMMD(it)
                 SliderMMD(
                     value = value,
                     onValueChange = onValueChange,
@@ -63,7 +62,7 @@ fun SliderPreference(
                     steps = steps
                 )
 
-//                Slider(
+//                SliderMMD(
 //                    value = 0.5f,
 //                    onValueChange = {}
 //                )
@@ -90,7 +89,7 @@ private fun SliderPreferencePreview() {
                 onValueChange = { value = it },
                 supporting = "Extra text $value"
             )
-            HorizontalDivider()
+            HorizontalDividerMMD()
         }
     }
 }

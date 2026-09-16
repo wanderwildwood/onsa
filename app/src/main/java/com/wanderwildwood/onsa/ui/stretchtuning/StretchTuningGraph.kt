@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.GetTextFromString
 import com.wanderwildwood.onsa.stretchtuning.StretchTuning
@@ -202,7 +202,7 @@ fun StretchTuningGraph(
             lineColor = tickLineColor,
             clipLabelToPlotWindow = false
         ) { tickModifier, _, _, c ->
-            Text(
+            TextMMD(
                 stringResource(R.string.hertz, centsToFrequency(c.toDouble(), referenceFrequency.toDouble()).toFloat()),
                 modifier = tickModifier.padding(horizontal = 2.dp),
                 style = tickLabelStyle,
@@ -218,7 +218,7 @@ fun StretchTuningGraph(
             lineColor = tickLineColor,
             clipLabelToPlotWindow = false
         ) { tickModifier, _, _, c ->
-            Text(
+            TextMMD(
                 stringResource(R.string.cent, c.roundToInt()),
                 modifier = tickModifier.padding(horizontal = 2.dp),
                 style = tickLabelStyle,

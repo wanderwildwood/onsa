@@ -18,7 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.instruments
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteModifier
@@ -79,10 +79,8 @@ fun SingleString(
     onClick: () -> Unit = {}
 ) {
     val colorResolved = if (color == Color.Unspecified) MaterialTheme.colorScheme.inverseSurface else color
-    val xAnimated: Float by animateFloatAsState(
-        targetValue = (positionIndex + 0.5f) / numPositions,
-        label = "label position"
-    )
+    // The marker used to slide to its fret. It steps there instead: one repaint, not thirty.
+    val xAnimated: Float = (positionIndex + 0.5f) / numPositions
 
     Layout(
         content = {
@@ -92,7 +90,7 @@ fun SingleString(
                     .height(stringLineWidth)
                     .background(colorResolved)
             )
-//            Text(
+//            TextMMD(
 //                note.base.toString(),
 //                modifier = Modifier
 //                    .background(colorResolved)

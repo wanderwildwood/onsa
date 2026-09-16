@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.BorderStroke
@@ -38,9 +39,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,6 +59,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.takeOrElse
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.notenames.NoteNamesEDOGenerator
@@ -313,8 +313,8 @@ private fun NoteSelectorPreview() {
                 notePrintOptions = notePrintOptions
             ) { selectedIndex = it }
             Spacer(modifier = Modifier.height(12.dp))
-            OutlinedButton(onClick = {  }) {
-                Text("Text button")
+            OutlinedButtonMMD(onClick = {  }) {
+                TextMMD("Text button")
             }
         }
     }
@@ -342,8 +342,8 @@ private fun NoteSelector2Preview() {
                 notePrintOptions = notePrintOptions
             ) { selectedIndex = it }
             Spacer(modifier = Modifier.height(12.dp))
-            OutlinedButton(onClick = { }) {
-                Text("Text button")
+            OutlinedButtonMMD(onClick = { }) {
+                TextMMD("Text button")
             }
         }
     }

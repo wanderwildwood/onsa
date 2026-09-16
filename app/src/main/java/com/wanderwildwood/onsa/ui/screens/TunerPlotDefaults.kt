@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanderwildwood.onsa.ui.plot.PlotWindowOutline
 import com.wanderwildwood.onsa.ui.theme.tunerColors
-import com.wanderwildwood.onsa.ui.theme.tunerTypography
 
 data class TunerPlotStyle(
     val tickFontStyle: TextStyle,
@@ -63,10 +62,10 @@ data class TunerPlotStyle(
     companion object {
         @Composable
         fun create(
-            tickFontStyle: TextStyle = MaterialTheme.tunerTypography.plotSmall,
+            tickFontStyle: TextStyle = MaterialTheme.typography.bodySmall,
             tickLineWidth: Dp = 1.dp,
             tickLineColor: Color = MaterialTheme.colorScheme.outline,
-            toleranceTickFontStyle: TextStyle = MaterialTheme.tunerTypography.plotMedium,
+            toleranceTickFontStyle: TextStyle = MaterialTheme.typography.bodyMedium,
             toleranceColor: Color = MaterialTheme.colorScheme.inverseSurface,
             plotPointSize: Dp = 15.dp,
             plotPointSizeInactive: Dp = 10.dp,
@@ -86,9 +85,9 @@ data class TunerPlotStyle(
             targetNoteLineWith: Dp = 2.dp,
             extraMarkLineWidth: Dp = 1.dp,
             extraMarkLineColor: Color = MaterialTheme.colorScheme.primary,
-            extraMarkTextStyle: TextStyle = MaterialTheme.tunerTypography.plotMedium,
+            extraMarkTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
             plotHeadlineStyle: TextStyle = MaterialTheme.typography.titleSmall,
-            stringFontStyle: TextStyle = MaterialTheme.tunerTypography.plotLarge,
+            stringFontStyle: TextStyle = MaterialTheme.typography.titleLarge,
             plotWindowOutline: PlotWindowOutline = PlotWindowOutline(
                 lineWidth = 1.5.dp,
                 cornerRadius = 8.dp,
@@ -99,7 +98,7 @@ data class TunerPlotStyle(
                 cornerRadius = 8.dp,
                 color = MaterialTheme.colorScheme.primary
             ),
-            noteSelectorStyle: TextStyle = MaterialTheme.tunerTypography.plotLarge,
+            noteSelectorStyle: TextStyle = MaterialTheme.typography.titleLarge,
             margin: Dp = 12.dp
         ): TunerPlotStyle {
             return TunerPlotStyle(

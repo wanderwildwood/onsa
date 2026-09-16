@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.screens
 
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import android.content.Context
@@ -26,9 +27,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -39,6 +38,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.misc.TunerScaffoldWithoutBottomBar
 import com.wanderwildwood.onsa.ui.misc.rememberNumberFormatter
@@ -101,7 +101,7 @@ fun Preferences(
                 }
                 SimplePreference(
                     name = stringResource(id = R.string.language),
-                    supporting = { Text(stringResource(selectedLocale.resId))},
+                    supporting = { TextMMD(stringResource(selectedLocale.resId))},
                     modifier = Modifier.clickable { onLanguageClicked() }
                 )
             }
@@ -149,7 +149,7 @@ fun Preferences(
                                     )
                                 }
                             }
-                        Text(summary)
+                        TextMMD(summary)
                     },
                     modifier = Modifier.clickable { onReferenceFrequencyClicked() }
                 )
@@ -176,7 +176,7 @@ fun Preferences(
                                 )
                             }
                         }
-                        Text(summary)
+                        TextMMD(summary)
                     },
                     modifier = Modifier.clickable { onTemperamentClicked() }
                 )
@@ -212,7 +212,7 @@ fun Preferences(
                         val summary = remember(notePrintOptions, context) {
                             "${context.getString(notePrintOptions.notationType.stringResourceId)}, ${context.getString(notePrintOptions.octaveNotation.stringResourceId)}"
                         }
-                        Text(summary)
+                        TextMMD(summary)
                     },
                     modifier = Modifier.clickable { onNotationClicked() }
                 )
@@ -229,7 +229,7 @@ fun Preferences(
                 )
             }
             item {
-                HorizontalDivider()
+                HorizontalDividerMMD()
             }
             item {
                 Section(title = stringResource(id = R.string.expert))
@@ -261,7 +261,7 @@ fun Preferences(
                 SimplePreference(
                     name = stringResource(id = R.string.stretch_tuning),
                     supporting = {
-                        Text(musicalScale.stretchTuning.name.value(context))
+                        TextMMD(musicalScale.stretchTuning.name.value(context))
                     },
                     modifier = Modifier.clickable { onStretchTuningClicked() }
                 )
@@ -354,7 +354,7 @@ fun Preferences(
                 )
             }
             item {
-                HorizontalDivider()
+                HorizontalDividerMMD()
             }
             item {
                 Section(title = stringResource(id = R.string.others))

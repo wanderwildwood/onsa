@@ -18,7 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.temperaments
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,15 +27,12 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -58,6 +54,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.ConfigurationCompat
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
@@ -251,7 +250,7 @@ private fun ClickableNote(
                     color = contentColor
                 )
             } else {
-                Text(
+                TextMMD(
                     "-",
                     style = MaterialTheme.typography.bodyLarge,
                     color = contentColor
@@ -309,7 +308,7 @@ fun TemperamentTableLine(
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
+                        TextMMD(
                             "${lineNumber + 1}",
                             style = MaterialTheme.typography.labelSmall,
                             modifier = Modifier
@@ -328,7 +327,7 @@ fun TemperamentTableLine(
                             enabled = !state.isOctaveLine
                         )
 
-                        Text(
+                        TextMMD(
                             "/",
                             style = MaterialTheme.typography.bodyLarge,
                             color = contentColor
@@ -347,11 +346,11 @@ fun TemperamentTableLine(
                 }
                 Spacer(modifier = Modifier.width(16.dp))
 
-                TextField(
+                TextFieldMMD(
                     value = state.centOrRatio ?: "",
                     onValueChange = onValueChange,
                     label = {
-                        Text(
+                        TextMMD(
                             if (isRatio)
                                 stringResource(id = R.string.ratio)
                             else
@@ -366,7 +365,7 @@ fun TemperamentTableLine(
                 )
             }
 
-            AnimatedVisibility(visible = state.noteEditorState != TemperamentTableLineState.NoteEditorState.Off) {
+            if (state.noteEditorState != TemperamentTableLineState.NoteEditorState.Off)  {
                 Column {
                     val resolvedBase by remember { derivedStateOf {
                         val n = state.note
@@ -471,13 +470,8 @@ fun TemperamentTableLine(
                 }
             }
 
-            AnimatedVisibility(visible = (
-                    state.centOrRatio == ""
-                            || state.invalidValueError
-                            || state.decreasingValueError
-                    )
-            ) {
-                Text(
+            if (( state.centOrRatio == "" || state.invalidValueError || state.decreasingValueError ))  {
+                TextMMD(
                     when {
                         state.centOrRatio == "" -> {
                             stringResource(R.string.missing_value)
@@ -496,9 +490,8 @@ fun TemperamentTableLine(
                 )
             }
 
-            AnimatedVisibility(visible = (state.note == null || state.duplicateNoteError)
-            ) {
-                Text(
+            if ((state.note == null || state.duplicateNoteError))  {
+                TextMMD(
                     when {
                         state.note == null -> {
                             stringResource(R.string.missing_note_name)
@@ -514,7 +507,7 @@ fun TemperamentTableLine(
                 )
             }
 
-            HorizontalDivider(
+            HorizontalDividerMMD(
                 Modifier
                     .padding(horizontal = 16.dp)
                     .padding(top = 4.dp)

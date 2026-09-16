@@ -23,10 +23,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,12 +36,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.times
+import com.mudita.mmd.components.buttons.ButtonMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteModifier
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
-import com.wanderwildwood.onsa.ui.theme.tunerTypography
 
 @Composable
 fun NoteLockedButton(
@@ -51,7 +50,7 @@ fun NoteLockedButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     notePrintOptions: NotePrintOptions2 = NotePrintOptions2(),
-    fontSize: TextUnit = MaterialTheme.tunerTypography.plotLarge.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize
 ) {
     val iconSize = with(LocalDensity.current) {
         0.8f * fontSize.toDp()
@@ -66,7 +65,7 @@ fun NoteLockedButton(
             resources = resources
         )
     }
-    Button(
+    ButtonMMD(
         onClick = onClick,
         modifier = modifier
     ) {
@@ -80,7 +79,7 @@ fun NoteLockedButton(
                 contentDescription = "locked",
                 modifier = Modifier.size(iconSize)
             )
-            Text(
+            TextMMD(
                 buttonText,
                 textAlign = TextAlign.Center
             )

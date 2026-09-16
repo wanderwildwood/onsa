@@ -18,9 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.plot
 
-import androidx.compose.animation.core.animateRectAsState
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -30,7 +27,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -49,6 +45,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -351,11 +348,10 @@ fun Plot(
                 )
             }
         }
-        val resolvedViewPortRaw by animateRectAsState(
-            targetValue = if (gestureBasedViewPort.isActive) gestureBasedViewPort.viewPort else viewPort,
-            label = "animate viewport",
-            animationSpec = if (gestureBasedViewPort.isActive) snap(0) else spring()
-        )
+        // The viewport used to spring into place. On E Ink a spring is a dozen full repaints
+        // of the plot to land where it could have been drawn at once.
+        val resolvedViewPortRaw =
+            if (gestureBasedViewPort.isActive) gestureBasedViewPort.viewPort else viewPort
         val resolvedLimits = remember(viewPortGestureLimits) {
             if (viewPortGestureLimits == null) {
                 null
@@ -454,7 +450,7 @@ private fun PlotPreview() {
                     maxNumLabels = 6,
                     clipLabelToPlotWindow = true
                 ) { modifier, level, index, y ->
-                    Text(
+                    TextMMD(
                         "y=$y",
                         modifier = modifier,//.background(MaterialTheme.colorScheme.secondary),
                         color = MaterialTheme.colorScheme.onSurface
@@ -473,7 +469,7 @@ private fun PlotPreview() {
                     maxNumLabels = 6,
                     clipLabelToPlotWindow = true
                 ) { modifier, level, index, x ->
-                    Text(
+                    TextMMD(
                         "x=$x",
                         modifier = modifier,//.background(MaterialTheme.colorScheme.secondary),
                         color = MaterialTheme.colorScheme.onSurface
@@ -505,7 +501,7 @@ private fun PlotPreview() {
                             )
                         ) { m ->
                             Surface(m, color = MaterialTheme.colorScheme.secondary) {
-                                Text("ABC", modifier = Modifier.padding(horizontal = 2.dp))
+                                TextMMD("ABC", modifier = Modifier.padding(horizontal = 2.dp))
                             }
                         },
                     ),
@@ -525,7 +521,7 @@ private fun PlotPreview() {
                             )
                         ) { m ->
                             Surface(m, color = MaterialTheme.colorScheme.secondary) {
-                                Text("ABC", modifier = Modifier.padding(horizontal = 2.dp))
+                                TextMMD("ABC", modifier = Modifier.padding(horizontal = 2.dp))
                             }
                         },
                     ),
@@ -545,7 +541,7 @@ private fun PlotPreview() {
                             )
                         ) { m ->
                             Surface(m, color = MaterialTheme.colorScheme.secondary) {
-                                Text("ABC", modifier = Modifier.padding(horizontal = 2.dp))
+                                TextMMD("ABC", modifier = Modifier.padding(horizontal = 2.dp))
                             }
                         },
                     ),
@@ -562,7 +558,7 @@ private fun PlotPreview() {
                             )
                         ) { m ->
                             Surface(m, color = MaterialTheme.colorScheme.secondary) {
-                                Text("ABC", modifier = Modifier.padding(horizontal = 2.dp))
+                                TextMMD("ABC", modifier = Modifier.padding(horizontal = 2.dp))
                             }
                         },
                     ),

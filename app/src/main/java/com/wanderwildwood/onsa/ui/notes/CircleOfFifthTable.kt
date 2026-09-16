@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,6 +38,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.temperaments.FifthModification
 import com.wanderwildwood.onsa.temperaments.Temperament3
@@ -207,7 +207,7 @@ fun CircleOfFifthTable(
                 )
             }
             item {
-                Text("...", fontWeight = FontWeight.Bold, style = noteTypography)
+                TextMMD("...", fontWeight = FontWeight.Bold, style = noteTypography)
             }
         }
     }

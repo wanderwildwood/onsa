@@ -21,11 +21,8 @@ package com.wanderwildwood.onsa.ui.preferences
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.switcher.SwitchMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 
@@ -48,16 +48,16 @@ fun SwitchPreference(
 ) {
     ListItem(
         headlineContent = {
-            Text(name)
+            TextMMD(name)
         },
         supportingContent = supporting?.let {{
-            Text(it)
+            TextMMD(it)
         }},
         // No icon. The house style keeps a settings row to its label and its value: on a
         // 4.3" panel with sixteen greys an icon beside every row costs a column of width
         // and renders a small glyph as a smudge.
         trailingContent = {
-            Switch(checked = checked, onCheckedChange = onCheckChange)
+            SwitchMMD(checked = checked, onCheckedChange = onCheckChange)
         },
         modifier = modifier
     )
@@ -75,7 +75,7 @@ private fun SwitchPreferencePreview() {
                 onCheckChange = { checked = it},
                 supporting = null // "Extra text"
             )
-            HorizontalDivider()
+            HorizontalDividerMMD()
         }
     }
 }

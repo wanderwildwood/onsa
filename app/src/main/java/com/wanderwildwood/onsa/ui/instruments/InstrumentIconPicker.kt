@@ -19,14 +19,12 @@
 package com.wanderwildwood.onsa.ui.instruments
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -35,8 +33,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.collections.immutable.toImmutableList
 
@@ -49,15 +50,16 @@ fun InstrumentIconPicker(
     val icons = remember {
         InstrumentIcon.entries.toImmutableList()
     }
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(id = R.string.abort))
-            }
+            OutlinedButtonMMD(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.abort)) }
         },
         title = {
-            Text(stringResource(id = R.string.pick_icon))
+            TextMMD(stringResource(id = R.string.pick_icon))
         },
         text = {
             LazyVerticalGrid(
@@ -74,7 +76,6 @@ fun InstrumentIconPicker(
                 }
             }
         },
-        modifier = modifier
     )
 }
 

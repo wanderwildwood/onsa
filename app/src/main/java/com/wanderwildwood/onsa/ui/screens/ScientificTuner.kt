@@ -34,12 +34,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -63,6 +59,10 @@ import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.getFilenameFromUri
 import com.wanderwildwood.onsa.notedetection.TuningState
@@ -138,7 +138,7 @@ fun ScientificTuner(
     val musicalScale by data.musicalScale.collectAsStateWithLifecycle()
     val notePrintOptions by data.notePrintOptions.collectAsStateWithLifecycle()
     val waveWriterDuration by data.waveWriterDuration.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostStateMMD() }
     val permissionGranted = rememberTunerAudioPermission(snackbarHostState)
     val context = LocalContext.current
 
@@ -176,11 +176,11 @@ fun ScientificTuner(
         musicalScale = musicalScale,
         notePrintOptions = notePrintOptions,
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+            SnackbarHostMMD(hostState = snackbarHostState)
         },
         floatingActionButton = {
             if (waveWriterDuration > 0) {
-                FloatingActionButton(
+                FloatingActionButtonMMD(
                     onClick = {
                         data.storeCurrentWaveWriterSnapshot()
                         writeWaveLauncher.launch("tuner-export.wav")
@@ -252,7 +252,7 @@ fun ScientificTunerPortrait(
 
         Column(modifier = Modifier.weight(0.225f)) {
             Spacer(modifier = Modifier.height(tunerPlotStyle.margin))
-            Text(
+            TextMMD(
                 stringResource(id = R.string.spectrum),
                 Modifier
                     .fillMaxWidth()
@@ -296,7 +296,7 @@ fun ScientificTunerPortrait(
         }
 
         Column(modifier = Modifier.weight(0.225f)) {
-            Text(
+            TextMMD(
                 stringResource(id = R.string.autocorrelation),
                 Modifier
                     .fillMaxWidth()
@@ -338,7 +338,7 @@ fun ScientificTunerPortrait(
         }
 
         Column(modifier = Modifier.weight(0.55f)) {
-            Text(
+            TextMMD(
                 stringResource(id = R.string.pitch_history),
                 Modifier
                     .fillMaxWidth()
@@ -431,7 +431,7 @@ fun ScientificTunerLandscape(
         ) {
             Column(modifier = Modifier.weight(0.5f)) {
                 Spacer(modifier = Modifier.height(tunerPlotStyle.margin))
-                Text(
+                TextMMD(
                     stringResource(id = R.string.spectrum),
                     Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
@@ -476,7 +476,7 @@ fun ScientificTunerLandscape(
             }
 
             Column(modifier = Modifier.weight(0.52f)) {
-                Text(
+                TextMMD(
                     stringResource(id = R.string.autocorrelation),
                     Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
@@ -521,7 +521,7 @@ fun ScientificTunerLandscape(
         }
 
         Column(modifier = Modifier.weight(0.5f)) {
-            Text(
+            TextMMD(
                 stringResource(id = R.string.pitch_history),
                 Modifier
                     .fillMaxWidth()

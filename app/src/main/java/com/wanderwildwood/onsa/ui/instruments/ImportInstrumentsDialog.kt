@@ -20,11 +20,9 @@ package com.wanderwildwood.onsa.ui.instruments
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,10 +34,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentIO
 import com.wanderwildwood.onsa.ui.preferences.RadioButtonLine
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -64,31 +65,27 @@ fun ImportInstrumentsDialog(
 ) {
     var importChoice by rememberSaveable { mutableStateOf(InstrumentIO.InsertMode.Append) }
     val context = LocalContext.current
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = {
+            OutlinedButtonMMD(
+                onClick = {
                 onImport(importChoice, instruments)
-            }) {
-                Text(stringResource(id = R.string.ok))
-            }
+            },
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.ok)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(id = R.string.abort))
-            }
+            OutlinedButtonMMD(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.abort)) }
         },
         title = {
-            Text(
+            TextMMD(
                 context.resources.getQuantityString(
                     R.plurals.load_instruments, instruments.size, instruments.size
                 )
-            )
-        },
-        icon = {
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_unarchive),
-                contentDescription = "import"
             )
         },
         text = {
@@ -102,7 +99,6 @@ fun ImportInstrumentsDialog(
                 }
             }
         },
-        modifier = modifier
     )
 }
 

@@ -20,20 +20,20 @@ package com.wanderwildwood.onsa.ui.preferences
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.BuildConfig
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import android.content.Intent
 import android.net.Uri
@@ -56,32 +56,31 @@ fun AboutDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {}
 ) {
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(
-                onClick = onDismiss
-            ) {
-                Text(stringResource(id = R.string.acknowledged))
-            }
-        },
-        modifier = modifier,
-        icon = {
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_info),
-                contentDescription = null
-            )
+            OutlinedButtonMMD(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.acknowledged)) }
         },
         title = {
-            Text(stringResource(id = R.string.about))
+            TextMMD(stringResource(id = R.string.about))
         },
         text = {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                Text(stringResource(id = R.string.about_message, BuildConfig.VERSION_NAME))
-                Spacer(Modifier.height(14.dp))
-                Llama()
+            // Paged, not scrolled: MMD's list steps and stops, and brings its own rail.
+            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp)) {
+                item {
+                    TextMMD(stringResource(id = R.string.about_message, BuildConfig.VERSION_NAME))
+                }
+                item {
+                    Spacer(Modifier.height(14.dp))
+                }
+                item {
+                    Llama()
+                }
             }
-        }
+        },
     )
 }
 
@@ -132,6 +131,6 @@ private fun Llama() {
             modifier = Modifier.size(22.dp),
         )
         Spacer(Modifier.width(6.dp))
-        Text("Feed the llamas")
+        TextMMD("Feed the llamas")
     }
 }

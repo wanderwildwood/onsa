@@ -19,12 +19,8 @@
 package com.wanderwildwood.onsa.ui.common
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +30,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.menus.DropdownMenuItemMMD
+import com.mudita.mmd.components.menus.DropdownMenuMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 
 interface OverflowMenuCallbacks{
@@ -59,12 +59,12 @@ fun OverflowMenu(
                 contentDescription = "menu"
             )
         }
-        DropdownMenu(
+        DropdownMenuMMD(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(
-                text = { Text(stringResource(id = R.string.delete_items)) },
+            DropdownMenuItemMMD(
+                text = { TextMMD(stringResource(id = R.string.delete_items)) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.delete_24px),
@@ -76,9 +76,9 @@ fun OverflowMenu(
                     expanded = false
                 }
             )
-            HorizontalDivider()
-            DropdownMenuItem(
-                text = { Text(stringResource(id = R.string.share)) },
+            HorizontalDividerMMD()
+            DropdownMenuItemMMD(
+                text = { TextMMD(stringResource(id = R.string.share)) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.share_24px),
@@ -90,8 +90,8 @@ fun OverflowMenu(
                     expanded = false
                 }
             )
-            DropdownMenuItem(
-                text = { Text(stringResource(id = R.string.save_to_disk)) },
+            DropdownMenuItemMMD(
+                text = { TextMMD(stringResource(id = R.string.save_to_disk)) },
                 leadingIcon = {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_archive),
@@ -103,8 +103,8 @@ fun OverflowMenu(
                     expanded = false
                 }
             )
-            DropdownMenuItem(
-                text = { Text(stringResource(id = R.string.load_from_disk)) },
+            DropdownMenuItemMMD(
+                text = { TextMMD(stringResource(id = R.string.load_from_disk)) },
                 leadingIcon = {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_unarchive),
@@ -117,9 +117,9 @@ fun OverflowMenu(
                 }
             )
             if (showSettings) {
-                HorizontalDivider()
-                DropdownMenuItem(
-                    text = { Text(stringResource(id = R.string.settings)) },
+                HorizontalDividerMMD()
+                DropdownMenuItemMMD(
+                    text = { TextMMD(stringResource(id = R.string.settings)) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(R.drawable.settings_24px),

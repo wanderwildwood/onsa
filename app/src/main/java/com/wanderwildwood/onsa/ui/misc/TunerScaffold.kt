@@ -22,14 +22,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +36,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.buttons.ButtonMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions
@@ -78,12 +78,12 @@ fun TunerScaffold(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
+            TopAppBarMMD(
                 title = {
                     if (actionModeActive)
-                        Text(actionModeTitle)
+                        TextMMD(actionModeTitle)
                     else
-                        Text(title)
+                        TextMMD(title)
                 },
                 navigationIcon = {
                     val state = when {
@@ -170,12 +170,12 @@ fun TunerScaffoldWithoutBottomBar(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
+            TopAppBarMMD(
                 title = {
                     if (actionModeActive)
-                        Text(actionModeTitle)
+                        TextMMD(actionModeTitle)
                     else
-                        Text(title)
+                        TextMMD(title)
                 },
                 navigationIcon = {
                     val state = when {
@@ -257,13 +257,13 @@ private fun TunerScaffoldPreview() {
             showBottomBar = showBottomBar
         ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                Button(onClick = { actionMode = !actionMode }) {
-                    Text(
+                ButtonMMD(onClick = { actionMode = !actionMode }) {
+                    TextMMD(
                         "EnableAction",
                     )
                 }
-                Button(onClick = { showBottomBar = !showBottomBar }) {
-                    Text(
+                ButtonMMD(onClick = { showBottomBar = !showBottomBar }) {
+                    TextMMD(
                         "Show bottom bar",
                     )
                 }

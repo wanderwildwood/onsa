@@ -28,19 +28,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,6 +47,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.buttons.ButtonMMD
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
+import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
@@ -110,13 +110,13 @@ fun InstrumentEditor(
     onIconButtonClicked: () -> Unit = {},
     onNavigateUpClicked: () -> Unit = {},
     onSaveNewInstrumentClicked: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    snackbarHostState: SnackbarHostStateMMD = remember { SnackbarHostStateMMD() }
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.edit_instrument)) },
+            TopAppBarMMD(
+                title = { TextMMD(stringResource(id = R.string.edit_instrument)) },
                 navigationIcon = {
                     IconButton(onClick = { onNavigateUpClicked() }) {
                         Icon(
@@ -127,12 +127,12 @@ fun InstrumentEditor(
                 },
                 actions = {
                     TextButton(onClick = { onSaveNewInstrumentClicked() }) {
-                        Text(stringResource(id = R.string.save))
+                        TextMMD(stringResource(id = R.string.save))
                     }
                 }
             )
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHostMMD(hostState = snackbarHostState) }
     ) { paddingValues ->
         val configuration = LocalConfiguration.current
         when (configuration.orientation) {
@@ -187,7 +187,7 @@ fun InstrumentEditorPortrait(
 
 //    Log.v("Tuner", "InstrumentEditor: strings: $strings")
     Column(modifier) {
-        OutlinedTextField(
+        TextFieldMMD(
             value = name,
             onValueChange = { state.setName(it) },
             modifier = Modifier
@@ -214,7 +214,7 @@ fun InstrumentEditorPortrait(
                 }
             },
             placeholder = {
-                Text(stringResource(id = R.string.instrument_name))
+                TextMMD(stringResource(id = R.string.instrument_name))
             },
             singleLine = true
         )
@@ -254,20 +254,20 @@ fun InstrumentEditorPortrait(
                 .padding(top = tunerPlotStyle.margin - 4.dp)
                 .fillMaxWidth()
         ) {
-            Button(
+            ButtonMMD(
                 onClick = { state.addNote() },
                 modifier = Modifier.weight(1f)
             ) {
-                Text(stringResource(id = R.string.add_note))
+                TextMMD(stringResource(id = R.string.add_note))
             }
 
             Spacer(modifier = Modifier.width(tunerPlotStyle.margin))
 
-            Button(
+            ButtonMMD(
                 onClick = { state.deleteNote() },
                 modifier = Modifier.weight(1f)
             ) {
-                Text(stringResource(id = R.string.delete_note))
+                TextMMD(stringResource(id = R.string.delete_note))
             }
         }
         NoteSelector(
@@ -278,10 +278,10 @@ fun InstrumentEditorPortrait(
             fontSize = tunerPlotStyle.noteSelectorStyle.fontSize,
             onIndexChanged = { state.modifySelectedString(musicalScale.getNote(it + musicalScale.noteIndexBegin)) }
         )
-        HorizontalDivider(
+        HorizontalDividerMMD(
             modifier = Modifier.padding(tunerPlotStyle.margin)
         )
-        Text(
+        TextMMD(
             stringResource(id = R.string.lately_detected_notes),
             modifier = Modifier.padding(horizontal = tunerPlotStyle.margin),
             style = MaterialTheme.typography.labelMedium
@@ -335,7 +335,7 @@ fun InstrumentEditorLandscape(
             Modifier.weight(1f),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            OutlinedTextField(
+            TextFieldMMD(
                 value = name,
                 onValueChange = { state.setName(it) },
                 modifier = Modifier
@@ -365,7 +365,7 @@ fun InstrumentEditorLandscape(
                     }
                 },
                 placeholder = {
-                    Text(stringResource(id = R.string.instrument_name))
+                    TextMMD(stringResource(id = R.string.instrument_name))
                 },
                 singleLine = true
             )
@@ -380,20 +380,20 @@ fun InstrumentEditorLandscape(
                     )
                     .fillMaxWidth()
             ) {
-                Button(
+                ButtonMMD(
                     onClick = { state.addNote() },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(stringResource(id = R.string.add_note))
+                    TextMMD(stringResource(id = R.string.add_note))
                 }
 
                 Spacer(modifier = Modifier.width(tunerPlotStyle.margin))
 
-                Button(
+                ButtonMMD(
                     onClick = { state.deleteNote() },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(stringResource(id = R.string.delete_note))
+                    TextMMD(stringResource(id = R.string.delete_note))
                 }
             }
 
@@ -412,7 +412,7 @@ fun InstrumentEditorLandscape(
 
             Spacer(Modifier.weight(1f))
 
-            HorizontalDivider(
+            HorizontalDividerMMD(
                 modifier = Modifier.padding(
                     top = tunerPlotStyle.margin,
                     bottom = tunerPlotStyle.margin,
@@ -420,7 +420,7 @@ fun InstrumentEditorLandscape(
                 )
             )
 
-            Text(
+            TextMMD(
                 stringResource(id = R.string.lately_detected_notes),
                 modifier = Modifier.padding(
                     start = tunerPlotStyle.margin

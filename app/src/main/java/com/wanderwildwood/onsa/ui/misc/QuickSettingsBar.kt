@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.stretchtuning.predefinedStretchTunings
@@ -83,7 +83,7 @@ fun QuickSettingsBar(
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Text(
+            TextMMD(
                 stringResource(
                     id = R.string.hertz_str,
                     decimalFormat.format(musicalScale.referenceFrequency)
@@ -109,7 +109,7 @@ fun QuickSettingsBar(
                         abbr
                 }
 
-            Text(
+            TextMMD(
                 abbreviation,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleSmall,
@@ -146,7 +146,7 @@ fun QuickSettingsBar(
                     .clickable { onStretchTuningClicked() },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
+                TextMMD(
                     musicalScale.stretchTuning.name.value(context),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleSmall,

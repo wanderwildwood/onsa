@@ -19,15 +19,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -47,6 +42,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.ShareData
 import com.wanderwildwood.onsa.misc.getFilenameFromUri
@@ -193,7 +192,7 @@ fun TemperamentsDialog2(
 
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostStateMMD() }
     val maxExpectedHeightForFab = 72.dp
 
     val overflowCallbacks = rememberImportExportCallbacks(
@@ -259,17 +258,16 @@ fun TemperamentsDialog2(
                         onTemperamentClicked(state.defaultTemperament, state.defaultTemperament.possibleRootNotes()[0])
                     },
                     containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                     icon = {
                         Icon(
                             ImageVector.vectorResource(R.drawable.ic_reset),
                             contentDescription = "reset"
                         )
                     },
-                    text = { Text(stringResource(R.string.use_default)) }
+                    text = { TextMMD(stringResource(R.string.use_default)) }
                 )
                 Spacer(modifier = Modifier.width(12.dp))
-                FloatingActionButton(
+                FloatingActionButtonMMD(
                     onClick = {
                         onEditTemperamentClicked(
                             Temperament3Custom(
@@ -283,7 +281,6 @@ fun TemperamentsDialog2(
                         )
                     },
                     containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.add_24px),
@@ -293,7 +290,7 @@ fun TemperamentsDialog2(
             }
         },
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+            SnackbarHostMMD(hostState = snackbarHostState)
         }
     ) { paddingValues ->
         val iconTextSize = with(LocalDensity.current) { 18.dp.toSp() }
@@ -316,12 +313,12 @@ fun TemperamentsDialog2(
                 // fit: at one line on a 480px screen six rows all read "Equal temperame..."
                 // and were told apart only by the line beneath them.
                 showIcon = false,
-                title = { Text(
+                title = { TextMMD(
                     item.name.value(context),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 ) },
-                description = { Text(
+                description = { TextMMD(
                     item.description.value(context),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -337,7 +334,7 @@ fun TemperamentsDialog2(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
+                            TextMMD(
                                 text = "${item.name.value(context).getOrNull(0) ?: ""}",
                                 fontSize = iconTextSize
                             )

@@ -29,13 +29,9 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -51,6 +47,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentIO
@@ -96,7 +96,7 @@ fun Instruments(
 ) {
     val selectedInstruments by state.listData.selectedItems.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostStateMMD() }
     val context = LocalContext.current
     val maxExpectedHeightForFab = 72.dp
     val listState = rememberLazyListState()
@@ -225,7 +225,7 @@ fun Instruments(
         onNavigateUpClicked = onNavigateUpClicked,
         showPreferenceButton = false,
         floatingActionButton = {
-            FloatingActionButton(
+            FloatingActionButtonMMD(
                 onClick = onCreateNewInstrumentClicked
             ) {
                 Icon(
@@ -235,7 +235,7 @@ fun Instruments(
             }
         },
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+            SnackbarHostMMD(hostState = snackbarHostState)
         }
     ) { paddingValues ->
         val layoutDirection = LocalLayoutDirection.current
@@ -252,7 +252,7 @@ fun Instruments(
             snackbarHostState = snackbarHostState
         ) { item ,itemInfo, itemModifier ->
             EditableListItem(
-                title = { Text(
+                title = { TextMMD(
                     item.getNameString(context),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -267,7 +267,7 @@ fun Instruments(
                             fontWeight = style.fontWeight
                         )
                     }
-                    Text(
+                    TextMMD(
                         stringsString,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

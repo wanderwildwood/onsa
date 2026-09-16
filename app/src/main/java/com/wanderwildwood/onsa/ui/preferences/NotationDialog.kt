@@ -20,21 +20,16 @@ package com.wanderwildwood.onsa.ui.preferences
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,10 +41,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.mudita.mmd.components.menus.DropdownMenuItemMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.notes.NotationType
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions2
 import com.wanderwildwood.onsa.ui.notes.OctaveNotation
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,124 +64,118 @@ fun NotationDialog(
     var notationType by remember { mutableStateOf(notePrintOptions.notationType) }
     var octaveNotation by remember { mutableStateOf(notePrintOptions.octaveNotation) }
 
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(
+            OutlinedButtonMMD(
                 onClick = {
                     onNotationChange(notationType, octaveNotation)
-                }
-            ) {
-                Text(stringResource(id = R.string.done))
-            }
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.done)) }
         },
-        modifier = modifier,
         dismissButton = {
-            TextButton(
-                onClick = onDismiss
-            ) {
-                Text(stringResource(id = R.string.abort))
-            }
-        },
-        icon = {
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_solfege),
-                contentDescription = null
-            )
+            OutlinedButtonMMD(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.abort)) }
         },
         title = {
-            Text(stringResource(id = R.string.notation))
+            TextMMD(stringResource(id = R.string.notation))
         },
         text = {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                var isNotationExpanded by remember { mutableStateOf(false) }
-                var isOctaveNotationExpanded by remember { mutableStateOf(false) }
-
-                ExposedDropdownMenuBox(
-                    expanded = isNotationExpanded,
-                    onExpandedChange = { isNotationExpanded = it }
-                ) {
-                    TextField(
-                        modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                        value = stringResource(notationType.stringResourceId),
-                        onValueChange = {},
-                        label = { Text(stringResource(R.string.notation)) },
-                        readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isNotationExpanded) },
-                        colors = ExposedDropdownMenuDefaults.textFieldColors()
-                    )
-                    ExposedDropdownMenu(
+            var isNotationExpanded by remember { mutableStateOf(false) }
+            var isOctaveNotationExpanded by remember { mutableStateOf(false) }
+            // Paged, not scrolled: MMD's list steps and stops, and brings its own rail.
+            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp)) {
+                item {
+                    ExposedDropdownMenuBox(
                         expanded = isNotationExpanded,
-                        onDismissRequest = { isNotationExpanded = false },
+                        onExpandedChange = { isNotationExpanded = it }
                     ) {
-                        for (n in NotationType.entries) {
-                            DropdownMenuItem(
-                                text = {
-                                    Column {
-                                        Text(
-                                            stringResource(n.stringResourceId),
-                                            modifier = Modifier.padding(bottom = 2.dp)
-                                        )
-                                        Text(
-                                            stringResource(n.descriptionResId),
-                                            style = MaterialTheme.typography.labelMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                        TextFieldMMD(
+                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            value = stringResource(notationType.stringResourceId),
+                            onValueChange = {},
+                            label = { TextMMD(stringResource(R.string.notation)) },
+                            readOnly = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isNotationExpanded) }
+                        )
+                        ExposedDropdownMenu(
+                            expanded = isNotationExpanded,
+                            onDismissRequest = { isNotationExpanded = false },
+                        ) {
+                            for (n in NotationType.entries) {
+                                DropdownMenuItemMMD(
+                                    text = {
+                                        Column {
+                                            TextMMD(
+                                                stringResource(n.stringResourceId),
+                                                modifier = Modifier.padding(bottom = 2.dp)
+                                            )
+                                            TextMMD(
+                                                stringResource(n.descriptionResId),
+                                                style = MaterialTheme.typography.labelMedium,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                    },
+                                    onClick = {
+                                        notationType = n
+                                        isNotationExpanded = false
                                     }
-                                },
-                                onClick = {
-                                    notationType = n
-                                    isNotationExpanded = false
-                                }
-                            )
+                                )
+                            }
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(24.dp))
-                ExposedDropdownMenuBox(
-                    expanded = isOctaveNotationExpanded,
-                    onExpandedChange = { isOctaveNotationExpanded = it }
-                ) {
-                    // Log.v("Tuner", "NotationDialog: octave expanded: $isOctaveNotationExpanded")
-                    TextField(
-                        modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                        value = stringResource(octaveNotation.stringResourceId),
-                        onValueChange = {},
-                        label = { Text(stringResource(R.string.octave_representation)) },
-                        readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isOctaveNotationExpanded) },
-                        colors = ExposedDropdownMenuDefaults.textFieldColors()
-                    )
-                    ExposedDropdownMenu(
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+                item {
+                    ExposedDropdownMenuBox(
                         expanded = isOctaveNotationExpanded,
-                        onDismissRequest = { isOctaveNotationExpanded = false },
+                        onExpandedChange = { isOctaveNotationExpanded = it }
                     ) {
-                        for (n in OctaveNotation.entries) {
-                            DropdownMenuItem(
-                                text = {
-                                    Column {
-                                        Text(
-                                            stringResource(n.stringResourceId),
-                                            modifier = Modifier.padding(bottom = 2.dp)
-                                        )
-                                        Text(
-                                            stringResource(n.descriptionResId),
-                                            style = MaterialTheme.typography.labelMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                        // Log.v("Tuner", "NotationDialog: octave expanded: $isOctaveNotationExpanded")
+                        TextFieldMMD(
+                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            value = stringResource(octaveNotation.stringResourceId),
+                            onValueChange = {},
+                            label = { TextMMD(stringResource(R.string.octave_representation)) },
+                            readOnly = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isOctaveNotationExpanded) }
+                        )
+                        ExposedDropdownMenu(
+                            expanded = isOctaveNotationExpanded,
+                            onDismissRequest = { isOctaveNotationExpanded = false },
+                        ) {
+                            for (n in OctaveNotation.entries) {
+                                DropdownMenuItemMMD(
+                                    text = {
+                                        Column {
+                                            TextMMD(
+                                                stringResource(n.stringResourceId),
+                                                modifier = Modifier.padding(bottom = 2.dp)
+                                            )
+                                            TextMMD(
+                                                stringResource(n.descriptionResId),
+                                                style = MaterialTheme.typography.labelMedium,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                    },
+                                    onClick = {
+                                        octaveNotation = n
+                                        isOctaveNotationExpanded = false
                                     }
-                                },
-                                onClick = {
-                                    octaveNotation = n
-                                    isOctaveNotationExpanded = false
-                                }
-                            )
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
+        },
     )
 }
 

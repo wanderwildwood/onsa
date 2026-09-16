@@ -20,8 +20,6 @@ package com.wanderwildwood.onsa.ui.misc
 
 import android.Manifest
 import android.content.Context
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -33,6 +31,8 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.snackbar.SnackbarResultMMD
 import com.wanderwildwood.onsa.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPermissionsApi::class)
 private fun CoroutineScope.launchSnackbar(
     context: Context,
-    snackbarHostState: SnackbarHostState,
+    snackbarHostState: SnackbarHostStateMMD,
     permission: PermissionState
 ) {
     launch {
@@ -51,8 +51,8 @@ private fun CoroutineScope.launchSnackbar(
             withDismissAction = false
         )
         when (result) {
-            SnackbarResult.Dismissed -> {}
-            SnackbarResult.ActionPerformed -> {
+            SnackbarResultMMD.Dismissed -> {}
+            SnackbarResultMMD.ActionPerformed -> {
                 permission.launchPermissionRequest()
             }
         }
@@ -61,7 +61,7 @@ private fun CoroutineScope.launchSnackbar(
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun rememberTunerAudioPermission(snackbarHostState: SnackbarHostState): Boolean {
+fun rememberTunerAudioPermission(snackbarHostState: SnackbarHostStateMMD): Boolean {
     val context = LocalContext.current
 
     val reopenSnackbarChannel = remember { Channel<Boolean>(Channel.CONFLATED) }

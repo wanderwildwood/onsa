@@ -18,8 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -35,6 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.GetTextFromString
 import com.wanderwildwood.onsa.stretchtuning.StretchTuning
@@ -87,8 +87,8 @@ private fun StretchTuningInfoPortrait(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.stretch_tuning_info)) },
+            TopAppBarMMD(
+                title = { TextMMD(stringResource(id = R.string.stretch_tuning_info)) },
                 navigationIcon = {
                     IconButton(onClick = { onNavigateUpClicked() }) {
                         Icon(
@@ -113,7 +113,7 @@ private fun StretchTuningInfoPortrait(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val context = LocalContext.current
-            Text(
+            TextMMD(
                 stretchTuning.name.value(context),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -121,7 +121,7 @@ private fun StretchTuningInfoPortrait(
                 ,
                 style = MaterialTheme.typography.titleLarge
             )
-            Text(
+            TextMMD(
                 stretchTuning.description.value(context),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -177,8 +177,8 @@ private fun StretchTuningInfoLandscape(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.stretch_tuning_info)) },
+            TopAppBarMMD(
+                title = { TextMMD(stringResource(id = R.string.stretch_tuning_info)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateUpClicked) {
                         Icon(
@@ -206,12 +206,12 @@ private fun StretchTuningInfoLandscape(
                 verticalAlignment = Alignment.Bottom
             ) {
                 val context = LocalContext.current
-                Text(
+                TextMMD(
                     stretchTuning.name.value(context),
                     modifier = Modifier.padding(start = 8.dp, end = 20.dp),
                     style = MaterialTheme.typography.titleLarge
                 )
-                Text(
+                TextMMD(
                     stretchTuning.description.value(context)
                 )
             }

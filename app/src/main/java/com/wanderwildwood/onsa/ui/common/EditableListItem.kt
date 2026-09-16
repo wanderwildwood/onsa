@@ -29,16 +29,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -53,6 +49,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.menus.DropdownMenuItemMMD
+import com.mudita.mmd.components.menus.DropdownMenuMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 
@@ -185,13 +185,13 @@ fun EditableListItem(
                             tint = variantColor
                         )
                     }
-                    DropdownMenu(
+                    DropdownMenuMMD(
                         expanded = menuExpanded,
                         onDismissRequest = { menuExpanded = false },
                     ) {
                         if (hasInfo) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.details)) },
+                            DropdownMenuItemMMD(
+                                text = { TextMMD(stringResource(id = R.string.details)) },
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(R.drawable.info_24px),
@@ -203,11 +203,11 @@ fun EditableListItem(
                                     onOptionsClicked(ListItemTask.Info)
                                 }
                             )
-                            HorizontalDivider()
+                            HorizontalDividerMMD()
                         }
                         if (!readOnly) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.edit)) },
+                            DropdownMenuItemMMD(
+                                text = { TextMMD(stringResource(id = R.string.edit)) },
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(R.drawable.edit_24px),
@@ -221,8 +221,8 @@ fun EditableListItem(
                             )
                         }
                         if (isCopyable) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.copy_)) },
+                            DropdownMenuItemMMD(
+                                text = { TextMMD(stringResource(id = R.string.copy_)) },
                                 leadingIcon = {
                                     Icon(
                                         ImageVector.vectorResource(id = R.drawable.ic_copy),
@@ -236,9 +236,9 @@ fun EditableListItem(
                             )
                         }
                         if (!readOnly) {
-                            HorizontalDivider()
-                            DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.delete)) },
+                            HorizontalDividerMMD()
+                            DropdownMenuItemMMD(
+                                text = { TextMMD(stringResource(id = R.string.delete)) },
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(R.drawable.delete_24px),
@@ -264,8 +264,8 @@ private fun EditableListItemPreview() {
     TunerTheme {
         Column {
             EditableListItem(
-                title = { Text("Title 1") },
-                description = { Text("Description 1") },
+                title = { TextMMD("Title 1") },
+                description = { TextMMD("Description 1") },
                 icon = {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_trumpet),

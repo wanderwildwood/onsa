@@ -19,19 +19,21 @@
 package com.wanderwildwood.onsa.ui.preferences
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 
 @Composable
@@ -40,37 +42,31 @@ fun ResetDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {}
 ) {
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(
-                onClick = onReset
-            ) {
-                Text(stringResource(id = R.string.yes))
-            }
+            OutlinedButtonMMD(
+                onClick = onReset,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.yes)) }
         },
-        modifier = modifier,
         dismissButton = {
-            TextButton(
-                onClick = onDismiss
-            ) {
-                Text(stringResource(id = R.string.no))
-            }
-        },
-        icon = {
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_reset),
-                contentDescription = null
-            )
+            OutlinedButtonMMD(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.no)) }
         },
         title = {
-            Text(stringResource(id = R.string.reset_all_settings))
+            TextMMD(stringResource(id = R.string.reset_all_settings))
         },
         text = {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                Text(stringResource(id = R.string.reset_settings_prompt))
+            // Paged, not scrolled: MMD's list steps and stops, and brings its own rail.
+            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp)) {
+                item {
+                    TextMMD(stringResource(id = R.string.reset_settings_prompt))
+                }
             }
-        }
+        },
     )
 }
 

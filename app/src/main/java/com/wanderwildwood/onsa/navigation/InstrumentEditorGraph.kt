@@ -18,7 +18,6 @@
 */
 package com.wanderwildwood.onsa.navigation
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -32,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentResources
 import com.wanderwildwood.onsa.preferences.PreferenceResources
@@ -72,7 +72,7 @@ fun NavGraphBuilder.instrumentEditorGraph(
             val musicalScale by temperaments.musicalScale.collectAsStateWithLifecycle()
             val notePrintOptions by preferences.notePrintOptions.collectAsStateWithLifecycle()
 
-            val snackbarHostState = remember { SnackbarHostState() }
+            val snackbarHostState = remember { SnackbarHostStateMMD() }
             val permissionGranted = rememberTunerAudioPermission(snackbarHostState)
 
             LifecycleResumeEffect(permissionGranted) {

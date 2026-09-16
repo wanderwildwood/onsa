@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -24,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
@@ -88,7 +88,7 @@ fun NoteEditorSimple(
             }
 
         )
-        Text(
+        TextMMD(
             stringResource(id = R.string.octave_offset),
             modifier = Modifier
                 .fillMaxWidth()
@@ -116,7 +116,7 @@ fun NoteEditorSimple(
                         index = (index), count = options.size
                     )
                 ) {
-                    Text(if (offset == 0) "0" else String.format("%+d", offset))
+                    TextMMD(if (offset == 0) "0" else String.format("%+d", offset))
                 }
             }
         }

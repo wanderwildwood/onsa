@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 
 /** Visualize a fraction.
  * @param numerator Numerator.
@@ -75,7 +75,7 @@ fun Fraction(
         modifier = modifier.width(IntrinsicSize.Min),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
+        TextMMD(
             numerator?.toString() ?: "?",
             color = colorResolved,
             fontSize = fontSize,
@@ -91,7 +91,7 @@ fun Fraction(
                 .height(1.dp)
                 .background(colorResolved)
         )
-        Text(
+        TextMMD(
             denominator?.toString() ?: "?",
             color = colorResolved,
             fontSize = fontSize,

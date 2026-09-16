@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.temperaments.Temperament3
@@ -100,7 +100,7 @@ fun CentAndRatioTable(
                     .height(1.dp)
                     .background(MaterialTheme.colorScheme.outline))
 
-                Text(
+                TextMMD(
                     stringResource(id = R.string.cent_nosign, centArray[it].roundToInt()),
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,

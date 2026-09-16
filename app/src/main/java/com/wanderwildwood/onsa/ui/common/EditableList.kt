@@ -38,10 +38,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +54,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.snackbar.SnackbarDurationMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.snackbar.SnackbarResultMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.collections.immutable.ImmutableList
@@ -390,7 +390,7 @@ fun <T>EditableList(
     state: EditableListData<T>,
     modifier: Modifier = Modifier,
     onActivateItemClicked: (T) -> Unit = { },
-    snackbarHostState: SnackbarHostState? = null,
+    snackbarHostState: SnackbarHostStateMMD? = null,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     noItemsMessage: (@Composable () -> Unit)? = null,
     drawItem: @Composable (T, EditableListItemInfo, Modifier) -> Unit
@@ -427,11 +427,11 @@ fun <T>EditableList(
                         R.plurals.items_deleted, delete.numDeleted, delete.numDeleted
                     ),
                     actionLabel = resources.getString(R.string.undo),
-                    duration = SnackbarDuration.Long
+                    duration = SnackbarDurationMMD.Long
                 )
                 when (result) {
-                    SnackbarResult.Dismissed -> {}
-                    SnackbarResult.ActionPerformed -> {
+                    SnackbarResultMMD.Dismissed -> {}
+                    SnackbarResultMMD.ActionPerformed -> {
 
                         val currentItems = state.editableItems.value
                         val backupItems = delete.backup
@@ -645,7 +645,7 @@ private fun EditableListTest() {
             onActivateItemClicked = { activeItem.value = it },
         ) { item, info, modifier ->
             Row(modifier.padding(12.dp)) {
-                Text(
+                TextMMD(
                     item.title,
                     color = if (info.isSelected) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     )

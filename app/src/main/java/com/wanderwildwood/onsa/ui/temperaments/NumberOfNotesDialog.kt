@@ -18,14 +18,11 @@
 */
 package com.wanderwildwood.onsa.ui.temperaments
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -44,7 +41,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.coroutines.android.awaitFrame
 
@@ -79,27 +80,24 @@ fun NumberOfNotesDialog(
         focusRequester.requestFocus()
     }
 
-    AlertDialog(
+    EInkAlertDialog(
         onDismissRequest = { onDismiss() },
         confirmButton = {
-            TextButton(
+            OutlinedButtonMMD(
                 onClick = { onDoneClicked(numberOfNotes.text.toIntOrNull() ?: 12) },
-                enabled = !hasErrors
-            ) {
-                Text(stringResource(id = R.string.done))
-            }
+                enabled = !hasErrors,
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.done)) }
         },
         dismissButton = {
-            TextButton(
-                onClick = { onDismiss() }
-            ) {
-                Text(stringResource(id = R.string.abort))
-            }
+            OutlinedButtonMMD(
+                onClick = { onDismiss() },
+                modifier = Modifier.fillMaxWidth(),
+            ) { TextMMD(stringResource(id = R.string.abort)) }
         },
-        modifier = modifier,
-        title = { Text(stringResource(id = R.string.note_number)) },
+        title = { TextMMD(stringResource(id = R.string.note_number)) },
         text = {
-            TextField(
+            TextFieldMMD(
                 value = numberOfNotes,
                 onValueChange = { numberOfNotes = it },
                 isError = hasErrors,
@@ -115,7 +113,7 @@ fun NumberOfNotesDialog(
                     }
                 ),
                 supportingText = if (maxValueExceeded) {
-                    { Text(stringResource(id = R.string.maximum_value_exceeded, maxNumberOfNotes)) }
+                    { TextMMD(stringResource(id = R.string.maximum_value_exceeded, maxNumberOfNotes)) }
                 } else {
                     null
                 },
@@ -129,7 +127,7 @@ fun NumberOfNotesDialog(
                 },
                 modifier = Modifier.focusRequester(focusRequester)
             )
-        }
+        },
     )
 }
 

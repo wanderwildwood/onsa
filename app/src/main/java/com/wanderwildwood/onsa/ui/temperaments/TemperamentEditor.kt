@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.temperaments
 
+import com.mudita.mmd.components.cards.CardMMD
 import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.layout.Column
@@ -32,16 +33,12 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
@@ -55,6 +52,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
+import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteNamesEDOGenerator
@@ -95,8 +95,8 @@ fun TemperamentEditor(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.temperament_editor)) },
+            TopAppBarMMD(
+                title = { TextMMD(stringResource(id = R.string.temperament_editor)) },
                 navigationIcon = {
                     IconButton(onClick = { onAbortClicked() }) {
                         Icon(
@@ -110,7 +110,7 @@ fun TemperamentEditor(
                         onClick = { onSaveClicked() },
                         enabled = !state.hasErrors.value
                     ) {
-                        Text(stringResource(id = R.string.save))
+                        TextMMD(stringResource(id = R.string.save))
                     }
                 }
             )
@@ -121,10 +121,10 @@ fun TemperamentEditor(
             contentPadding = paddingValues
         ) {
             item {
-                TextField(
+                TextFieldMMD(
                     value = state.name.value,
                     onValueChange = { state.modifyName(it) },
-                    label = { Text(stringResource(id = R.string.temperament_name)) },
+                    label = { TextMMD(stringResource(id = R.string.temperament_name)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
@@ -141,10 +141,10 @@ fun TemperamentEditor(
                 )
             }
             item {
-                TextField(
+                TextFieldMMD(
                     value = state.abbreviation.value,
                     onValueChange = { state.modifyAbbreviation(it) },
-                    label = { Text(stringResource(id = R.string.temperament_abbreviation)) },
+                    label = { TextMMD(stringResource(id = R.string.temperament_abbreviation)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -162,10 +162,10 @@ fun TemperamentEditor(
                 )
             }
             item {
-                TextField(
+                TextFieldMMD(
                     value = state.description.value,
                     onValueChange = { state.modifyDescription(it) },
-                    label = { Text(stringResource(id = R.string.temperament_description)) },
+                    label = { TextMMD(stringResource(id = R.string.temperament_description)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -183,19 +183,19 @@ fun TemperamentEditor(
                 )
             }
             item {
-                Card(
+                CardMMD(
                     onClick = onNumberOfNotesClicked,
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                         .fillMaxWidth()
                 ) {
                     Column {
-                        Text(
+                        TextMMD(
                             stringResource(id = R.string.note_number),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                             style = MaterialTheme.typography.labelSmall
                         )
-                        Text(
+                        TextMMD(
                             "${state.numberOfValues.value}",
                             modifier = Modifier
                                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)

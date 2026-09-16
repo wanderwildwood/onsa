@@ -30,22 +30,6 @@ import androidx.compose.ui.unit.sp
 import com.mudita.mmd.ThemeMMD
 
 /**
- * The whole app, in black and white, on MMD.
- *
- * This one file is the lever: every screen in the app reads its colours and type through
- * here, so replacing the body with ThemeMMD re-clothes all of them at once — MMD's E Ink
- * type scale, a monochrome scheme, and no ripple anywhere.
- *
- * The shape of the file is deliberately unchanged. `TunerTheme`, `tunerColors` and
- * `tunerTypography` keep their names and their types, so the eighty-odd screens that read
- * them compile exactly as they did. What changed is what comes out of them.
- *
- * Light and dark are gone, and so is dynamic colour. The panel has one appearance — dark
- * marks on a light ground, in daylight, all the time — and offering a night mode that the
- * hardware cannot honour is a setting that lies.
- */
-
-/**
  * In tune and out of tune, which upstream says in green and red.
  *
  * They are both black here, and that is not a compromise. This screen has sixteen greys
@@ -81,43 +65,33 @@ val OnLightTunerColors = TunerColors(
 val OnDarkTunerColors = OnLightTunerColors
 
 /**
- * Type for the plots.
+ * The whole app, in black and white, on MMD.
  *
- * A shade larger than upstream's. These labels sit beside a moving line on a panel that is
- * read at arm's length on a music stand rather than held at reading distance, and 14sp
- * that works on an OLED in the hand does not survive that.
- */
-@Immutable
-data class TunerTypography(
-    val plotSmall: TextStyle = TextStyle(fontSize = 15.sp),
-    val plotMedium: TextStyle = TextStyle(fontSize = 18.sp),
-    val plotLarge: TextStyle = TextStyle(fontSize = 24.sp)
-)
-
-val LocalTunerTypography = staticCompositionLocalOf { TunerTypography() }
-
-val MaterialTheme.tunerTypography: TunerTypography
-    @Composable
-    @ReadOnlyComposable
-    get() = LocalTunerTypography.current
-
-val tunerTypography = TunerTypography()
-
-/**
- * There is one appearance, so this takes no arguments about which one.
+ * This one file is the lever: every screen in the app reads its colours and type through
+ * here, so replacing the body with ThemeMMD re-clothes all of them at once — MMD's E Ink
+ * type scale, [monochrome], and no ripple anywhere.
  *
- * It briefly kept the ignored darkTheme/dynamicColor/blackNightMode parameters so callers
- * would still compile. Nothing passes them any more, and a parameter that is accepted and
- * ignored is a promise the code does not keep.
+ * `TunerTheme` and `tunerColors` keep their names and their types, so the eighty-odd screens
+ * that read them compile exactly as they did. What changed is what comes out of them.
+ *
+ * `tunerTypography` is gone rather than kept. Its three styles carried a size and **no
+ * typeface**, and an explicit `style` replaces `LocalTextStyle` rather than merging with it —
+ * so every tick label, tolerance label, string label and note selector on the plots was
+ * drawn in the platform's default face while the rest of the app was in Lato. Their sizes
+ * were 15, 18 and 24, which are exactly MMD's `bodySmall`, `bodyMedium` and `titleLarge`, so
+ * the plots now read those and the app has one typeface again.
+ *
+ * Light and dark are gone, and so is dynamic colour. The panel has one appearance — dark
+ * marks on a light ground, in daylight, all the time — and offering a night mode that the
+ * hardware cannot honour is a setting that lies. This takes no arguments about which
+ * appearance to use, because there is one: the ignored darkTheme/dynamicColor/blackNightMode
+ * parameters went when the last caller stopped passing them.
  */
 @Composable
 fun TunerTheme(
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(
-        LocalTunerColors provides OnLightTunerColors,
-        LocalTunerTypography provides tunerTypography
-    ) {
-        ThemeMMD(content = content)
+    CompositionLocalProvider(LocalTunerColors provides OnLightTunerColors) {
+        ThemeMMD(colorScheme = monochrome, content = content)
     }
 }

@@ -20,15 +20,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -49,6 +44,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.GetTextFromString
 import com.wanderwildwood.onsa.misc.ShareData
@@ -186,7 +185,7 @@ fun StretchTuningOverview(
 
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostStateMMD() }
     val maxExpectedHeightForFab = 72.dp
 
     val overflowCallbacks = rememberImportExportCallbacks(
@@ -253,17 +252,16 @@ fun StretchTuningOverview(
                         onStretchTuningClicked(state.defaultStretchTuning)
                     },
                     containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                     icon = {
                         Icon(
                             ImageVector.vectorResource(R.drawable.ic_reset),
                             contentDescription = "reset"
                         )
                     },
-                    text = { Text(stringResource(R.string.use_default)) }
+                    text = { TextMMD(stringResource(R.string.use_default)) }
                 )
                 Spacer(modifier = Modifier.width(12.dp))
-                FloatingActionButton(
+                FloatingActionButtonMMD(
                     onClick = {
                         onEditStretchTuningClicked(
                             StretchTuning(
@@ -276,7 +274,6 @@ fun StretchTuningOverview(
                         )
                     },
                     containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.add_24px),
@@ -286,7 +283,7 @@ fun StretchTuningOverview(
             }
         },
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+            SnackbarHostMMD(hostState = snackbarHostState)
         }
     ) { paddingValues ->
         val iconTextSize = with(LocalDensity.current) { 18.dp.toSp() }
@@ -304,12 +301,12 @@ fun StretchTuningOverview(
             snackbarHostState = snackbarHostState
        ) { item, itemInfo, itemModifier ->
             EditableListItem(
-                title = { Text(
+                title = { TextMMD(
                     item.name.value(context),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 ) },
-                description = { Text(
+                description = { TextMMD(
                     item.description.value(context),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -326,7 +323,7 @@ fun StretchTuningOverview(
                             contentAlignment = Alignment.Center
                         ) {
                             // Log.v("Tuner", "StretchTuningOverview: name=${item.name.value(context)}, 0=${item.name.value(context).getOrNull(0)?.code}")
-                            Text(
+                            TextMMD(
                                 text = "${item.name.value(context).getOrNull(0) ?: ""}",
                                 fontSize = iconTextSize
                             )

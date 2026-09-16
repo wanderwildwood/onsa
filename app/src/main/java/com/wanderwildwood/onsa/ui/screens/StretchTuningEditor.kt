@@ -14,15 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +34,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.menus.DropdownMenuItemMMD
+import com.mudita.mmd.components.menus.DropdownMenuMMD
+import com.mudita.mmd.components.text.TextMMD
+import com.mudita.mmd.components.text_field.TextFieldMMD
+import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.GetTextFromString
 import com.wanderwildwood.onsa.stretchtuning.StretchTuning
@@ -80,19 +83,19 @@ interface StretchTuningEditorState {
 //        }) {
 //            Icon(Icons.Default.MoreVert, contentDescription = "menu")
 //        }
-//        DropdownMenu(
+//        DropdownMenuMMD(
 //            expanded = expanded,
 //            onDismissRequest = { expanded = false }
 //        ) {
-//            DropdownMenuItem(
-//                text = { Text(stringResource(id = R.string.edit)) },
+//            DropdownMenuItemMMD(
+//                text = { TextMMD(stringResource(id = R.string.edit)) },
 //                leadingIcon = { Icon(Icons.Default.Add, contentDescription = "load") },
 //                onClick = {
 //                    onLoadClicked()
 //                    expanded = false
 //                }
 //            )
-//            // HorizontalDivider()
+//            // HorizontalDividerMMD()
 //        }
 //    }
 //}
@@ -142,7 +145,7 @@ private fun StretchTuningPortrait(
     //    showPreferenceButton = false,
     //    //defaultModeTools = { OverflowMenu(onLoadClicked = {}) },
     //    floatingActionButton = {
-    //        FloatingActionButton(
+    //        FloatingActionButtonMMD(
     //            onClick = {
     //                state.addLine()
     //            }
@@ -153,8 +156,8 @@ private fun StretchTuningPortrait(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.stretch_tuning_editor)) },
+            TopAppBarMMD(
+                title = { TextMMD(stringResource(id = R.string.stretch_tuning_editor)) },
                 navigationIcon = {
                     IconButton(onClick = { onAbortClicked() }) {
                         Icon(
@@ -168,13 +171,13 @@ private fun StretchTuningPortrait(
                         onClick = { onSaveClicked() },
                         enabled = stretchTuningData.isMonotonic
                     ) {
-                        Text(stringResource(id = R.string.save))
+                        TextMMD(stringResource(id = R.string.save))
                     }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            FloatingActionButtonMMD(
                 onClick = {
                     state.addLine()
                 }
@@ -198,10 +201,10 @@ private fun StretchTuningPortrait(
             ,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextField(
+            TextFieldMMD(
                 value = state.name.value,
                 onValueChange = { state.modifyName(it) },
-                label = { Text(stringResource(id = R.string.name)) },
+                label = { TextMMD(stringResource(id = R.string.name)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -220,10 +223,10 @@ private fun StretchTuningPortrait(
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
             )
 
-            TextField(
+            TextFieldMMD(
                 value = state.description.value,
                 onValueChange = { state.modifyDescription(it) },
-                label = { Text(stringResource(id = R.string.description)) },
+                label = { TextMMD(stringResource(id = R.string.description)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -294,7 +297,7 @@ private fun StretchTuningLandscape(
     //     showPreferenceButton = false,
     //     //defaultModeTools = { OverflowMenu(onLoadClicked = {}) },
     //     floatingActionButton = {
-    //         FloatingActionButton(
+    //         FloatingActionButtonMMD(
     //             onClick = {
     //                 state.addLine()
     //             }
@@ -305,8 +308,8 @@ private fun StretchTuningLandscape(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.stretch_tuning_editor)) },
+            TopAppBarMMD(
+                title = { TextMMD(stringResource(id = R.string.stretch_tuning_editor)) },
                 navigationIcon = {
                     IconButton(onClick = { onAbortClicked() }) {
                         Icon(
@@ -320,13 +323,13 @@ private fun StretchTuningLandscape(
                         onClick = { onSaveClicked() },
                         enabled = stretchTuningData.isMonotonic
                     ) {
-                        Text(stringResource(id = R.string.save))
+                        TextMMD(stringResource(id = R.string.save))
                     }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            FloatingActionButtonMMD(
                 onClick = {
                     state.addLine()
                 }
@@ -357,10 +360,10 @@ private fun StretchTuningLandscape(
                     )
                     .weight(1f)
             ) {
-                TextField(
+                TextFieldMMD(
                     value = state.name.value,
                     onValueChange = { state.modifyName(it) },
-                    label = { Text(stringResource(id = R.string.name)) },
+                    label = { TextMMD(stringResource(id = R.string.name)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = tunerPlotStyle.margin),
@@ -403,10 +406,10 @@ private fun StretchTuningLandscape(
                     .padding(start = tunerPlotStyle.margin / 2)
                     .weight(1f)
             ) {
-                TextField(
+                TextFieldMMD(
                     value = state.description.value,
                     onValueChange = { state.modifyDescription(it) },
-                    label = { Text(stringResource(id = R.string.description)) },
+                    label = { TextMMD(stringResource(id = R.string.description)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp),

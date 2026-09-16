@@ -10,15 +10,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +36,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.mudita.mmd.components.menus.DropdownMenuItemMMD
+import com.mudita.mmd.components.menus.DropdownMenuMMD
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.GetTextFromString
 import com.wanderwildwood.onsa.stretchtuning.StretchTuning
@@ -86,12 +86,12 @@ private fun OverflowMenu(
                 contentDescription = "menu"
             )
         }
-        DropdownMenu(
+        DropdownMenuMMD(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(
-                text = { Text(stringResource(id = R.string.edit)) },
+            DropdownMenuItemMMD(
+                text = { TextMMD(stringResource(id = R.string.edit)) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.edit_24px),
@@ -103,9 +103,9 @@ private fun OverflowMenu(
                     expanded = false
                 }
             )
-            HorizontalDivider()
-            DropdownMenuItem(
-                text = { Text(stringResource(id = R.string.delete)) },
+            HorizontalDividerMMD()
+            DropdownMenuItemMMD(
+                text = { TextMMD(stringResource(id = R.string.delete)) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.delete_24px),
@@ -173,7 +173,7 @@ fun StretchTuningTableLine(
                 modifier = Modifier.heightIn(min = 52.dp)
             ) {
                 Spacer(modifier = Modifier.weight(2f))
-                Text(
+                TextMMD(
                     column1,
                     modifier = Modifier.padding(start=16.dp).width(column1Width),
                     maxLines = 1,
@@ -183,7 +183,7 @@ fun StretchTuningTableLine(
                 Spacer(modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.width(32.dp))
                 Spacer(modifier = Modifier.weight(1f))
-                Text(
+                TextMMD(
                     column2,
                     modifier = Modifier.padding(end=16.dp).width(column2Width),
                     style = textStyle,
@@ -202,7 +202,7 @@ fun StretchTuningTableLine(
             }
 
             if (errorMessage != null) {
-                Text(
+                TextMMD(
                     errorMessage,
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.labelSmall,
@@ -211,7 +211,7 @@ fun StretchTuningTableLine(
                 )
             }
 
-            HorizontalDivider()
+            HorizontalDividerMMD()
         }
     }
 }

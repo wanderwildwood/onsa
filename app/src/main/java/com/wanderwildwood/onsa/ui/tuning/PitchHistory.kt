@@ -20,7 +20,6 @@ package com.wanderwildwood.onsa.ui.tuning
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notedetection.TuningState
 import com.wanderwildwood.onsa.notenames.MusicalNote
@@ -380,7 +380,7 @@ fun PitchHistory(
                             )
                         )
                     ) {
-                        Text(
+                        TextMMD(
                             stringResource(id = R.string.cent, centDeviation),
                             modifier = it,
                             style = centDeviationStyle,
@@ -407,7 +407,7 @@ fun PitchHistory(
                     ),
                 ){ m ->
                     Label(
-                        content = { Text(
+                        content = { TextMMD(
                             stringResource(id = R.string.cent, -toleranceInCents),
                             modifier = Modifier.padding(horizontal = 4.dp),
                             textAlign = TextAlign.Center,
@@ -427,7 +427,7 @@ fun PitchHistory(
                     ),
                 ){ m ->
                     Label(
-                        content = { Text(
+                        content = { TextMMD(
                             stringResource(id = R.string.cent, toleranceInCents),
                             modifier = Modifier.padding(horizontal = 4.dp),
                             textAlign = TextAlign.Center,
