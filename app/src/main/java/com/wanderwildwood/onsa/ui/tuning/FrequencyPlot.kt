@@ -80,12 +80,12 @@ fun FrequencyPlot(
     // current frequency
     currentFrequency: Float? = null,
     frequencyMarkLineWidth: Dp = 1.dp,
-    frequencyMarkLineColor: Color = MaterialTheme.colorScheme.secondary,
+    frequencyMarkLineColor: Color = MaterialTheme.colorScheme.onSurface,
     frequencyMarkTextStyle: TextStyle = MaterialTheme.typography.labelMedium,
     // harmonics
     harmonicFrequencies: VerticalLinesPositions? = null,
     harmonicLineWidth: Dp = 1.dp,
-    harmonicLineColor: Color = MaterialTheme.colorScheme.secondary,
+    harmonicLineColor: Color = MaterialTheme.colorScheme.onSurface,
     // outline
     plotWindowOutline: PlotWindowOutline = PlotWindowOutline()
 ) {

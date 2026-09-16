@@ -18,6 +18,9 @@
 */
 package com.wanderwildwood.onsa.ui.screens
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
@@ -53,6 +56,7 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import androidx.compose.ui.platform.LocalResources
 import com.wanderwildwood.onsa.ui.preferences.LanguageSelections
+import kotlinx.coroutines.delay
 
 @Composable
 fun Preferences(
@@ -368,9 +372,29 @@ fun Preferences(
                 )
             }
             item {
+                // The row asks, not a dialog. A dialog is two full-panel repaints to ask one
+                // question; the row is one, and it asks in the place the answer belongs. It
+                // disarms itself after four seconds, so a stray tap leaves nothing live.
+                var armed by remember { mutableStateOf(false) }
+                LaunchedEffect(armed) {
+                    if (armed) {
+                        delay(4000)
+                        armed = false
+                    }
+                }
                 SimplePreference(
-                    name = stringResource(id = R.string.reset_all_settings),
-                    modifier = Modifier.clickable { onResetClicked() }
+                    name = stringResource(
+                        id = if (armed) R.string.reset_all_settings_armed
+                        else R.string.reset_all_settings
+                    ),
+                    modifier = Modifier.clickable {
+                        if (armed) {
+                            onResetClicked()
+                            armed = false
+                        } else {
+                            armed = true
+                        }
+                    }
                 )
             }
             item {

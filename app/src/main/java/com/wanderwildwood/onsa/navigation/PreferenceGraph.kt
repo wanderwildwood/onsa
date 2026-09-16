@@ -31,7 +31,6 @@ import com.wanderwildwood.onsa.temperaments.TemperamentResources
 import com.wanderwildwood.onsa.ui.preferences.AboutDialog
 import com.wanderwildwood.onsa.ui.preferences.LanguageDialog
 import com.wanderwildwood.onsa.ui.preferences.NotationDialog
-import com.wanderwildwood.onsa.ui.preferences.ResetDialog
 import com.wanderwildwood.onsa.ui.preferences.WindowingFunctionDialog
 import com.wanderwildwood.onsa.ui.screens.Preferences
 import com.wanderwildwood.onsa.viewmodels.PreferencesViewModel
@@ -64,7 +63,10 @@ fun NavGraphBuilder.preferenceGraph(
                 onTemperamentClicked = { controller.navigate(TemperamentDialogRoute) },
                 onWindowingFunctionClicked = { controller.navigate(WindowingFunctionDialogRoute) },
                 onStretchTuningClicked = {controller.navigate(StretchTuningOverviewRoute) },
-                onResetClicked = { controller.navigate(ResetDialogRoute) },
+                onResetClicked = {
+                    preferences.resetAllSettings()
+                    temperaments.resetAllSettings()
+                },
                 onAboutClicked = { controller.navigate(AboutDialogRoute) }
             )
         }
@@ -99,16 +101,6 @@ fun NavGraphBuilder.preferenceGraph(
                 onDismiss = { controller.navigateUp() }
             )
         }
-        dialog<ResetDialogRoute> {
-            ResetDialog(
-                onReset = {
-                    preferences.resetAllSettings()
-                    temperaments.resetAllSettings()
-                    controller.navigateUp()
-                },
-                onDismiss = { controller.navigateUp() }
-            )
-        }
         dialog<AboutDialogRoute> {
             AboutDialog(
                 onDismiss = { controller.navigateUp() }
@@ -127,7 +119,5 @@ data object LanguageDialogRoute
 data object NotationDialogRoute
 @Serializable
 data object WindowingFunctionDialogRoute
-@Serializable
-data object ResetDialogRoute
 @Serializable
 data object AboutDialogRoute
