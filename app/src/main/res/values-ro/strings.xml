@@ -124,7 +124,6 @@
     <string name="about">Despre</string>
     <string name="about_message">Aplicație acordare\nVersiune: %s\nLicență: GPLv3\nhttps://codeberg.org/thetwom/Tuner</string>
     <string name="reset_all_settings">Resetează toate setările</string>
-    <string name="reset_settings_prompt">Dorești să resetezi toate setările?</string>
     <string name="yes">Da</string>
     <string name="no">Nu</string>
     <plurals name="sharing_num_items">

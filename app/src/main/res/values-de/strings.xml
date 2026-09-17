@@ -31,7 +31,6 @@
     <string name="about">Über</string>
     <string name="about_message">Tuner app\nVersion: %s\nLizenz: GPLv3\nhttps://codeberg.org/thetwom/Tuner</string>
     <string name="reset_all_settings">Alle Einstellungen zurücksetzen</string>
-    <string name="reset_settings_prompt">Sollen wirklich alle Einstellungen zurückgesetzt werden?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="autocorrelation">Autokorrelation</string>

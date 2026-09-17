@@ -21,7 +21,6 @@
     <string name="num_moving_average">Рухоме середнє</string>
     <string name="about">Про додаток</string>
     <string name="reset_all_settings">Скинути всі налаштування</string>
-    <string name="reset_settings_prompt">Ви справді хочете скинути всі налаштування?</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
     <string name="keep_screen_on">Не вимикати екран</string>

@@ -30,7 +30,6 @@
     <string name="about">À propos</string>
     <string name="about_message">Tuner app\nVersion: %s\nLicence: GPLv3\nhttps://codeberg.org/thetwom/Tuner</string>
     <string name="reset_all_settings">Réinitialiser tous les paramètres</string>
-    <string name="reset_settings_prompt">Êtes-vous sûr de vouloir réinitialiser tous les paramètres\u00A0?</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="autocorrelation">autocorrélation</string>

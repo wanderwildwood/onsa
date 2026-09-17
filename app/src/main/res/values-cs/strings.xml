@@ -22,7 +22,6 @@
     <string name="about">O aplikaci</string>
     <string name="about_message">Tuner app\nVerze: %s\nLicense: GPLv3\nhttps://codeberg.org/thetwom/Tuner</string>
     <string name="reset_all_settings">Obnovit výchozí nastavení</string>
-    <string name="reset_settings_prompt">Opravdu chcete obnovit výchozí nastavení?</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="autocorrelation">Autokorelace</string>

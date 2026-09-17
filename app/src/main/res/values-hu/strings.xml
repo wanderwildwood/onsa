@@ -30,7 +30,6 @@
     <string name="about">Névjegy</string>
     <string name="about_message">Hangoló alkalmazás\nVerzió: %s\nLicenc: GPLv3\nhttps://codeberg.org/thetwom/Tuner</string>
     <string name="reset_all_settings">Összes beállítás alaphelyzetbe állítása</string>
-    <string name="reset_settings_prompt">Biztos, hogy alaphelyzetbe állítja az összes beállítást?</string>
     <string name="yes">Igen</string>
     <string name="no">Nem</string>
     <string name="autocorrelation">autokorreláció</string>
