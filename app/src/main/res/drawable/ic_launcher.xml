@@ -20,7 +20,7 @@
     <!-- the fork: up one tine, round the yoke, down the other. One stroke. -->
     <path
         android:strokeColor="#000000"
-        android:strokeWidth="2.0"
+        android:strokeWidth="3.0"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
         android:pathData="M45.4,26.8 C45.0,38.2 44.8,50.0 45.2,57.4 Q45.6,65.8 54.2,66.2 Q62.6,65.8 63.0,57.2 C63.3,49.0 63.0,37.0 62.6,25.4" />
@@ -28,7 +28,7 @@
     <!-- the stem, hanging from the middle of the yoke -->
     <path
         android:strokeColor="#000000"
-        android:strokeWidth="2.0"
+        android:strokeWidth="3.0"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
         android:pathData="M54.2,66.2 C54.5,72.4 54.4,78.0 54.0,83.2" />
