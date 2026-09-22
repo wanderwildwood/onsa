@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import com.mudita.mmd.components.text.TextMMD
@@ -58,12 +59,12 @@ fun EditableListSection(
                 if (expanded) {
                     Icon(
                         painter = painterResource(R.drawable.keyboard_arrow_up_24px),
-                        contentDescription = "collapse"
+                        contentDescription = stringResource(R.string.cd_collapse)
                     )
                 } else {
                     Icon(
                         painter = painterResource(R.drawable.keyboard_arrow_down_24px),
-                        contentDescription = "expand"
+                        contentDescription = stringResource(R.string.cd_expand)
                     )
                 }
             }

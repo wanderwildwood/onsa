@@ -198,7 +198,7 @@ fun Instruments(
             }) {
                 Icon(
                     painter = painterResource(R.drawable.keyboard_arrow_up_24px),
-                    contentDescription = "move up"
+                    contentDescription = stringResource(R.string.cd_move_up)
                 )
             }
             IconButton(onClick = {
@@ -214,7 +214,7 @@ fun Instruments(
             }) {
                 Icon(
                     painter = painterResource(R.drawable.keyboard_arrow_down_24px),
-                    contentDescription = "move down"
+                    contentDescription = stringResource(R.string.cd_move_down)
                 )
             }
             OverflowMenu(overflowCallbacks)
@@ -230,7 +230,7 @@ fun Instruments(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.add_24px),
-                    contentDescription = "create new instrument"
+                    contentDescription = stringResource(R.string.cd_create_new_instrument)
                 )
             }
         },

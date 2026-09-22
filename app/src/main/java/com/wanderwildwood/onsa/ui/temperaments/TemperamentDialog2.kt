@@ -225,7 +225,7 @@ fun TemperamentsDialog2(
             }) {
                 Icon(
                     painter = painterResource(R.drawable.keyboard_arrow_up_24px),
-                    contentDescription = "move up"
+                    contentDescription = stringResource(R.string.cd_move_up)
                 )
             }
             IconButton(onClick = {
@@ -241,7 +241,7 @@ fun TemperamentsDialog2(
             }) {
                 Icon(
                     painter = painterResource(R.drawable.keyboard_arrow_down_24px),
-                    contentDescription = "move down"
+                    contentDescription = stringResource(R.string.cd_move_down)
                 )
             }
             OverflowMenu(overflowCallbacks, showSettings = false)
@@ -261,7 +261,7 @@ fun TemperamentsDialog2(
                     icon = {
                         Icon(
                             ImageVector.vectorResource(R.drawable.ic_reset),
-                            contentDescription = "reset"
+                            contentDescription = stringResource(R.string.cd_reset)
                         )
                     },
                     text = { TextMMD(stringResource(R.string.use_default)) }
@@ -284,7 +284,7 @@ fun TemperamentsDialog2(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.add_24px),
-                        contentDescription = "new temperament"
+                        contentDescription = stringResource(R.string.cd_new_temperament)
                     )
                 }
             }

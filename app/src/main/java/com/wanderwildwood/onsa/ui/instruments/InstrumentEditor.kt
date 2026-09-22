@@ -121,7 +121,7 @@ fun InstrumentEditor(
                     IconButton(onClick = { onNavigateUpClicked() }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            "close"
+                            stringResource(R.string.cd_close)
                         )
                     }
                 },
@@ -209,7 +209,7 @@ fun InstrumentEditorPortrait(
                 IconButton(onClick = { state.setName("") }) {
                     Icon(
                         painter = painterResource(R.drawable.close_24px),
-                        contentDescription = "clear"
+                        contentDescription = stringResource(R.string.cd_clear)
                     )
                 }
             },
@@ -360,7 +360,7 @@ fun InstrumentEditorLandscape(
                     IconButton(onClick = { state.setName("") }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            contentDescription = "clear"
+                            contentDescription = stringResource(R.string.cd_clear)
                         )
                     }
                 },

@@ -464,7 +464,7 @@ fun TemperamentTableLine(
                         ) {
                         Icon(
                             painter = painterResource(R.drawable.keyboard_arrow_up_24px),
-                            contentDescription = "close"
+                            contentDescription = stringResource(R.string.cd_close)
                         )
                     }
                 }

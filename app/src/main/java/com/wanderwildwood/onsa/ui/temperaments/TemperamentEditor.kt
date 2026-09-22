@@ -101,7 +101,7 @@ fun TemperamentEditor(
                     IconButton(onClick = { onAbortClicked() }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            "close"
+                            stringResource(R.string.cd_close)
                         )
                     }
                 },
@@ -132,7 +132,7 @@ fun TemperamentEditor(
                         IconButton(onClick = { state.modifyName("") }) {
                             Icon(
                                 painter = painterResource(R.drawable.close_24px),
-                                contentDescription = "clear text"
+                                contentDescription = stringResource(R.string.cd_clear_text)
                             )
                         }
                     },
@@ -153,7 +153,7 @@ fun TemperamentEditor(
                         IconButton(onClick = { state.modifyAbbreviation("") }) {
                             Icon(
                                 painter = painterResource(R.drawable.close_24px),
-                                contentDescription = "clear text"
+                                contentDescription = stringResource(R.string.cd_clear_text)
                             )
                         }
                     },
@@ -174,7 +174,7 @@ fun TemperamentEditor(
                         IconButton(onClick = { state.modifyDescription("") }) {
                             Icon(
                                 painter = painterResource(R.drawable.close_24px),
-                                contentDescription = "clear text"
+                                contentDescription = stringResource(R.string.cd_clear_text)
                             )
                         }
                     },

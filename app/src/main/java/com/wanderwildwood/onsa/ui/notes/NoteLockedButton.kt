@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -76,7 +77,7 @@ fun NoteLockedButton(
         ) {
             Icon(
                 painter = painterResource(R.drawable.lock_24px),
-                contentDescription = "locked",
+                contentDescription = stringResource(R.string.cd_locked),
                 modifier = Modifier.size(iconSize)
             )
             TextMMD(
@@ -86,7 +87,7 @@ fun NoteLockedButton(
         }
         Icon(
             painter = painterResource(R.drawable.close_24px),
-            contentDescription = "clear"
+            contentDescription = stringResource(R.string.cd_clear)
         )
     }
 }

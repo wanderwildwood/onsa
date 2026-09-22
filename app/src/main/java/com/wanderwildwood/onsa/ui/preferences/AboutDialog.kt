@@ -120,7 +120,7 @@ private fun Llama() {
                         Intent(Intent.ACTION_VIEW, Uri.parse("https://square.link/u/AGu8oT10")),
                     )
                 }.onFailure {
-                    Toast.makeText(context, "There is no browser on this phone to open that with.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
                 }
             }
             .padding(vertical = 4.dp),
@@ -131,6 +131,6 @@ private fun Llama() {
             modifier = Modifier.size(22.dp),
         )
         Spacer(Modifier.width(6.dp))
-        TextMMD("Feed the llamas")
+        TextMMD(stringResource(R.string.about_feed_the_llamas))
     }
 }

@@ -96,7 +96,7 @@ fun TunerScaffold(
                             IconButton(onClick = onActionModeFinishedClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.close_24px),
-                                    "close"
+                                    stringResource(R.string.cd_close)
                                 )
                             }
                         }
@@ -104,7 +104,7 @@ fun TunerScaffold(
                             IconButton(onClick = onNavigateUpClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.arrow_back_24px),
-                                    "back"
+                                    stringResource(R.string.cd_back)
                                 )
                             }
 
@@ -120,7 +120,7 @@ fun TunerScaffold(
                             IconButton(onClick = onPreferenceButtonClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.settings_24px),
-                                    "settings"
+                                    stringResource(R.string.cd_settings)
                                 )
                             }
                         }
@@ -188,7 +188,7 @@ fun TunerScaffoldWithoutBottomBar(
                             IconButton(onClick = onActionModeFinishedClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.close_24px),
-                                    "close"
+                                    stringResource(R.string.cd_close)
                                 )
                             }
                         }
@@ -196,7 +196,7 @@ fun TunerScaffoldWithoutBottomBar(
                             IconButton(onClick = onNavigateUpClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.arrow_back_24px),
-                                    "back"
+                                    stringResource(R.string.cd_back)
                                 )
                             }
 
@@ -212,7 +212,7 @@ fun TunerScaffoldWithoutBottomBar(
                             IconButton(onClick = onPreferenceButtonClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.settings_24px),
-                                    "settings"
+                                    stringResource(R.string.cd_settings)
                                 )
                             }
                         }

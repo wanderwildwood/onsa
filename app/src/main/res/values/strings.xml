@@ -361,4 +361,67 @@
     <string name="ukrainian" translatable="false">Українська</string>
     <string name="simplified_chinese" translatable="false">简体中文</string>
     <string name="romanian" translatable="false">Română</string>
+
+    <!-- ============================================================ -->
+    <!-- About dialog: the donation row under the licence -->
+
+    <!-- The donation link label, beside a drawing of a llama. A fixed phrase: a verb and an object, so the reader knows what pressing it does -->
+    <string name="about_feed_the_llamas">Feed the llamas</string>
+    <!-- Toast when the donation link cannot be opened -->
+    <string name="about_no_browser">There is no browser on this phone to open that with.</string>
+
+    <!-- ============================================================ -->
+    <!-- Icon descriptions, read aloud by a screen reader and never shown on screen.
+         They are lower case in English; follow your language's own habit -->
+
+    <!-- Top bar, on every screen -->
+    <!-- Leaves a screen or a selection (verb) -->
+    <string name="cd_close">close</string>
+    <!-- Goes back to the previous screen (verb) -->
+    <string name="cd_back">back</string>
+    <!-- Opens the settings screen (noun) -->
+    <string name="cd_settings">settings</string>
+
+    <!-- Lists of instruments, temperaments and stretch tunings -->
+    <!-- The three-dot button that opens a list's menu (noun) -->
+    <string name="cd_menu">menu</string>
+    <!-- Menu entries. All verbs, except details (noun): it shows more about an item -->
+    <string name="cd_delete">delete</string>
+    <string name="cd_share">share</string>
+    <!-- Save items to a file (verb) -->
+    <string name="cd_archive">archive</string>
+    <!-- Load items from a file (verb) -->
+    <string name="cd_unarchive">unarchive</string>
+    <string name="cd_copy">copy</string>
+    <string name="cd_details">details</string>
+    <string name="cd_edit">edit</string>
+    <!-- The arrow on a list section: fold it shut, or open it out (verbs) -->
+    <string name="cd_collapse">collapse</string>
+    <string name="cd_expand">expand</string>
+    <!-- Arrows that move the selected item one place up or down the list (verbs) -->
+    <string name="cd_move_up">move up</string>
+    <string name="cd_move_down">move down</string>
+    <!-- Beside "Use default": go back to the default choice (verb) -->
+    <string name="cd_reset">reset</string>
+    <!-- The + button on each list (verb phrases or noun phrases, whichever reads naturally as a button) -->
+    <string name="cd_create_new_instrument">create new instrument</string>
+    <string name="cd_new_temperament">new temperament</string>
+    <string name="cd_new_stretch_tuning">new stretch tuning</string>
+
+    <!-- Editors -->
+    <!-- Empties the instrument name field (verb). On the tuner it is also the cross on a
+         held note, which lets the note go (verb) -->
+    <string name="cd_clear">clear</string>
+    <!-- Empties a text field in the temperament and stretch tuning editors (verb) -->
+    <string name="cd_clear_text">clear text</string>
+    <!-- Adds a line to the stretch tuning table (verb) -->
+    <string name="cd_add">add</string>
+    <!-- The padlock on a note that is held as the tuning target, not picked automatically (adjective) -->
+    <string name="cd_locked">locked</string>
+
+    <!-- Tuning -->
+    <!-- The microphone button in scientific mode that writes the captured sound to a file (verb) -->
+    <string name="cd_record">record</string>
+    <!-- In the reference note dialog: stop listening for the frequency to use as reference -->
+    <string name="cd_stop_frequency_detection">stop frequency detection</string>
 </resources>

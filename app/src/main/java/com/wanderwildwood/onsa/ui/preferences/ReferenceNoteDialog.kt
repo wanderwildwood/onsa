@@ -253,7 +253,7 @@ fun ReferenceNoteDialog(
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.close_24px),
-                                        contentDescription = "stop frequency detection"
+                                        contentDescription = stringResource(R.string.cd_stop_frequency_detection)
                                     )
                                 }
                             }

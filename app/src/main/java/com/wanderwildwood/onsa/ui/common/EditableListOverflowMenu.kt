@@ -56,7 +56,7 @@ fun OverflowMenu(
         }) {
             Icon(
                 painter = painterResource(R.drawable.more_vert_24px),
-                contentDescription = "menu"
+                contentDescription = stringResource(R.string.cd_menu)
             )
         }
         DropdownMenuMMD(
@@ -68,7 +68,7 @@ fun OverflowMenu(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.delete_24px),
-                        contentDescription = "delete"
+                        contentDescription = stringResource(R.string.cd_delete)
                     )
                 },
                 onClick = {
@@ -82,7 +82,7 @@ fun OverflowMenu(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.share_24px),
-                        contentDescription = "share"
+                        contentDescription = stringResource(R.string.cd_share)
                     )
                 },
                 onClick = {
@@ -95,7 +95,7 @@ fun OverflowMenu(
                 leadingIcon = {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_archive),
-                        contentDescription = "archive"
+                        contentDescription = stringResource(R.string.cd_archive)
                     )
                 },
                 onClick = {
@@ -108,7 +108,7 @@ fun OverflowMenu(
                 leadingIcon = {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_unarchive),
-                        contentDescription = "unarchive"
+                        contentDescription = stringResource(R.string.cd_unarchive)
                     )
                 },
                 onClick = {
@@ -123,7 +123,7 @@ fun OverflowMenu(
                     leadingIcon = {
                         Icon(
                             painter = painterResource(R.drawable.settings_24px),
-                            contentDescription = "settings"
+                            contentDescription = stringResource(R.string.cd_settings)
                         )
                     },
                     onClick = {

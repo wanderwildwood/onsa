@@ -93,7 +93,7 @@ private fun StretchTuningInfoPortrait(
                     IconButton(onClick = { onNavigateUpClicked() }) {
                         Icon(
                             painter = painterResource(R.drawable.arrow_back_24px),
-                            "back"
+                            stringResource(R.string.cd_back)
                         )
                     }
                 },
@@ -183,7 +183,7 @@ private fun StretchTuningInfoLandscape(
                     IconButton(onClick = onNavigateUpClicked) {
                         Icon(
                             painter = painterResource(R.drawable.arrow_back_24px),
-                            "back"
+                            stringResource(R.string.cd_back)
                         )
                     }
                 }

@@ -158,7 +158,7 @@ fun EditableListItem(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_copy),
-                            contentDescription = "copy",
+                            contentDescription = stringResource(R.string.cd_copy),
                             tint = variantColor
                         )
                     }
@@ -169,7 +169,7 @@ fun EditableListItem(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.info_24px),
-                            contentDescription = "details",
+                            contentDescription = stringResource(R.string.cd_details),
                             tint = variantColor
                         )
                     }
@@ -195,7 +195,7 @@ fun EditableListItem(
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(R.drawable.info_24px),
-                                        contentDescription = "details"
+                                        contentDescription = stringResource(R.string.cd_details)
                                     )
                                 },
                                 onClick = {
@@ -211,7 +211,7 @@ fun EditableListItem(
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(R.drawable.edit_24px),
-                                        contentDescription = "edit"
+                                        contentDescription = stringResource(R.string.cd_edit)
                                     )
                                 },
                                 onClick = {
@@ -226,7 +226,7 @@ fun EditableListItem(
                                 leadingIcon = {
                                     Icon(
                                         ImageVector.vectorResource(id = R.drawable.ic_copy),
-                                        contentDescription = "copy"
+                                        contentDescription = stringResource(R.string.cd_copy)
                                     )
                                 },
                                 onClick = {
@@ -242,7 +242,7 @@ fun EditableListItem(
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(R.drawable.delete_24px),
-                                        contentDescription = "delete"
+                                        contentDescription = stringResource(R.string.cd_delete)
                                     )
                                 },
                                 onClick = {

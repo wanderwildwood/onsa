@@ -162,7 +162,7 @@ private fun StretchTuningPortrait(
                     IconButton(onClick = { onAbortClicked() }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            "close"
+                            stringResource(R.string.cd_close)
                         )
                     }
                 },
@@ -184,7 +184,7 @@ private fun StretchTuningPortrait(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.add_24px),
-                    contentDescription = "add"
+                    contentDescription = stringResource(R.string.cd_add)
                 )
             }
         }
@@ -215,7 +215,7 @@ private fun StretchTuningPortrait(
                     IconButton(onClick = { state.modifyName("") }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            contentDescription = "clear text"
+                            contentDescription = stringResource(R.string.cd_clear_text)
                         )
                     }
                 },
@@ -236,7 +236,7 @@ private fun StretchTuningPortrait(
                     IconButton(onClick = { state.modifyDescription("") }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            contentDescription = "clear text"
+                            contentDescription = stringResource(R.string.cd_clear_text)
                         )
                     }
                 },
@@ -314,7 +314,7 @@ private fun StretchTuningLandscape(
                     IconButton(onClick = { onAbortClicked() }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            "close"
+                            stringResource(R.string.cd_close)
                         )
                     }
                 },
@@ -336,7 +336,7 @@ private fun StretchTuningLandscape(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.add_24px),
-                    contentDescription = "add"
+                    contentDescription = stringResource(R.string.cd_add)
                 )
             }
         }
@@ -371,7 +371,7 @@ private fun StretchTuningLandscape(
                         IconButton(onClick = { state.modifyName("") }) {
                             Icon(
                                 painter = painterResource(R.drawable.close_24px),
-                                contentDescription = "clear text"
+                                contentDescription = stringResource(R.string.cd_clear_text)
                             )
                         }
                     },
@@ -417,7 +417,7 @@ private fun StretchTuningLandscape(
                         IconButton(onClick = { state.modifyDescription("") }) {
                             Icon(
                                 painter = painterResource(R.drawable.close_24px),
-                                contentDescription = "clear text"
+                                contentDescription = stringResource(R.string.cd_clear_text)
                             )
                         }
                     },

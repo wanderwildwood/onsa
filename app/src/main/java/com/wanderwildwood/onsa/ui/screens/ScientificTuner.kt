@@ -188,7 +188,7 @@ fun ScientificTuner(
                 ) {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_mic),
-                        contentDescription = "record"
+                        contentDescription = stringResource(R.string.cd_record)
                     )
                 }
             }

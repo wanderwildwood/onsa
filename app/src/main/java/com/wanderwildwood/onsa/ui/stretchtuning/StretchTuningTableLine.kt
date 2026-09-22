@@ -83,7 +83,7 @@ private fun OverflowMenu(
         }) {
             Icon(
                 painter = painterResource(R.drawable.more_vert_24px),
-                contentDescription = "menu"
+                contentDescription = stringResource(R.string.cd_menu)
             )
         }
         DropdownMenuMMD(
@@ -95,7 +95,7 @@ private fun OverflowMenu(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.edit_24px),
-                        contentDescription = "edit"
+                        contentDescription = stringResource(R.string.cd_edit)
                     )
                 },
                 onClick = {
@@ -109,7 +109,7 @@ private fun OverflowMenu(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.delete_24px),
-                        contentDescription = "delete"
+                        contentDescription = stringResource(R.string.cd_delete)
                     )
                 },
                 onClick = {
