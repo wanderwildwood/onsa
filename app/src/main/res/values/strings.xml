@@ -34,7 +34,7 @@
         <item quantity="other">Average over %d pitch results</item>
     </plurals>
     <string name="about">About</string>
-    <string name="about_message">Tuning Fork\nVersion: %s\nLicense: GPLv3 or later\n\nAfter Tuner by Michael Moessner\nhttps://codeberg.org/thetwom/Tuner\n\nwanderthe.dev</string>
+    <string name="about_message">Tuning Fork\nVersion: %s\nLicense: GPLv3 or later\n\nAfter Tuner by Michael Moessner\nhttps://codeberg.org/thetwom/Tuner</string>
     <string name="reset_all_settings">Reset all settings</string>
     <!-- What the row says once it is armed. The warning takes the dash and the question
          follows a semicolon; an armed row disarms itself after four seconds. -->
