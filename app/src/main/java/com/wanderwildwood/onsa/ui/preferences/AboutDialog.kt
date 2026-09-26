@@ -112,7 +112,7 @@ private fun Llama() {
         modifier = Modifier.fillMaxWidth(),
     ) {
         TextMMD("wanderthe.dev")
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(6.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
