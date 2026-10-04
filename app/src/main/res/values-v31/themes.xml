@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      No splash screen.
+
+      Android 12 shows one whether or not an app asks, and the only lever is what it draws, so it
+      draws nothing: a transparent icon on white, the white the tuner opens onto. A logo that
+      flashes up and vanishes is worth less than nothing on e-ink, where it costs a full-panel
+      refresh before the app has done anything at all.
+
+      Here under values-v31 because minSdk is 23 and these attributes only exist from 31. The
+      parent is the same as values/themes.xml's; keep the two in step.
+    -->
+    <style name="Theme.Onsa" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowSplashScreenBackground">@android:color/white</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_nothing</item>
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
+    </style>
+</resources>

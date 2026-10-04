@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:fullBackupContent="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.Onsa">
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
