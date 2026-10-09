@@ -1,4 +1,4 @@
-# Tuning Fork
+# Tuner
 
 音叉 *onsa*
 

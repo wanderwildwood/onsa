@@ -1,6 +1,6 @@
 # Privacy
 
-Tuning Fork listens to your instrument and has no way to tell anyone what it heard.
+Tuner listens to your instrument and has no way to tell anyone what it heard.
 
 ## One permission
 
