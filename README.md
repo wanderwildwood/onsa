@@ -67,8 +67,13 @@ key by design.
 ## Credit
 
 After [Tuner](https://codeberg.org/thetwom/Tuner) by Michael Moessner. The pitch detection,
-the temperaments, the note naming and the instrument definitions are all his, unchanged —
-that is the substance of the app, and roughly ten thousand lines of it.
+the temperaments, the note naming and the instrument definitions (all but the banjo) are his,
+unchanged — that is the substance of the app, and roughly ten thousand lines of it.
+
+The 5-string banjo and its eleven tunings come from **carefulcarpenter** on the Mudita
+forum ([heavencanthandle](https://github.com/heavencanthandle) on GitHub), who added them in
+[a fork of this app](https://github.com/heavencanthandle/onsa). They sit in the instrument list
+beside the guitar and the basses, one row a tuning, short fifth string first.
 
 The interface was already Jetpack Compose, so this is a re-clothing rather than a rebuild:
 the theme is [MMD](https://github.com/mudita/MMD), Mudita's E Ink component library.

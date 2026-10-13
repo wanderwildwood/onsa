@@ -38,7 +38,8 @@ enum class InstrumentIcon(
     tar(R.drawable.ic_tar),
     setar(R.drawable.ic_setar),
     kamancheh(R.drawable.ic_kamancheh),
-    piano(R.drawable.ic_piano)
+    piano(R.drawable.ic_piano),
+    banjo(R.drawable.ic_banjo)
 }
 
 fun String.toInstrumentIcon(): InstrumentIcon {

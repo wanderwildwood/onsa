@@ -34,7 +34,7 @@
         <item quantity="other">Average over %d pitch results</item>
     </plurals>
     <string name="about">About</string>
-    <string name="about_message">Tuner\nVersion: %s\nLicense: GPLv3 or later\n\nAfter Tuner by Michael Moessner\nhttps://codeberg.org/thetwom/Tuner</string>
+    <string name="about_message">Tuner\nVersion: %s\nLicense: GPLv3 or later\n\nAfter Tuner by Michael Moessner\nhttps://codeberg.org/thetwom/Tuner\n\nBanjo tunings by carefulcarpenter\nhttps://github.com/heavencanthandle/onsa</string>
     <string name="reset_all_settings">Reset all settings</string>
     <!-- What the row says once it is armed. The warning takes the dash and the question
          follows a semicolon; an armed row disarms itself after four seconds. -->
@@ -61,6 +61,17 @@
     <string name="bass_eadg">4-string bass</string>
     <string name="bass_beadg">5-string bass</string>
     <string name="ukulele_gcea">Ukulele</string>
+    <string name="banjo_open_g">Banjo, open G</string>
+    <string name="banjo_g_minor">Banjo, G minor</string>
+    <string name="banjo_sawmill">Banjo, sawmill</string>
+    <string name="banjo_double_c">Banjo, double C</string>
+    <string name="banjo_open_c">Banjo, open C</string>
+    <string name="banjo_drop_c">Banjo, drop C</string>
+    <string name="banjo_c_minor">Banjo, C minor</string>
+    <string name="banjo_open_d">Banjo, open D</string>
+    <string name="banjo_d_minor">Banjo, D minor</string>
+    <string name="banjo_double_d">Banjo, double D</string>
+    <string name="banjo_open_a">Banjo, open A</string>
     <string name="c_note_name">C</string>
     <string name="d_note_name">D</string>
     <string name="e_note_name">E</string>

@@ -276,6 +276,183 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
             stableId = -1 - instruments.size.toLong()
         )
     )
+    // 5-string banjo, after carefulcarpenter's fork (github.com/heavencanthandle/onsa).
+    // Appended after the others so that no existing stable id moves. Strings run fifth to
+    // first, so the short fifth string, the high drone, comes first and sits beside the low
+    // fourth -- the order a banjo player reads them in. Each tuning is its own row, the way
+    // the two basses are. A sharp or flat is spelled as the default scale spells it, sharp
+    // first with its flat as the enharmonic, because a selected string is looked up by exact
+    // spelling: written plainly as B flat, G minor's second string would find no note.
+    instruments.add(
+        Instrument(
+            name = "Banjo, open G",
+            nameResource = R.string.banjo_open_g,
+            strings = arrayOf(
+                MusicalNote(BaseNote.G, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.B, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, G minor",
+            nameResource = R.string.banjo_g_minor,
+            strings = arrayOf(
+                MusicalNote(BaseNote.G, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.A, NoteModifier.Sharp, 3,
+                    enharmonicBase = BaseNote.B, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, sawmill",
+            nameResource = R.string.banjo_sawmill,
+            strings = arrayOf(
+                MusicalNote(BaseNote.G, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.C, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, double C",
+            nameResource = R.string.banjo_double_c,
+            strings = arrayOf(
+                MusicalNote(BaseNote.G, NoteModifier.None, 4),
+                MusicalNote(BaseNote.C, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.C, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, open C",
+            nameResource = R.string.banjo_open_c,
+            strings = arrayOf(
+                MusicalNote(BaseNote.G, NoteModifier.None, 4),
+                MusicalNote(BaseNote.C, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.C, NoteModifier.None, 4),
+                MusicalNote(BaseNote.E, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, drop C",
+            nameResource = R.string.banjo_drop_c,
+            strings = arrayOf(
+                MusicalNote(BaseNote.G, NoteModifier.None, 4),
+                MusicalNote(BaseNote.C, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.B, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, C minor",
+            nameResource = R.string.banjo_c_minor,
+            strings = arrayOf(
+                MusicalNote(BaseNote.G, NoteModifier.None, 4),
+                MusicalNote(BaseNote.C, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.C, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.Sharp, 4,
+                    enharmonicBase = BaseNote.E, enharmonicModifier = NoteModifier.Flat)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, open D",
+            nameResource = R.string.banjo_open_d,
+            strings = arrayOf(
+                MusicalNote(BaseNote.F, NoteModifier.Sharp, 4,
+                    enharmonicBase = BaseNote.G, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.F, NoteModifier.Sharp, 3,
+                    enharmonicBase = BaseNote.G, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.A, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, D minor",
+            nameResource = R.string.banjo_d_minor,
+            strings = arrayOf(
+                MusicalNote(BaseNote.F, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.F, NoteModifier.None, 3),
+                MusicalNote(BaseNote.A, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, double D",
+            nameResource = R.string.banjo_double_d,
+            strings = arrayOf(
+                MusicalNote(BaseNote.A, NoteModifier.None, 4),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.A, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4),
+                MusicalNote(BaseNote.E, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Banjo, open A",
+            nameResource = R.string.banjo_open_a,
+            strings = arrayOf(
+                MusicalNote(BaseNote.A, NoteModifier.None, 4),
+                MusicalNote(BaseNote.E, NoteModifier.None, 3),
+                MusicalNote(BaseNote.A, NoteModifier.None, 3),
+                MusicalNote(BaseNote.C, NoteModifier.Sharp, 4,
+                    enharmonicBase = BaseNote.D, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.E, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
 //    instruments.add(
 //        Instrument(
 //            name = "Test instrument",

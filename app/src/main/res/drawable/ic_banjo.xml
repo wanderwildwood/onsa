@@ -1,0 +1,14 @@
+<vector android:height="24dp" android:viewportHeight="50"
+    android:viewportWidth="50" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tint="?attr/colorControlNormal">
+    <!-- Drawn upright, then laid on the same diagonal as the other instruments. The open
+         ring of the pot is what tells a banjo from a guitar at this size; the stub on the
+         neck is the peg of the short fifth string. -->
+    <group android:pivotX="25" android:pivotY="25" android:rotation="-45"
+        android:scaleX="0.8" android:scaleY="0.8">
+        <path android:fillColor="#000000" android:fillType="evenOdd"
+            android:pathData="M25,26.5A13,13 0,1 1,25 52.5A13,13 0,1 1,25 26.5ZM25,29.9A9.6,9.6 0,1 0,25 49.1A9.6,9.6 0,1 0,25 29.9Z"/>
+        <path android:fillColor="#000000"
+            android:pathData="M22.5,-4h5v34h-5zM20,-11.5h10v9h-10zM27.5,11.5h4.5v3.2h-4.5zM19.5,42.8h11v3.2h-11z"/>
+    </group>
+</vector>
