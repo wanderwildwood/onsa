@@ -23,7 +23,6 @@ import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -45,13 +44,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
@@ -64,7 +61,7 @@ import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.notenames.NoteNamesEDOGenerator
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
-import kotlin.math.absoluteValue
+import kotlinx.coroutines.flow.drop
 
 /** Select between available notes.
  * @param selectedIndex List index of selected note in noteNameScale.notes
@@ -83,44 +80,30 @@ private fun NoteSelectorBase(
     content: LazyListScope.() -> Unit
 ) {
     val state = rememberLazyListState(selectedIndex)
+    val currentSelected by rememberUpdatedState(selectedIndex)
+    val currentOnIndexChanged by rememberUpdatedState(onIndexChanged)
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            var preScrollIndex = Int.MAX_VALUE
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                preScrollIndex = state.layoutInfo
-                    .visibleItemsInfo
-                    .minByOrNull { it.offset.absoluteValue }?.index ?: 0
-                return super.onPreScroll(available, source)
-            }
-
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-//                Log.v("Tuner", "onPostScroll: o0 = ${state.layoutInfo.visibleItemsInfo[0].offset}")
-                val postScrollIndex = state.layoutInfo
-                    .visibleItemsInfo
-                    .minByOrNull { it.offset.absoluteValue }?.index ?: 0
-                if (preScrollIndex != postScrollIndex) {
-//                    Log.v("Tuner", "onPostScroll: new index: $postScrollIndex")
-                    onIndexChanged(postScrollIndex)
-                }
-
-                return super.onPostScroll(consumed, available, source)
-            }
-
-        }
+    // MMD's LazyRow does its own dragging: a swipe jumps the row a few notes with scrollToItem,
+    // and the row's own scrolling is switched off. So no scroll ever reached a nested-scroll
+    // listener, and a swipe moved the notes without choosing one. The note in the middle is
+    // the first visible one, the content padding being half a row wide, so whichever note a
+    // swipe stops on is taken as chosen.
+    LaunchedEffect(state) {
+        snapshotFlow { state.firstVisibleItemIndex }
+            .drop(1)
+            .collect { index -> if (index != currentSelected) currentOnIndexChanged(index) }
     }
 
+    // A jump rather than a glide: an e-ink screen shows a glide as a smear of half-drawn rows.
     LaunchedEffect(key1 = selectedIndex, key2 = state) {
-        if (!state.isScrollInProgress && selectedIndex >= 0)
-            state.animateScrollToItem(selectedIndex)
+        if (selectedIndex >= 0 && state.firstVisibleItemIndex != selectedIndex)
+            state.scrollToItem(selectedIndex)
     }
 
+    // One note high. MMD's LazyRow fills all the height it is offered, so without this the
+    // selector took the rest of the instrument editor, and the strings above it got none.
     BoxWithConstraints(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().height(singleNoteSize.height),
         contentAlignment = Alignment.Center
     ) {
         Surface(
@@ -131,13 +114,12 @@ private fun NoteSelectorBase(
         ) { }
 
         LazyRowMMD(
-            modifier = Modifier.nestedScroll(nestedScrollConnection),
+            modifier = Modifier.height(singleNoteSize.height),
             contentPadding = PaddingValues(
                 horizontal = (maxWidth - singleNoteSize.width).coerceAtLeast(0.dp) / 2
             ),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             state = state,
-            flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
             isScrollbarVisible = false,
             content = content,
         )
