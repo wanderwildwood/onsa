@@ -209,4 +209,7 @@
     <string name="extended_quarter_comma_mean_tone">Mésotonique ¼ comma étendu</string>
     <string name="extended_quarter_comma_mean_tone_desc">Tierce majeure pure, 15 notes</string>
     <string name="extended_quarter_comma_mean_tone_abbr">Mésotonique ¼ comma étendu</string>
+    <string name="instrument_guitar">Guitare</string>
+    <string name="instrument_bass">Basse</string>
+    <string name="instrument_banjo">Banjo</string>
 </resources>

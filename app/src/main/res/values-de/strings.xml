@@ -301,4 +301,7 @@
     <string name="octave_representation">Oktavdarstellung</string>
     <string name="language">Sprache</string>
     <string name="system_default">Systemstandard</string>
+    <string name="instrument_guitar">Gitarre</string>
+    <string name="instrument_bass">Bass</string>
+    <string name="instrument_banjo">Banjo</string>
 </resources>

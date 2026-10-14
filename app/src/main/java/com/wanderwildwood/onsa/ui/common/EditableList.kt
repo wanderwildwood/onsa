@@ -42,6 +42,7 @@ import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -94,6 +95,21 @@ class EditableListPredefinedSectionImmutable<T>(
 ) : EditableListPredefinedSection<T> {
     override val size get() = items.size
     override operator fun get(index: Int) = items[index]
+}
+
+/**
+ * A predefined section whose rows can change while the list is open - the instrument list,
+ * where adding a tuning to an instrument can turn its single row into an instrument row.
+ * The rows are read from Compose state, so the list redraws when they change.
+ */
+class EditableListPredefinedSectionState<T>(
+    @StringRes override val sectionStringResourceId: Int,
+    private val items: State<ImmutableList<T>>,
+    override val isExpanded: StateFlow<Boolean>,
+    override val toggleExpanded: (isExpanded: Boolean) -> Unit
+) : EditableListPredefinedSection<T> {
+    override val size get() = items.value.size
+    override operator fun get(index: Int) = items.value[index]
 }
 
 @Stable

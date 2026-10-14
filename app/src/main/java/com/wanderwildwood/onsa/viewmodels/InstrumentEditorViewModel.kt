@@ -25,6 +25,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.wanderwildwood.onsa.instruments.Instrument
+import com.wanderwildwood.onsa.instruments.InstrumentGroup
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
 import com.wanderwildwood.onsa.instruments.instrumentChromatic
 import com.wanderwildwood.onsa.notedetection.FrequencyDetectionCollectedResults
@@ -59,6 +60,7 @@ class InstrumentEditorViewModel @AssistedInject constructor(
 
     override val icon = MutableStateFlow(instrument.icon)
     override val name = MutableStateFlow(instrument.getNameString(null))
+    override val group = MutableStateFlow(instrument.group)
 
     override val strings = MutableStateFlow(
         instrument.strings.mapIndexed { index, string ->
@@ -79,6 +81,18 @@ class InstrumentEditorViewModel @AssistedInject constructor(
 
     override fun setName(name: String) {
         this.name.value = name
+    }
+
+    /**
+     * Files the tuning under [group]. The drawing follows the instrument while it is still
+     * the one a new tuning starts with, or the previous instrument's own; one the reader
+     * picked themselves is left alone.
+     */
+    override fun setGroup(group: InstrumentGroup?) {
+        val followsInstrument = icon.value == InstrumentIcon.entries[0] ||
+                icon.value == this.group.value?.icon
+        this.group.value = group
+        if (group != null && followsInstrument) icon.value = group.icon
     }
 
     override fun selectString(key: Int) {
@@ -165,7 +179,8 @@ class InstrumentEditorViewModel @AssistedInject constructor(
             strings = strings.value.map{ it.note }.toTypedArray(),
             icon = icon.value,
             stableId = stableId,
-            isChromatic = false
+            isChromatic = false,
+            group = group.value
         )
     }
 

@@ -313,4 +313,7 @@
     <string name="b_note_vietnamese">Phan</string>
     <string name="use_default">Użyj domyślnych</string>
     <string name="detect_frequency">Wykryj częstotliwość</string>
+    <string name="instrument_guitar">Gitara</string>
+    <string name="instrument_bass">Bas</string>
+    <string name="instrument_banjo">Banjo</string>
 </resources>

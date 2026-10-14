@@ -33,7 +33,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
+import android.content.Context
+import com.mudita.mmd.components.snackbar.SnackbarDurationMMD
+import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.mudita.mmd.components.snackbar.SnackbarResultMMD
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.instruments.InstrumentGroup
+import com.wanderwildwood.onsa.instruments.toInstrumentGroup
+import com.wanderwildwood.onsa.ui.instruments.InstrumentGroupPage
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
@@ -152,20 +161,9 @@ fun NavGraphBuilder.mainGraph(
                 viewModel.setCurrentInstrument(it)
                 controller.navigateUp()
             },
+            onInstrumentGroupClicked = { controller.navigate(InstrumentGroupRoute(it.name)) },
             onEditInstrumentClicked = { instrument, copy ->
-                val newInstrument = if (copy) {
-                    instrument.copy(
-                        nameResource = null,
-                        name = context.getString(R.string.copy_extension, instrument.getNameString(context)),
-                        stableId = Instrument.NO_STABLE_ID
-                    )
-                } else {
-                    instrument.copy(
-                        nameResource = null,
-                        name = instrument.getNameString(context)
-                    )
-                }
-                controller.navigate(InstrumentEditorGraphRoute.create(newInstrument))
+                controller.navigate(editorRouteFor(instrument, copy, context))
             },
             onCreateNewInstrumentClicked = {
                 val newInstrument = Instrument(
@@ -188,6 +186,64 @@ fun NavGraphBuilder.mainGraph(
 //            onTemperamentClicked = { controller.navigate(TemperamentDialogRoute) },
             onPreferenceButtonClicked = { controller.navigate(PreferencesGraphRoute) },
             onLoadInstruments = onLoadInstruments
+        )
+    }
+
+    composable<InstrumentGroupRoute> { entry ->
+        val group = entry.toRoute<InstrumentGroupRoute>().groupName.toInstrumentGroup()
+            ?: InstrumentGroup.guitar
+        val notePrintOptions by preferences.notePrintOptions.collectAsStateWithLifecycle()
+        val musicalScale by temperamentResources.musicalScale.collectAsStateWithLifecycle()
+        // The list's own view model, which is still on the back stack beneath this page.
+        val parentEntry = remember(entry) { controller.getBackStackEntry<InstrumentsRoute>() }
+        val viewModel: InstrumentViewModel = hiltViewModel(parentEntry)
+        val custom by viewModel.instruments.customInstruments.collectAsStateWithLifecycle()
+        val active by viewModel.instruments.currentInstrument.collectAsStateWithLifecycle()
+        val tunings = remember(group, custom) { viewModel.tuningsOf(group, custom) }
+        val context = LocalContext.current
+        val snackbarHostState = remember { SnackbarHostStateMMD() }
+        val scope = rememberCoroutineScope()
+        InstrumentGroupPage(
+            group = group,
+            tunings = tunings,
+            activeInstrument = active,
+            modifier = Modifier.fillMaxSize(),
+            notePrintOptions = notePrintOptions,
+            onTuningClicked = {
+                viewModel.setCurrentInstrument(it)
+                // Straight back to the tuner, past the instrument list.
+                controller.popBackStack(InstrumentsRoute, inclusive = true)
+            },
+            onEditTuningClicked = { tuning, copy ->
+                controller.navigate(editorRouteFor(tuning, copy, context))
+            },
+            // Undone the way the instrument list undoes a delete: the list as it was is put back.
+            onDeleteTuningClicked = { tuning ->
+                val before = viewModel.instruments.customInstruments.value
+                viewModel.deleteCustomInstrument(tuning)
+                scope.launch {
+                    val result = snackbarHostState.showSnackbar(
+                        context.resources.getQuantityString(R.plurals.items_deleted, 1, 1),
+                        actionLabel = context.getString(R.string.undo),
+                        duration = SnackbarDurationMMD.Long
+                    )
+                    if (result == SnackbarResultMMD.ActionPerformed)
+                        viewModel.instruments.writeCustomInstruments(before)
+                }
+            },
+            snackbarHostState = snackbarHostState,
+            onCreateNewTuningClicked = {
+                val newInstrument = Instrument(
+                    nameResource = null,
+                    name = "",
+                    strings = arrayOf(musicalScale.referenceNote),
+                    icon = group.icon,
+                    stableId = Instrument.NO_STABLE_ID,
+                    group = group
+                )
+                controller.navigate(InstrumentEditorGraphRoute.create(newInstrument))
+            },
+            onNavigateUpClicked = { controller.navigateUp() }
         )
     }
 
@@ -366,6 +422,33 @@ data object TunerRoute
 
 @Serializable
 data object InstrumentsRoute
+
+/** One instrument's page of tunings. The group travels by its name, as it is saved. */
+@Serializable
+data class InstrumentGroupRoute(val groupName: String)
+
+/**
+ * The editor, for a tuning as it is or for a copy of it. Either way the tuning becomes the
+ * reader's own - named in full, keeping its instrument - since a built-in one cannot be
+ * changed in place.
+ */
+private fun editorRouteFor(instrument: Instrument, copy: Boolean, context: Context) =
+    InstrumentEditorGraphRoute.create(
+        if (copy) {
+            instrument.copy(
+                nameResource = null,
+                tuningNameResource = null,
+                name = context.getString(R.string.copy_extension, instrument.getNameString(context)),
+                stableId = Instrument.NO_STABLE_ID
+            )
+        } else {
+            instrument.copy(
+                nameResource = null,
+                tuningNameResource = null,
+                name = instrument.getNameString(context)
+            )
+        }
+    )
 
 // it seems that we cannot use complex arguments, so we must serialize ...
 @Serializable

@@ -55,6 +55,7 @@ import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.instruments.InstrumentGroup
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
 import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.notedetection.TuningState
@@ -77,6 +78,8 @@ import kotlin.math.min
 interface InstrumentEditorData {
     val icon: StateFlow<InstrumentIcon>
     val name: StateFlow<String>
+    /** The instrument this tuning is filed under, or null for one that stands on its own. */
+    val group: StateFlow<InstrumentGroup?>
 
     val strings: StateFlow<ImmutableList<StringWithInfo> >
     val stringsState: StringsState
@@ -91,6 +94,7 @@ interface InstrumentEditorData {
 
     fun setIcon(icon: InstrumentIcon)
     fun setName(name: String)
+    fun setGroup(group: InstrumentGroup?)
 
     fun selectString(key: Int)
     fun modifySelectedString(note: MusicalNote)
@@ -108,6 +112,7 @@ fun InstrumentEditor(
     notePrintOptions: NotePrintOptions2 = NotePrintOptions2(),
     tunerPlotStyle: TunerPlotStyle = TunerPlotStyle.create(),
     onIconButtonClicked: () -> Unit = {},
+    onGroupButtonClicked: () -> Unit = {},
     onNavigateUpClicked: () -> Unit = {},
     onSaveNewInstrumentClicked: () -> Unit = {},
     snackbarHostState: SnackbarHostStateMMD = remember { SnackbarHostStateMMD() }
@@ -143,7 +148,8 @@ fun InstrumentEditor(
                     modifier = modifier.padding(paddingValues),
                     notePrintOptions = notePrintOptions,
                     tunerPlotStyle = tunerPlotStyle,
-                    onIconButtonClicked = onIconButtonClicked
+                    onIconButtonClicked = onIconButtonClicked,
+                    onGroupButtonClicked = onGroupButtonClicked
                 )
             }
             else -> {
@@ -153,7 +159,8 @@ fun InstrumentEditor(
                     modifier = modifier.padding(paddingValues),
                     notePrintOptions = notePrintOptions,
                     tunerPlotStyle = tunerPlotStyle,
-                    onIconButtonClicked = onIconButtonClicked
+                    onIconButtonClicked = onIconButtonClicked,
+                    onGroupButtonClicked = onGroupButtonClicked
                 )
             }
         }
@@ -167,9 +174,11 @@ fun InstrumentEditorPortrait(
     modifier: Modifier = Modifier,
     notePrintOptions: NotePrintOptions2 = NotePrintOptions2(),
     tunerPlotStyle: TunerPlotStyle = TunerPlotStyle.create(),
-    onIconButtonClicked: () -> Unit = {}
+    onIconButtonClicked: () -> Unit = {},
+    onGroupButtonClicked: () -> Unit = {}
 ) {
     val icon by state.icon.collectAsStateWithLifecycle()
+    val group by state.group.collectAsStateWithLifecycle()
     val name by state.name.collectAsStateWithLifecycle()
     val strings by state.strings.collectAsStateWithLifecycle()
     val selectedStringIndex by state.selectedStringIndex.collectAsStateWithLifecycle()
@@ -217,6 +226,13 @@ fun InstrumentEditorPortrait(
                 TextMMD(stringResource(id = R.string.instrument_name))
             },
             singleLine = true
+        )
+        InstrumentGroupRow(
+            group = group,
+            onClick = onGroupButtonClicked,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = tunerPlotStyle.margin)
         )
 
         Strings(
@@ -312,9 +328,11 @@ fun InstrumentEditorLandscape(
     modifier: Modifier = Modifier,
     notePrintOptions: NotePrintOptions2 = NotePrintOptions2(),
     tunerPlotStyle: TunerPlotStyle = TunerPlotStyle.create(),
-    onIconButtonClicked: () -> Unit = {}
+    onIconButtonClicked: () -> Unit = {},
+    onGroupButtonClicked: () -> Unit = {}
 ) {
     val icon by state.icon.collectAsStateWithLifecycle()
+    val group by state.group.collectAsStateWithLifecycle()
     val name by state.name.collectAsStateWithLifecycle()
     val strings by state.strings.collectAsStateWithLifecycle()
     val selectedStringIndex by state.selectedStringIndex.collectAsStateWithLifecycle()
@@ -368,6 +386,13 @@ fun InstrumentEditorLandscape(
                     TextMMD(stringResource(id = R.string.instrument_name))
                 },
                 singleLine = true
+            )
+            InstrumentGroupRow(
+                group = group,
+                onClick = onGroupButtonClicked,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = tunerPlotStyle.margin)
             )
 
             Spacer(Modifier.weight(1f))
@@ -485,6 +510,8 @@ private class InstrumentEditorDataTest : InstrumentEditorData {
 
     override val icon = MutableStateFlow(InstrumentIcon.piano)
     override val name = MutableStateFlow("Test name")
+    override val group = MutableStateFlow<InstrumentGroup?>(InstrumentGroup.guitar)
+    override fun setGroup(group: InstrumentGroup?) { this.group.value = group }
 
     override var strings = MutableStateFlow(
         persistentListOf(

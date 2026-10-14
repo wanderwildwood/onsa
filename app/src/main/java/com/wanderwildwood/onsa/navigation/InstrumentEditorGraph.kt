@@ -37,6 +37,7 @@ import com.wanderwildwood.onsa.instruments.InstrumentResources
 import com.wanderwildwood.onsa.preferences.PreferenceResources
 import com.wanderwildwood.onsa.temperaments.TemperamentResources
 import com.wanderwildwood.onsa.ui.instruments.InstrumentEditor
+import com.wanderwildwood.onsa.ui.instruments.InstrumentGroupPicker
 import com.wanderwildwood.onsa.ui.instruments.InstrumentIconPicker
 import com.wanderwildwood.onsa.ui.misc.rememberTunerAudioPermission
 import com.wanderwildwood.onsa.viewmodels.InstrumentEditorViewModel
@@ -85,6 +86,7 @@ fun NavGraphBuilder.instrumentEditorGraph(
                 musicalScale = musicalScale,
                 notePrintOptions = notePrintOptions,
                 onIconButtonClicked = { controller.navigate(IconPickerRoute) },
+                onGroupButtonClicked = { controller.navigate(GroupPickerRoute) },
                 onNavigateUpClicked = { controller.navigateUp() },
                 onSaveNewInstrumentClicked = {
                     val newInstrument = viewModel.getInstrument()
@@ -92,6 +94,18 @@ fun NavGraphBuilder.instrumentEditorGraph(
                     controller.navigateUp()
                 },
                 snackbarHostState = snackbarHostState
+            )
+        }
+        dialog<GroupPickerRoute> {
+            val viewModel = createStretchTuningEditorViewModel(controller = controller, backStackEntry = it)
+            val current by viewModel.group.collectAsStateWithLifecycle()
+            InstrumentGroupPicker(
+                current = current,
+                onDismiss = { controller.navigateUp() },
+                onGroupSelected = { group ->
+                    viewModel.setGroup(group)
+                    controller.navigateUp()
+                }
             )
         }
         dialog<IconPickerRoute> {
@@ -125,3 +139,5 @@ data class InstrumentEditorGraphRoute(val instrumentSerialized: String) {
 data object InstrumentEditorRoute
 @Serializable
 data object IconPickerRoute
+@Serializable
+data object GroupPickerRoute

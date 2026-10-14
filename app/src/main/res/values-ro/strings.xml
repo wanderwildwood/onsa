@@ -279,4 +279,7 @@
     <string name="octave_representation">Reprezentarea octavei</string>
     <string name="language">Limbă</string>
     <string name="system_default">Implicit sistem</string>
+    <string name="instrument_guitar">Chitară</string>
+    <string name="instrument_bass">Chitară bas</string>
+    <string name="instrument_banjo">Banjo</string>
 </resources>

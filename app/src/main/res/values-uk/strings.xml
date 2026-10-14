@@ -263,4 +263,7 @@
     <string name="stretched_frequencies_must_be_strictly_increasing">Розтягнуті частоти повинні строго зростати (попереднє значення: %1$.2f Гц, поточне: %2$.2f Гц).</string>
     <string name="stretched_frequency">Розтягнута частота</string>
     <string name="pure_tuning_desc">Чистий стрій границі 5, асиметрична гама</string>
+    <string name="instrument_guitar">Гітара</string>
+    <string name="instrument_bass">Бас</string>
+    <string name="instrument_banjo">Банджо</string>
 </resources>

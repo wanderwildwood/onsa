@@ -50,6 +50,12 @@ import kotlinx.serialization.Serializable
  * @param stableId Stable id to identify instrument in a list.
  * @param isChromatic Defines if a instrument is defined via strings or it is chromatic. In latter
  *   case, strings should be empty.
+ * @param group The instrument this is a tuning of, or null for one that stands on its own in
+ *   the list. Absent from settings and files written before tunings were grouped, which
+ *   therefore read back as standing on their own.
+ * @param tuningNameResource For a predefined tuning whose name, shown under its instrument,
+ *   should not simply be its full name with the instrument's name taken off the front - the
+ *   standard guitar tuning, which is called "6-string guitar" everywhere else.
  */
 @Serializable
 @Parcelize
@@ -60,7 +66,9 @@ data class Instrument(
     val strings: Array<MusicalNote>,
     val icon: InstrumentIcon,
     val stableId: Long,
-    val isChromatic: Boolean = false
+    val isChromatic: Boolean = false,
+    val group: InstrumentGroup? = null,
+    @StringRes private val tuningNameResource: Int? = null
 ) : Parcelable {
     /** Tell if an instrument is a predefined instrument. */
     fun isPredefined() = nameResource != null
@@ -74,6 +82,25 @@ data class Instrument(
             nameResource != null && context != null -> context.getString(nameResource)
             else -> name
         }
+    }
+
+    /**
+     * The name to show among the other tunings of the same instrument, where the instrument
+     * is already the page's title: "Open G" rather than "Banjo, open G". A name that does not
+     * begin with its instrument's name is shown whole.
+     */
+    fun getTuningNameString(context: Context): String {
+        if (tuningNameResource != null) return context.getString(tuningNameResource)
+        val full = getNameString(context)
+        val instrumentName = group?.let { context.getString(it.nameResource) } ?: return full
+        // The one built-in tuning of an instrument named after it - Violin among the violin's
+        // tunings - is that instrument's standard tuning.
+        if (isPredefined() && full == instrumentName) return context.getString(R.string.tuning_standard)
+        val prefix = "$instrumentName, "
+        return if (full.startsWith(prefix, ignoreCase = true) && full.length > prefix.length)
+            full.substring(prefix.length).replaceFirstChar { it.titlecase() }
+        else
+            full
     }
 
     /** Get readable representation of all strings (e.g. "A#4 - C5 - G5")
@@ -114,8 +141,32 @@ data class Instrument(
         }
     }
 
+    /** Whether this is the list row standing for all of an instrument's tunings. */
+    val isGroupRow: Boolean
+        get() = stableId in (GROUP_ROW_ID_BASE - 99)..GROUP_ROW_ID_BASE
+
     companion object {
         const val NO_STABLE_ID = Long.MAX_VALUE
+
+        /**
+         * Ids for instrument rows, far below the predefined tunings' small negative ids and
+         * the reader's positive ones, so that none can collide.
+         */
+        private const val GROUP_ROW_ID_BASE = Long.MIN_VALUE + 1000
+
+        /**
+         * The row in the instrument list that stands for every tuning of [group]. It is only
+         * ever a row: tapping it opens the instrument's page, so it is never selected,
+         * tuned to or saved.
+         */
+        fun groupRow(group: InstrumentGroup) = Instrument(
+            name = group.name,
+            nameResource = group.nameResource,
+            strings = arrayOf(),
+            icon = group.icon,
+            stableId = GROUP_ROW_ID_BASE - group.ordinal,
+            group = group
+        )
     }
 
     override fun equals(other: Any?): Boolean {
@@ -130,6 +181,7 @@ data class Instrument(
         if (icon != other.icon) return false
         if (stableId != other.stableId) return false
         if (isChromatic != other.isChromatic) return false
+        if (group != other.group) return false
 
         return true
     }
@@ -141,6 +193,7 @@ data class Instrument(
         result = 31 * result + icon.hashCode()
         result = 31 * result + stableId.hashCode()
         result = 31 * result + isChromatic.hashCode()
+        result = 31 * result + (group?.hashCode() ?: 0)
         return result
     }
 }
@@ -174,6 +227,8 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.E, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
+            tuningNameResource = R.string.tuning_standard,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -188,6 +243,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.G, NoteModifier.None, 2),
             ),
             icon = InstrumentIcon.bass,
+            group = InstrumentGroup.bass,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -203,6 +259,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.G, NoteModifier.None, 2),
             ),
             icon = InstrumentIcon.bass,
+            group = InstrumentGroup.bass,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -217,6 +274,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.A, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.ukulele,
+            group = InstrumentGroup.ukulele,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -231,6 +289,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.E, NoteModifier.None, 5),
             ),
             icon = InstrumentIcon.violin,
+            group = InstrumentGroup.violin,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -245,6 +304,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.A, NoteModifier.None, 4),
             ),
             icon = InstrumentIcon.violin,
+            group = InstrumentGroup.viola,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -259,6 +319,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.A, NoteModifier.None, 3),
             ),
             icon = InstrumentIcon.cello,
+            group = InstrumentGroup.cello,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -273,6 +334,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.G, NoteModifier.None, 2),
             ),
             icon = InstrumentIcon.double_bass,
+            group = InstrumentGroup.double_bass,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -295,6 +357,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.D, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -311,6 +374,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.D, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -326,6 +390,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.D, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -341,6 +406,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.D, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -356,6 +422,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.E, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -371,6 +438,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.D, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -387,6 +455,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                     enharmonicBase = BaseNote.E, enharmonicModifier = NoteModifier.Flat)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -404,6 +473,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.D, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -419,6 +489,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.D, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -434,6 +505,7 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.E, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
             stableId = -1 - instruments.size.toLong()
         )
     )
@@ -450,6 +522,137 @@ private fun createInstrumentDatabase(): ArrayList<Instrument> {
                 MusicalNote(BaseNote.E, NoteModifier.None, 4)
             ),
             icon = InstrumentIcon.banjo,
+            group = InstrumentGroup.banjo,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    // Guitar's other tunings. Appended after the banjo for the same reason the banjo was
+    // appended after the rest: so that no existing stable id moves. They list under the one
+    // Guitar row with the standard tuning, lowest string first like it.
+    instruments.add(
+        Instrument(
+            name = "Guitar, drop D",
+            nameResource = R.string.guitar_drop_d,
+            strings = arrayOf(
+                MusicalNote(BaseNote.D, NoteModifier.None, 2),
+                MusicalNote(BaseNote.A, NoteModifier.None, 2),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.B, NoteModifier.None, 3),
+                MusicalNote(BaseNote.E, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Guitar, D standard",
+            nameResource = R.string.guitar_d_standard,
+            strings = arrayOf(
+                MusicalNote(BaseNote.D, NoteModifier.None, 2),
+                MusicalNote(BaseNote.G, NoteModifier.None, 2),
+                MusicalNote(BaseNote.C, NoteModifier.None, 3),
+                MusicalNote(BaseNote.F, NoteModifier.None, 3),
+                MusicalNote(BaseNote.A, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Guitar, half-step down",
+            nameResource = R.string.guitar_half_step_down,
+            strings = arrayOf(
+                MusicalNote(BaseNote.D, NoteModifier.Sharp, 2,
+                    enharmonicBase = BaseNote.E, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.G, NoteModifier.Sharp, 2,
+                    enharmonicBase = BaseNote.A, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.C, NoteModifier.Sharp, 3,
+                    enharmonicBase = BaseNote.D, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.F, NoteModifier.Sharp, 3,
+                    enharmonicBase = BaseNote.G, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.A, NoteModifier.Sharp, 3,
+                    enharmonicBase = BaseNote.B, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.D, NoteModifier.Sharp, 4,
+                    enharmonicBase = BaseNote.E, enharmonicModifier = NoteModifier.Flat)
+            ),
+            icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Guitar, DADGAD",
+            nameResource = R.string.guitar_dadgad,
+            strings = arrayOf(
+                MusicalNote(BaseNote.D, NoteModifier.None, 2),
+                MusicalNote(BaseNote.A, NoteModifier.None, 2),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.A, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Guitar, open D",
+            nameResource = R.string.guitar_open_d,
+            strings = arrayOf(
+                MusicalNote(BaseNote.D, NoteModifier.None, 2),
+                MusicalNote(BaseNote.A, NoteModifier.None, 2),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.F, NoteModifier.Sharp, 3,
+                    enharmonicBase = BaseNote.G, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.A, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Guitar, open G",
+            nameResource = R.string.guitar_open_g,
+            strings = arrayOf(
+                MusicalNote(BaseNote.D, NoteModifier.None, 2),
+                MusicalNote(BaseNote.G, NoteModifier.None, 2),
+                MusicalNote(BaseNote.D, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.None, 3),
+                MusicalNote(BaseNote.B, NoteModifier.None, 3),
+                MusicalNote(BaseNote.D, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
+            stableId = -1 - instruments.size.toLong()
+        )
+    )
+    instruments.add(
+        Instrument(
+            name = "Guitar, open E",
+            nameResource = R.string.guitar_open_e,
+            strings = arrayOf(
+                MusicalNote(BaseNote.E, NoteModifier.None, 2),
+                MusicalNote(BaseNote.B, NoteModifier.None, 2),
+                MusicalNote(BaseNote.E, NoteModifier.None, 3),
+                MusicalNote(BaseNote.G, NoteModifier.Sharp, 3,
+                    enharmonicBase = BaseNote.A, enharmonicModifier = NoteModifier.Flat),
+                MusicalNote(BaseNote.B, NoteModifier.None, 3),
+                MusicalNote(BaseNote.E, NoteModifier.None, 4)
+            ),
+            icon = InstrumentIcon.guitar,
+            group = InstrumentGroup.guitar,
             stableId = -1 - instruments.size.toLong()
         )
     )

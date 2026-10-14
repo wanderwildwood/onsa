@@ -61,6 +61,28 @@
     <string name="bass_eadg">4-string bass</string>
     <string name="bass_beadg">5-string bass</string>
     <string name="ukulele_gcea">Ukulele</string>
+    <!-- Instrument rows that hold more than one tuning; the tunings are listed on the instrument's own page -->
+    <string name="instrument_guitar">Guitar</string>
+    <string name="instrument_bass">Bass</string>
+    <string name="instrument_banjo">Banjo</string>
+    <!-- The standard guitar tuning, as it is named among the guitar's other tunings -->
+    <string name="tuning_standard">Standard</string>
+    <string name="guitar_drop_d">Guitar, drop D</string>
+    <string name="guitar_d_standard">Guitar, D standard</string>
+    <string name="guitar_half_step_down">Guitar, half-step down</string>
+    <string name="guitar_dadgad">Guitar, DADGAD</string>
+    <string name="guitar_open_d">Guitar, open D</string>
+    <string name="guitar_open_g">Guitar, open G</string>
+    <string name="guitar_open_e">Guitar, open E</string>
+    <!-- Under an instrument row in the list: how many tunings its page holds -->
+    <plurals name="instrument_num_tunings">
+        <item quantity="one">%d tuning</item>
+        <item quantity="other">%d tunings</item>
+    </plurals>
+    <!-- The instrument choice in the instrument editor -->
+    <string name="instrument_group">Instrument</string>
+    <string name="instrument_group_none">On its own</string>
+    <string name="pick_instrument_group">Tuning of which instrument?</string>
     <string name="banjo_open_g">Banjo, open G</string>
     <string name="banjo_g_minor">Banjo, G minor</string>
     <string name="banjo_sawmill">Banjo, sawmill</string>

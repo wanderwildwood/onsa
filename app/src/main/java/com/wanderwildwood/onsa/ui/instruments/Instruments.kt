@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -53,6 +54,7 @@ import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.Instrument
+import com.wanderwildwood.onsa.instruments.InstrumentGroup
 import com.wanderwildwood.onsa.instruments.InstrumentIO
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
 import com.wanderwildwood.onsa.misc.ShareData
@@ -75,11 +77,16 @@ import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 interface InstrumentsData {
     val listData: EditableListData<Instrument>
+    /** How many tunings each instrument has, built-in and the reader's together. */
+    val tuningCounts: StateFlow<Map<InstrumentGroup, Int>>
     fun saveInstruments(context: Context, uri: Uri, instruments: List<Instrument>)
+    /** All of the reader's own instruments, including those filed under an instrument. */
+    fun allCustomInstruments(): List<Instrument>
 }
 
 @Composable
@@ -88,6 +95,7 @@ fun Instruments(
     modifier: Modifier = Modifier,
     notePrintOptions: NotePrintOptions2 = NotePrintOptions2(),
     onInstrumentClicked: (instrument: Instrument) -> Unit = { },
+    onInstrumentGroupClicked: (group: InstrumentGroup) -> Unit = { },
     onEditInstrumentClicked: (instrument: Instrument, copy: Boolean) -> Unit = {_,_ -> },
     onCreateNewInstrumentClicked: () -> Unit = {},
     onNavigateUpClicked: () -> Unit = {},
@@ -95,6 +103,13 @@ fun Instruments(
     onPreferenceButtonClicked: () -> Unit = {}
 ) {
     val selectedInstruments by state.listData.selectedItems.collectAsStateWithLifecycle()
+    val activeInstrument by state.listData.activeItem.collectAsStateWithLifecycle()
+    val tuningCounts by state.tuningCounts.collectAsStateWithLifecycle()
+    // With nothing selected, export and share take all of the reader's instruments - those
+    // filed under an instrument too, which the Custom section does not show.
+    fun instrumentsToSave(): List<Instrument> =
+        if (state.listData.selectedItems.value.isEmpty()) state.allCustomInstruments()
+        else state.listData.extractSelectedItems()
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostStateMMD() }
     val context = LocalContext.current
@@ -105,7 +120,7 @@ fun Instruments(
         contract = ActivityResultContracts.CreateDocument("text/plain")
     ) { uri ->
         if (uri != null) {
-            val instruments = state.listData.extractSelectedItems()
+            val instruments = instrumentsToSave()
             state.saveInstruments(context, uri, instruments)
             state.listData.clearSelectedItems()
             val filename = getFilenameFromUri(context, uri)
@@ -150,7 +165,7 @@ fun Instruments(
                 state.listData.deleteAllItems()
         }
         override fun onShareClicked() {
-            val instruments = state.listData.extractSelectedItems()
+            val instruments = instrumentsToSave()
             if (instruments.isEmpty()) {
                 Toast.makeText(context, R.string.database_empty_share, Toast.LENGTH_LONG).show()
             } else {
@@ -165,7 +180,7 @@ fun Instruments(
             }
         }
         override fun onExportClicked() {
-            if (state.listData.editableItems.value.isEmpty())
+            if (state.allCustomInstruments().isEmpty())
                 Toast.makeText(context, R.string.database_empty, Toast.LENGTH_LONG).show()
             else
                 saveInstrumentLauncher.launch("tuner.txt")
@@ -248,7 +263,10 @@ fun Instruments(
                 top = paddingValues.calculateTopPadding(),
                 bottom = paddingValues.calculateBottomPadding() + maxExpectedHeightForFab
             ),
-            onActivateItemClicked = onInstrumentClicked,
+            onActivateItemClicked = {
+                if (it.isGroupRow && it.group != null) onInstrumentGroupClicked(it.group)
+                else onInstrumentClicked(it)
+            },
             snackbarHostState = snackbarHostState
         ) { item ,itemInfo, itemModifier ->
             EditableListItem(
@@ -258,20 +276,29 @@ fun Instruments(
                     overflow = TextOverflow.Ellipsis
                 ) },
                 description = {
-                    val style = LocalTextStyle.current
-                    val stringsString = remember(context, style, item, notePrintOptions) {
-                        item.getStringsString(
-                            context = context,
-                            notePrintOptions = notePrintOptions,
-                            fontSize = style.fontSize,
-                            fontWeight = style.fontWeight
+                    if (item.isGroupRow && item.group != null) {
+                        val count = tuningCounts[item.group] ?: 0
+                        TextMMD(
+                            pluralStringResource(R.plurals.instrument_num_tunings, count, count),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else {
+                        val style = LocalTextStyle.current
+                        val stringsString = remember(context, style, item, notePrintOptions) {
+                            item.getStringsString(
+                                context = context,
+                                notePrintOptions = notePrintOptions,
+                                fontSize = style.fontSize,
+                                fontWeight = style.fontWeight
+                            )
+                        }
+                        TextMMD(
+                            stringsString,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
-                    TextMMD(
-                        stringsString,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
                 },
                 icon = {
                     Icon(
@@ -291,10 +318,12 @@ fun Instruments(
                         ListItemTask.Info -> {}
                     }
                 },
-                isActive = itemInfo.isActive,
+                // An instrument row is marked while the tuning in use is one of its own.
+                isActive = itemInfo.isActive ||
+                        (item.isGroupRow && item.group != null && activeInstrument?.group == item.group),
                 isSelected = itemInfo.isSelected,
                 readOnly = itemInfo.readOnly,
-                isCopyable = !item.isChromatic,
+                isCopyable = !item.isChromatic && !item.isGroupRow,
                 hasInfo = false
             )
         }
@@ -334,6 +363,8 @@ private val testInstrument8 = testInstrument2.copy(stableId = 8L)
 private val testInstrument9 = testInstrument2.copy(stableId = 9L)
 
 private class TestInstrumentsData : InstrumentsData {
+    override val tuningCounts = MutableStateFlow(mapOf<InstrumentGroup, Int>())
+    override fun allCustomInstruments(): List<Instrument> = customInstruments.value
 
     val activeInstrument = MutableStateFlow<Instrument?>(null)
 

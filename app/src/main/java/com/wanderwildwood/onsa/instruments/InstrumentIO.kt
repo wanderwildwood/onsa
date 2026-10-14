@@ -83,6 +83,7 @@ object InstrumentIO {
         var instrumentName = ""
         var strings: Array<MusicalNote>? = null
         var icon = InstrumentIcon.entries[0]
+        var group: InstrumentGroup? = null
         var stableId = Instrument.NO_STABLE_ID
 
         while (!stream.isEos()) {
@@ -112,6 +113,12 @@ object InstrumentIO {
 //                        Log.v("Tuner", "InstrumentDatabase.stringToInstruments: reading icon id: $iconId")
                 }
 
+                Keyword.Group -> {
+                    // A file from a newer version may name a group this one lacks; the
+                    // tuning then stands on its own rather than failing the import.
+                    group = stream.readString().toInstrumentGroup()
+                }
+
                 Keyword.Strings -> {
                     strings = stream.readMusicalNoteArray()
 //                        Log.v("Tuner", "InstrumentDatabase.stringToInstruments: reading strings: ${strings?.joinToString(separator=";", prefix="[", postfix="]"){it.asString()}}")
@@ -120,7 +127,7 @@ object InstrumentIO {
                 Keyword.Instrument -> {
                     // string indices were used in older versions, we still allow reading them ....
                     strings?.let {
-                        val instrument = Instrument(instrumentName, null, it, icon, stableId)
+                        val instrument = Instrument(instrumentName, null, it, icon, stableId, group = group)
                         instruments.add(instrument)
                         numInstrumentsRead += 1
                     }
@@ -128,6 +135,7 @@ object InstrumentIO {
                     instrumentName = ""
                     strings = null
                     icon = InstrumentIcon.entries[0]
+                    group = null
                     stableId = stream.readLong() ?: Instrument.NO_STABLE_ID
 //                        Log.v("Tuner", "InstrumentDatabase.stringToInstruments: reading next instrument")
                 }
@@ -139,7 +147,7 @@ object InstrumentIO {
 
         // string indices were used in older versions, we still allow reading them ....
         strings?.let {
-            val instrument = Instrument(instrumentName, null, it, icon, stableId)
+            val instrument = Instrument(instrumentName, null, it, icon, stableId, group = group)
             instruments.add(instrument)
             numInstrumentsRead += 1
         }
@@ -149,9 +157,9 @@ object InstrumentIO {
         return InstrumentsAndFileCheckResult(FileCheck.Ok, instruments)
     }
 
-    private val keywords = arrayOf("Version=", "Instrument", "Length of name=", "Name=", "Icon=", "String indices=", "Strings=")
+    private val keywords = arrayOf("Version=", "Instrument", "Length of name=", "Name=", "Icon=", "Group=", "String indices=", "Strings=")
 
-    private enum class Keyword {Version, Instrument, NameLength, Name, Icon, Strings, Invalid}
+    private enum class Keyword {Version, Instrument, NameLength, Name, Icon, Group, Strings, Invalid}
 
     /** Get string representation of a single instrument.
      * @param context Context is only needed, if the instrument name is a string resource.
@@ -163,6 +171,7 @@ object InstrumentIO {
                 "Length of name=${name.length}\n" +
                 "Name=$name\n" +
                 "Icon=${instrument.icon.name}\n" +
+                (instrument.group?.let { "Group=${it.name}\n" } ?: "") +
                 "Strings=${
                     instrument.strings.joinToString(
                         separator = ";",
@@ -298,6 +307,7 @@ object InstrumentIO {
             "Length of name=" -> Keyword.NameLength
             "Name=" -> Keyword.Name
             "Icon=" -> Keyword.Icon
+            "Group=" -> Keyword.Group
             "Strings=" -> Keyword.Strings
             else -> Keyword.Invalid
         }

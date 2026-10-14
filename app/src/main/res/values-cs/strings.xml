@@ -208,4 +208,7 @@
         <item quantity="few">Sdílí se %d nástroje</item>
         <item quantity="other">Sdílí se %d nástrojů</item>
     </plurals>
+    <string name="instrument_guitar">Kytara</string>
+    <string name="instrument_bass">Baskytara</string>
+    <string name="instrument_banjo">Banjo</string>
 </resources>

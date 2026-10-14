@@ -292,4 +292,7 @@
     <string name="duplicate_note_name">Ismétlődő hangjegynév.</string>
     <string name="invalid_value">Érvénytelen érték.</string>
     <string name="maximum_value_exceeded">Legnagyobb érték túllépve: %d.</string>
+    <string name="instrument_guitar">Gitár</string>
+    <string name="instrument_bass">Basszusgitár</string>
+    <string name="instrument_banjo">Bendzsó</string>
 </resources>
