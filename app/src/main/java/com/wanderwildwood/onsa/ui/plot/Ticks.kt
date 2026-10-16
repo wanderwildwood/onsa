@@ -23,6 +23,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
 import kotlin.math.min
 
 interface TickLevel {
@@ -74,6 +75,41 @@ class TickLevelExplicitRanges(
         val iEnd = if (i1 >= 0) i1 else -i1 - 1
 
         return TicksRange(level, iBegin, iEnd)
+    }
+
+    override fun getTickValue(level: Int, index: Int) = ticks[level][index]
+}
+
+/**
+ * Like [TickLevelExplicitRanges], coarse ticks first, but a level is judged by the gaps
+ * between its ticks where the plot is looking, not anywhere along it: notes are far closer
+ * together in the bass than in the treble, so judged along the whole scale, no level but the
+ * coarsest would ever fit. The finest level whose labels have room not to overlap is used.
+ */
+class TickLevelVisibleRanges(
+    private val ticks: ImmutableList<FloatArray>
+) : TickLevel {
+    override fun getTicksRange(
+        startValue: Float,
+        endValue: Float,
+        maxNumTicks: Int,
+        labelSizeRaw: Float
+    ): TicksRange {
+        var range = TicksRange(0, 0, 0)
+        for (l in ticks.size - 1 downTo 0) {
+            val level = ticks[l]
+            val i0 = level.binarySearch(startValue - labelSizeRaw)
+            val iBegin = if (i0 >= 0) i0 else -i0 - 1
+            val i1 = level.binarySearch(endValue + labelSizeRaw)
+            val iEnd = if (i1 >= 0) i1 else -i1 - 1
+            range = TicksRange(l, iBegin, iEnd)
+            var dMin = Float.MAX_VALUE
+            for (i in max(iBegin, 1) until min(iEnd + 1, level.size))
+                dMin = min(dMin, (level[i] - level[i - 1]).absoluteValue)
+            if (dMin >= labelSizeRaw.absoluteValue)
+                break
+        }
+        return range
     }
 
     override fun getTickValue(level: Int, index: Int) = ticks[level][index]

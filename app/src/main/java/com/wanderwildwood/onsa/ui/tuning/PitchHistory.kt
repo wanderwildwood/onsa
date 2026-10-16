@@ -58,7 +58,7 @@ import com.wanderwildwood.onsa.ui.plot.Plot
 import com.wanderwildwood.onsa.ui.plot.PlotWindowOutline
 import com.wanderwildwood.onsa.ui.plot.PointMark
 import com.wanderwildwood.onsa.ui.plot.PointShape
-import com.wanderwildwood.onsa.ui.plot.TickLevelExplicitRanges
+import com.wanderwildwood.onsa.ui.plot.TickLevelVisibleRanges
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import com.wanderwildwood.onsa.ui.theme.tunerColors
 import kotlinx.collections.immutable.persistentListOf
@@ -70,6 +70,9 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
+
+/** How many notes apart the plot's note lines are, coarsest first, as [TickLevelVisibleRanges] wants. */
+private val TICK_NOTE_STEPS = listOf(12, 6, 3, 2, 1)
 
 private fun centsToRatio(cents: Float): Float {
     return (2.0.pow(cents / 1200.0)).toFloat()
@@ -196,12 +199,16 @@ fun PitchHistory(
     // outline
     plotWindowOutline: PlotWindowOutline = PlotWindowOutline()
 ) {
+    // Every note when the plot is zoomed in, and every second, third, sixth or twelfth note
+    // when it is stretched, say from a string played far below the chosen one. With every
+    // note at every zoom, their names stack on top of each other.
     val noteFrequencies = remember(musicalScale) {
-        TickLevelExplicitRanges(
-            listOf(
-                FloatArray(musicalScale.noteIndexEnd - musicalScale.noteIndexBegin) {
-                    musicalScale.getNoteFrequency(musicalScale.noteIndexBegin + it)
-                }).toImmutableList()
+        TickLevelVisibleRanges(
+            TICK_NOTE_STEPS.map { step ->
+                FloatArray((musicalScale.noteIndexEnd - musicalScale.noteIndexBegin + step - 1) / step) {
+                    musicalScale.getNoteFrequency(musicalScale.noteIndexBegin + it * step)
+                }
+            }.toImmutableList()
         )
     }
 
@@ -310,8 +317,8 @@ fun PitchHistory(
             lineColor = tickLineColor,
             lineWidth = tickLineWidth,
             clipLabelToPlotWindow = false
-        ) { noteModifier, _, index, _ ->
-            val note = musicalScale.getNote(musicalScale.noteIndexBegin + index)
+        ) { noteModifier, level, index, _ ->
+            val note = musicalScale.getNote(musicalScale.noteIndexBegin + index * TICK_NOTE_STEPS[level])
             Note(
                 note,
                 modifier = noteModifier.padding(horizontal = 4.dp),
