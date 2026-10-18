@@ -21,7 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.InstrumentGroup
@@ -77,9 +77,8 @@ fun InstrumentGroupPicker(
         },
         title = { TextMMD(stringResource(id = R.string.pick_instrument_group)) },
         text = {
-            LazyColumnMMD(
-                modifier = Modifier.heightIn(max = 420.dp),
-                isScrollbarVisible = false
+            PagedColumn(
+                modifier = Modifier.heightIn(max = 420.dp)
             ) {
                 item {
                     GroupChoice(

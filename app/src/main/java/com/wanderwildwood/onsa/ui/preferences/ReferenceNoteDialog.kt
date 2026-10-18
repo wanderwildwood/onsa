@@ -55,7 +55,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
@@ -182,8 +182,8 @@ fun ReferenceNoteDialog(
             TextMMD(stringResource(id = R.string.reference_frequency))
         },
         text = {
-            // Paged, not scrolled: MMD's list steps and stops, with its scrollbar turned off.
-            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp), isScrollbarVisible = false) {
+            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
+            PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
                 item {
                     warning?.let {
                         TextMMD(

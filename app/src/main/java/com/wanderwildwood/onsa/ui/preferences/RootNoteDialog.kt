@@ -49,7 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.preferences.PreferenceResources
@@ -117,8 +117,8 @@ fun RootNoteDialog(
             TextMMD(temperament.name.value(context))
         },
         text = {
-            // Paged, not scrolled: MMD's list steps and stops, with its scrollbar turned off.
-            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp), isScrollbarVisible = false) {
+            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
+            PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
                 item {
                     warning?.let {
                         TextMMD(

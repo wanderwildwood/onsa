@@ -21,7 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.snackbar.SnackbarHostMMD
 import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
 import com.mudita.mmd.components.text.TextMMD
@@ -74,7 +74,7 @@ fun InstrumentGroupPage(
         snackbarHost = { SnackbarHostMMD(hostState = snackbarHostState) }
     ) { paddingValues ->
         val layoutDirection = LocalLayoutDirection.current
-        LazyColumnMMD(
+        PagedColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .consumeWindowInsets(paddingValues),
@@ -84,7 +84,6 @@ fun InstrumentGroupPage(
                 top = paddingValues.calculateTopPadding(),
                 bottom = paddingValues.calculateBottomPadding() + maxExpectedHeightForFab
             ),
-            isScrollbarVisible = false,
         ) {
             items(tunings, key = { it.stableId }) { tuning ->
                 EditableListItem(

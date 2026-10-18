@@ -18,7 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
-import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

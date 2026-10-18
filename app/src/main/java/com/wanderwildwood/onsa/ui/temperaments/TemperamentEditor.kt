@@ -19,17 +19,14 @@
 package com.wanderwildwood.onsa.ui.temperaments
 
 import com.mudita.mmd.components.cards.CardMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardOptions
@@ -116,10 +113,9 @@ fun TemperamentEditor(
             )
         }
     ) { paddingValues ->
-        LazyColumnMMD(
+        PagedColumn(
             modifier = modifier.imePadding().consumeWindowInsets(paddingValues),
             contentPadding = paddingValues,
-            isScrollbarVisible = false,
         ) {
             item {
                 TextFieldMMD(
@@ -223,9 +219,6 @@ fun TemperamentEditor(
                     onChangeNote = { it?.let { n -> state.modifyNote(index, n) } },
                     onNoteEditorCloseClicked = { state.onCloseNoteEditorClicked(index) }
                 )
-            }
-            item {
-                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
             }
         }
     }

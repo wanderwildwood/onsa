@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.BuildConfig
 import com.wanderwildwood.onsa.R
@@ -68,8 +68,8 @@ fun AboutDialog(
             TextMMD(stringResource(id = R.string.about))
         },
         text = {
-            // Paged, not scrolled: MMD's list steps and stops, with its scrollbar turned off.
-            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp), isScrollbarVisible = false) {
+            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
+            PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
                 item {
                     TextMMD(stringResource(id = R.string.about_message, BuildConfig.VERSION_NAME))
                 }

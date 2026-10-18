@@ -19,7 +19,6 @@
 package com.wanderwildwood.onsa.ui.notes
 
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

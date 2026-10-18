@@ -1,6 +1,6 @@
 package com.wanderwildwood.onsa.ui.stretchtuning
 
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -74,10 +74,9 @@ fun StretchTuningTable(
             reserveSpaceForOverflowMenu = showOverflowMenu
         )
 
-        LazyColumnMMD(
+        PagedColumn(
             contentPadding = contentPadding,
             state = lazyListState,
-            isScrollbarVisible = false,
         ) {
             items(
                 stretchTuningData.size,

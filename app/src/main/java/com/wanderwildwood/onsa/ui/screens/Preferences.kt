@@ -22,7 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
@@ -87,10 +87,9 @@ fun Preferences(
         title = stringResource(id = R.string.settings),
         showPreferenceButton = false,
     ) { paddingValues ->
-        LazyColumnMMD(
+        PagedColumn(
             modifier = Modifier.consumeWindowInsets(paddingValues),
             contentPadding = paddingValues,
-            isScrollbarVisible = false,
         ) {
             item {
                 Section(

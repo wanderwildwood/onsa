@@ -18,7 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.common
 
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import android.os.Parcelable
 import androidx.activity.compose.BackHandler
@@ -477,11 +477,10 @@ fun <T>EditableList(
     }
 
 //    Log.v("Metronome", "EditableList: contentPadding: top=${contentPadding.calculateTopPadding()}, bottom=${contentPadding.calculateBottomPadding()}")
-    LazyColumnMMD(
+    PagedColumn(
         modifier = modifier.imePadding(),
         contentPadding = contentPadding,
         state = state.lazyListState,
-        isScrollbarVisible = false,
     ) {
         val showSections = (
                 (editableItems.size + state.numNonEmptyPredefinedLists) > 1 ||

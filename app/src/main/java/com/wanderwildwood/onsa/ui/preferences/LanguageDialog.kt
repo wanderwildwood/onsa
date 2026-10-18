@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
+import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
@@ -58,11 +58,12 @@ fun LanguageDialog(
                 } ?: LanguageSelections.SystemDefault
             }
 
-            // Paged, not scrolled: MMD's list steps and stops, with its scrollbar turned off.
-            LazyColumnMMD(modifier = Modifier.heightIn(max = 420.dp).selectableGroup(), isScrollbarVisible = false) {
-                item {
-    //                Log.v("Tuner", "Languagedialog: As is: tag=${AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag()}, ${AppCompatDelegate.getApplicationLocales()[0]?.language}, ${AppCompatDelegate.getApplicationLocales()[0]?.variant}")
-                    LanguageSelections.entries.forEach {
+            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
+            PagedColumn(modifier = Modifier.heightIn(max = 420.dp).selectableGroup()) {
+    //            Log.v("Tuner", "Languagedialog: As is: tag=${AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag()}, ${AppCompatDelegate.getApplicationLocales()[0]?.language}, ${AppCompatDelegate.getApplicationLocales()[0]?.variant}")
+                // One row to an item, so a page turns on whole languages.
+                LanguageSelections.entries.forEach {
+                    item {
                         RadioButtonLine(
                             selected = it == selectedLocale,
                             it.resId

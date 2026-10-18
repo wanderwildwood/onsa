@@ -59,7 +59,7 @@ fun CheckedButtonLine(
     ) {
         CheckboxMMD(
             checked = checked,
-            onCheckedChange = null
+            onCheckedChange = { onClick(it) }
         )
         TextMMD(
             text = stringResource(id = stringRes),
