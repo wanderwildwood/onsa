@@ -28,7 +28,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
@@ -96,7 +95,7 @@ fun NavGraphBuilder.instrumentEditorGraph(
                 snackbarHostState = snackbarHostState
             )
         }
-        dialog<GroupPickerRoute> {
+        plainDialog<GroupPickerRoute> {
             val viewModel = createStretchTuningEditorViewModel(controller = controller, backStackEntry = it)
             val current by viewModel.group.collectAsStateWithLifecycle()
             InstrumentGroupPicker(
@@ -108,7 +107,7 @@ fun NavGraphBuilder.instrumentEditorGraph(
                 }
             )
         }
-        dialog<IconPickerRoute> {
+        plainDialog<IconPickerRoute> {
             val viewModel = createStretchTuningEditorViewModel(controller = controller, backStackEntry = it)
             InstrumentIconPicker(
                 onDismiss = { controller.navigateUp() },

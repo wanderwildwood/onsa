@@ -27,7 +27,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.wanderwildwood.onsa.preferences.PreferenceResources
@@ -74,7 +73,7 @@ fun NavGraphBuilder.temperamentEditorGraph(
             )
         }
 
-        dialog<NumberOfNotesDialogRoute> {
+        plainDialog<NumberOfNotesDialogRoute> {
             val viewModel = createStretchTuningEditorViewModel(controller = controller, backStackEntry = it)
             NumberOfNotesDialog(
                 initialNumberOfNotes = viewModel.numberOfValues.value,

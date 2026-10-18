@@ -8,7 +8,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.wanderwildwood.onsa.preferences.PreferenceResources
@@ -84,7 +83,7 @@ fun NavGraphBuilder.stretchTuningEditorGraph(
             )
         }
 
-        dialog<ModifyStretchTuningLineDialogRoute> {
+        plainDialog<ModifyStretchTuningLineDialogRoute> {
             val data = it.toRoute<ModifyStretchTuningLineDialogRoute>()
             val viewModel = createStretchTuningEditorViewModel(
                 controller = controller, backStackEntry = it

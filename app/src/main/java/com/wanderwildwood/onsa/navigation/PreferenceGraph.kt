@@ -24,7 +24,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
 import com.wanderwildwood.onsa.preferences.PreferenceResources
 import com.wanderwildwood.onsa.temperaments.TemperamentResources
@@ -71,12 +70,12 @@ fun NavGraphBuilder.preferenceGraph(
             )
         }
 
-        dialog<LanguageDialogRoute> {
+        plainDialog<LanguageDialogRoute> {
             LanguageDialog(
                 onDismiss = { controller.navigateUp()}
             )
         }
-        dialog<NotationDialogRoute> {
+        plainDialog<NotationDialogRoute> {
             val notePrintOptions by preferences.notePrintOptions.collectAsStateWithLifecycle()
             NotationDialog(
                 notePrintOptions = notePrintOptions,
@@ -90,7 +89,7 @@ fun NavGraphBuilder.preferenceGraph(
                 onDismiss = { controller.navigateUp() }
             )
         }
-        dialog<WindowingFunctionDialogRoute> {
+        plainDialog<WindowingFunctionDialogRoute> {
             val windowing by preferences.windowing.collectAsStateWithLifecycle()
             WindowingFunctionDialog(
                 initialWindowingFunction = windowing,
@@ -101,7 +100,7 @@ fun NavGraphBuilder.preferenceGraph(
                 onDismiss = { controller.navigateUp() }
             )
         }
-        dialog<AboutDialogRoute> {
+        plainDialog<AboutDialogRoute> {
             AboutDialog(
                 onDismiss = { controller.navigateUp() }
             )

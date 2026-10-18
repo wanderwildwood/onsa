@@ -31,7 +31,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
 import android.content.Context
 import com.mudita.mmd.components.snackbar.SnackbarDurationMMD
@@ -247,7 +246,7 @@ fun NavGraphBuilder.mainGraph(
         )
     }
 
-    dialog<ReferenceFrequencyDialogRoute> {
+    plainDialog<ReferenceFrequencyDialogRoute> {
         val state = it.toRoute<ReferenceFrequencyDialogRoute>()
         val notePrintOptions by preferences.notePrintOptions.collectAsStateWithLifecycle()
         val viewModel: ReferenceNoteDialogViewModel = hiltViewModel()
@@ -307,7 +306,7 @@ fun NavGraphBuilder.mainGraph(
         )
     }
 
-    dialog<TemperamentInfoDialogRoute> {
+    plainDialog<TemperamentInfoDialogRoute> {
         val notePrintOptions by preferences.notePrintOptions.collectAsStateWithLifecycle()
         val temperament = it.toRoute<TemperamentInfoDialogRoute>().obtainTemperament()
         TemperamentDetailsDialog(
@@ -317,7 +316,7 @@ fun NavGraphBuilder.mainGraph(
         )
     }
 
-    dialog<RootNoteDialogRoute> {
+    plainDialog<RootNoteDialogRoute> {
         val data = it.toRoute<RootNoteDialogRoute>()
         val notePrintOptions by preferences.notePrintOptions.collectAsStateWithLifecycle()
         val resources = LocalResources.current
