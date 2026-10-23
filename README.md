@@ -78,6 +78,17 @@ beside the guitar and the basses, one row a tuning, short fifth string first.
 The interface was already Jetpack Compose, so this is a re-clothing rather than a rebuild:
 the theme is [MMD](https://github.com/mudita/MMD), Mudita's E Ink component library.
 
+## Getting it, and keeping it
+
+Download <https://github.com/wanderwildwood/onsa/releases/latest/download/onsa.apk>
+and sideload it. That address always points at the newest release, and every release
+publishes a `.sha256` beside the APK if you would rather check than trust.
+
+For updates without doing this by hand, add this repository to
+[Obtainium](https://github.com/ImranR98/Obtainium):
+
+    https://github.com/wanderwildwood/onsa
+
 ## Licence
 
 **GNU General Public License v3.0 or later.** See [LICENSE](LICENSE).
