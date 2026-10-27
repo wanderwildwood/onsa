@@ -30,7 +30,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentResources
 import com.wanderwildwood.onsa.preferences.PreferenceResources
@@ -72,8 +71,8 @@ fun NavGraphBuilder.instrumentEditorGraph(
             val musicalScale by temperaments.musicalScale.collectAsStateWithLifecycle()
             val notePrintOptions by preferences.notePrintOptions.collectAsStateWithLifecycle()
 
-            val snackbarHostState = remember { SnackbarHostStateMMD() }
-            val permissionGranted = rememberTunerAudioPermission(snackbarHostState)
+            val permission = rememberTunerAudioPermission()
+            val permissionGranted = permission.granted
 
             LifecycleResumeEffect(permissionGranted) {
                 if (permissionGranted)
@@ -92,7 +91,7 @@ fun NavGraphBuilder.instrumentEditorGraph(
                     instruments.addNewOrReplaceInstrument(newInstrument)
                     controller.navigateUp()
                 },
-                snackbarHostState = snackbarHostState
+                audioPermission = permission
             )
         }
         plainDialog<GroupPickerRoute> {

@@ -36,6 +36,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -140,8 +142,18 @@ class TemperamentResources @Inject constructor(
 
     // modification of custom temperaments list
 
-   /** Add temperament if stable id does not exist, else replace it.*/
-    fun addNewOrReplaceTemperament(temperament: Temperament3Custom) {
+    private val _justSavedTemperamentId = MutableStateFlow<Long?>(null)
+    /** Stable id of the custom temperament which was just saved from the editor, until the
+     * temperament list has scrolled to it and called [clearJustSavedTemperament]. */
+    val justSavedTemperamentId = _justSavedTemperamentId.asStateFlow()
+    fun clearJustSavedTemperament() {
+        _justSavedTemperamentId.value = null
+    }
+
+   /** Add temperament if stable id does not exist, else replace it.
+    * @return Stable id which the temperament has now.
+    */
+    fun addNewOrReplaceTemperament(temperament: Temperament3Custom): Long {
         val newTemperament = if (temperament.stableId == Temperament3.NO_STABLE_ID) {
             temperament.copy(stableId = getNewTemperamentStableId())
         } else {
@@ -150,7 +162,7 @@ class TemperamentResources @Inject constructor(
 
         val oldTemperaments = customTemperaments.value
         val newTemperaments = oldTemperaments.mutate { mutated ->
-            val index = oldTemperaments.indexOfFirst { it.stableId == temperament.stableId }
+            val index = oldTemperaments.indexOfFirst { it.stableId == newTemperament.stableId }
 //            Log.v("Tuner", "TemperamentResource.addNewOrReplaceTemperament: Writing temperament to index $index")
             if (index >= 0)
                 mutated[index] = newTemperament
@@ -158,6 +170,10 @@ class TemperamentResources @Inject constructor(
                 mutated.add(newTemperament)
         }
         writeCustomTemperaments(newTemperaments)
+        // the list must show it: section open, and the list scrolls to it
+        writeCustomTemperamentsExpanded(true)
+        _justSavedTemperamentId.value = newTemperament.stableId
+        return newTemperament.stableId
     }
 
     fun appendTemperaments(temperaments: List<Temperament3Custom>) {

@@ -18,10 +18,13 @@
 */
 package com.wanderwildwood.onsa.ui.preferences
 
+import android.content.res.Resources
 import android.widget.Toast
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -68,6 +71,7 @@ fun AboutDialog(
             TextMMD(stringResource(id = R.string.about))
         },
         text = {
+            val resources = LocalContext.current.resources
             // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
             PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
                 item {
@@ -76,12 +80,32 @@ fun AboutDialog(
                 item {
                     Spacer(Modifier.height(14.dp))
                 }
+                aboutSection(resources, R.string.about_privacy_title, R.string.about_privacy_text)
+                aboutSection(resources, R.string.about_terms_title, R.string.about_terms_text)
+                aboutSection(resources, R.string.about_libraries_title, R.string.about_libraries_text)
                 item {
                     Llama()
                 }
             }
         },
     )
+}
+
+/** A heading and its paragraphs, one list row each, so a page turns on whole rows. */
+private fun LazyListScope.aboutSection(resources: Resources, title: Int, text: Int) {
+    val heading = resources.getString(title)
+    item {
+        TextMMD(
+            heading,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(top = 6.dp)
+        )
+    }
+    resources.getString(text).split("\n\n").forEach { paragraph ->
+        item {
+            TextMMD(paragraph, modifier = Modifier.padding(bottom = 8.dp))
+        }
+    }
 }
 
 @Preview(widthDp = 300, heightDp = 500)
@@ -113,6 +137,7 @@ private fun Llama() {
     ) {
         Row(
             // The site's address opens the site, the way the llama beside it opens its page.
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable {
                     runCatching {
@@ -123,6 +148,7 @@ private fun Llama() {
                         Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
                     }
                 }
+                .heightIn(min = 48.dp)
                 .padding(vertical = 4.dp),
         ) {
             TextMMD("wanderthe.dev")
@@ -145,6 +171,7 @@ private fun Llama() {
                         Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
                     }
                 }
+                .heightIn(min = 48.dp)
                 .padding(vertical = 4.dp),
         ) {
             Image(

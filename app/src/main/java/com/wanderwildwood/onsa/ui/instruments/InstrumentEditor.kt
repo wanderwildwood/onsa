@@ -20,6 +20,7 @@ package com.wanderwildwood.onsa.ui.instruments
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -49,8 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.buttons.ButtonMMD
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.snackbar.SnackbarHostMMD
-import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.wanderwildwood.onsa.ui.misc.AudioPermissionBanner
+import com.wanderwildwood.onsa.ui.misc.TunerAudioPermission
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
@@ -115,7 +116,7 @@ fun InstrumentEditor(
     onGroupButtonClicked: () -> Unit = {},
     onNavigateUpClicked: () -> Unit = {},
     onSaveNewInstrumentClicked: () -> Unit = {},
-    snackbarHostState: SnackbarHostStateMMD = remember { SnackbarHostStateMMD() }
+    audioPermission: TunerAudioPermission? = null
 ) {
     Scaffold(
         modifier = modifier,
@@ -137,31 +138,35 @@ fun InstrumentEditor(
                 }
             )
         },
-        snackbarHost = { SnackbarHostMMD(hostState = snackbarHostState) }
     ) { paddingValues ->
         val configuration = LocalConfiguration.current
-        when (configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> {
-                InstrumentEditorLandscape(
-                    state = state,
-                    musicalScale = musicalScale,
-                    modifier = modifier.padding(paddingValues),
-                    notePrintOptions = notePrintOptions,
-                    tunerPlotStyle = tunerPlotStyle,
-                    onIconButtonClicked = onIconButtonClicked,
-                    onGroupButtonClicked = onGroupButtonClicked
-                )
-            }
-            else -> {
-                InstrumentEditorPortrait(
-                    state = state,
-                    musicalScale = musicalScale,
-                    modifier = modifier.padding(paddingValues),
-                    notePrintOptions = notePrintOptions,
-                    tunerPlotStyle = tunerPlotStyle,
-                    onIconButtonClicked = onIconButtonClicked,
-                    onGroupButtonClicked = onGroupButtonClicked
-                )
+        Column(modifier = Modifier.padding(paddingValues)) {
+            audioPermission?.let { AudioPermissionBanner(it) }
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                when (configuration.orientation) {
+                    Configuration.ORIENTATION_LANDSCAPE -> {
+                        InstrumentEditorLandscape(
+                            state = state,
+                            musicalScale = musicalScale,
+                            modifier = modifier,
+                            notePrintOptions = notePrintOptions,
+                            tunerPlotStyle = tunerPlotStyle,
+                            onIconButtonClicked = onIconButtonClicked,
+                            onGroupButtonClicked = onGroupButtonClicked
+                        )
+                    }
+                    else -> {
+                        InstrumentEditorPortrait(
+                            state = state,
+                            musicalScale = musicalScale,
+                            modifier = modifier,
+                            notePrintOptions = notePrintOptions,
+                            tunerPlotStyle = tunerPlotStyle,
+                            onIconButtonClicked = onIconButtonClicked,
+                            onGroupButtonClicked = onGroupButtonClicked
+                        )
+                    }
+                }
             }
         }
     }

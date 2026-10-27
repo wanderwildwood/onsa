@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,12 +69,19 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
+private val noJustSaved = MutableStateFlow<Long?>(null)
 
 interface TemperamentsDialog2Data {
     val listData: EditableListData<Temperament3>
     val defaultTemperament: Temperament3
     fun proposeRootNote(temperament: Temperament3): MusicalNote
+
+    /** Stable id of a temperament which was just saved and is still to be shown, else null. */
+    val justSavedId: StateFlow<Long?> get() = noJustSaved
+    fun clearJustSaved() {}
 
     fun saveTemperaments(
         context: Context,
@@ -194,6 +202,19 @@ fun TemperamentsDialog2(
     val listState = rememberLazyListState()
     val snackbarHostState = remember { SnackbarHostStateMMD() }
     val maxExpectedHeightForFab = 72.dp
+
+    // A temperament saved in the editor shows at once: the custom section is opened by the
+    // saving, and the list scrolls to the new row.
+    val justSavedId by state.justSavedId.collectAsStateWithLifecycle()
+    val customTemperaments by state.listData.editableItems.collectAsStateWithLifecycle()
+    LaunchedEffect(justSavedId, customTemperaments) {
+        val id = justSavedId ?: return@LaunchedEffect
+        val index = customTemperaments.indexOfFirst { state.listData.getStableId(it) == id }
+        if (index >= 0) {
+            state.listData.lazyListState.scrollToItem(state.listData.editableListStartIndex + index)
+            state.clearJustSaved()
+        }
+    }
 
     val overflowCallbacks = rememberImportExportCallbacks(
         state = state,

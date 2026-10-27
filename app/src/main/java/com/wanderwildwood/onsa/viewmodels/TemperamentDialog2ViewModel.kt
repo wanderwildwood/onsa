@@ -55,6 +55,10 @@ class TemperamentDialog2ViewModel @Inject constructor(
 
     override val defaultTemperament: Temperament3 get() = pref.defaultTemperament
 
+    override val justSavedId get() = pref.justSavedTemperamentId
+
+    override fun clearJustSaved() = pref.clearJustSavedTemperament()
+
     override fun saveTemperaments(
         context: Context,
         uri: Uri,

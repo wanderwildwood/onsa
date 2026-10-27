@@ -135,13 +135,22 @@ class PitchHistoryState(
         history.resize(newCapacity)
     }
 
+    private val publishLimiter = UpdateLimiter(PUBLISH_INTERVAL_MS)
+
+    /** Add a value to the history. Every value is kept, so the time scale stays right, but the
+     * screen is told about it at most ten times a second: the panel cannot show more, and every
+     * telling is a redraw. */
     fun addFrequency(value: Float) {
         history.add(value)
-        lineCoordinates = history.values // toLineCoordinates()
-        pointCoordinates = Offset(history.size - 1f, value)
+        if (publishLimiter.allow()) {
+            lineCoordinates = history.values // toLineCoordinates()
+            pointCoordinates = Offset(history.size - 1f, value)
+        }
     }
 
     companion object {
+        private const val PUBLISH_INTERVAL_MS = 100L
+
         /** Compute number of samples to be stored in pitch history.
          * @param duration Duration of pitch history in seconds.
          * @param sampleRate Sample rate of audio signal in Hertz

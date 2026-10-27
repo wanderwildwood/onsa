@@ -21,6 +21,7 @@ package com.wanderwildwood.onsa.ui.screens
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,8 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mudita.mmd.components.snackbar.SnackbarHostMMD
-import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.wanderwildwood.onsa.ui.misc.AudioPermissionBanner
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
@@ -145,8 +145,8 @@ fun InstrumentTuner(
 
     val musicalScale by data.musicalScale.collectAsStateWithLifecycle()
     val notePrintOptions by data.notePrintOptions.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostStateMMD() }
-    val permissionGranted = rememberTunerAudioPermission(snackbarHostState)
+    val permission = rememberTunerAudioPermission()
+    val permissionGranted = permission.granted
 
     LifecycleResumeEffect(permissionGranted) {
         if (permissionGranted)
@@ -165,26 +165,28 @@ fun InstrumentTuner(
         onStretchTuningClicked = onStretchTuningClicked,
         musicalScale = musicalScale,
         notePrintOptions = notePrintOptions,
-        snackbarHost = {
-            SnackbarHostMMD(hostState = snackbarHostState)
-        },
         modifier = modifier
     ) { paddingValues ->
         val configuration = LocalConfiguration.current
-        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && !isEmptyInstrument) {
-            InstrumentTunerLandscape(
-                data = data,
-                modifier = Modifier.fillMaxSize().padding(paddingValues),
-                onInstrumentButtonClicked = onInstrumentButtonClicked,
-                tunerPlotStyle = tunerPlotStyle
-            )
-        } else {
-            InstrumentTunerPortrait(
-                data = data,
-                modifier = Modifier.fillMaxSize().padding(paddingValues),
-                onInstrumentButtonClicked = onInstrumentButtonClicked,
-                tunerPlotStyle = tunerPlotStyle
-            )
+        Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+            AudioPermissionBanner(permission)
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && !isEmptyInstrument) {
+                    InstrumentTunerLandscape(
+                        data = data,
+                        modifier = Modifier.fillMaxSize(),
+                        onInstrumentButtonClicked = onInstrumentButtonClicked,
+                        tunerPlotStyle = tunerPlotStyle
+                    )
+                } else {
+                    InstrumentTunerPortrait(
+                        data = data,
+                        modifier = Modifier.fillMaxSize(),
+                        onInstrumentButtonClicked = onInstrumentButtonClicked,
+                        tunerPlotStyle = tunerPlotStyle
+                    )
+                }
+            }
         }
     }
 }

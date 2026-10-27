@@ -26,6 +26,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -60,8 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
-import com.mudita.mmd.components.snackbar.SnackbarHostMMD
-import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
+import com.wanderwildwood.onsa.ui.misc.AudioPermissionBanner
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.misc.getFilenameFromUri
@@ -138,8 +138,8 @@ fun ScientificTuner(
     val musicalScale by data.musicalScale.collectAsStateWithLifecycle()
     val notePrintOptions by data.notePrintOptions.collectAsStateWithLifecycle()
     val waveWriterDuration by data.waveWriterDuration.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostStateMMD() }
-    val permissionGranted = rememberTunerAudioPermission(snackbarHostState)
+    val permission = rememberTunerAudioPermission()
+    val permissionGranted = permission.granted
     val context = LocalContext.current
 
     val writeWaveLauncher = rememberLauncherForActivityResult(
@@ -175,9 +175,6 @@ fun ScientificTuner(
         onStretchTuningClicked = onStretchTuningClicked,
         musicalScale = musicalScale,
         notePrintOptions = notePrintOptions,
-        snackbarHost = {
-            SnackbarHostMMD(hostState = snackbarHostState)
-        },
         floatingActionButton = {
             if (waveWriterDuration > 0) {
                 FloatingActionButtonMMD(
@@ -197,25 +194,26 @@ fun ScientificTuner(
         modifier = modifier
     ) { paddingValues ->
         val configuration = LocalConfiguration.current
-        when (configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> {
-                ScientificTunerLandscape(
-                    data = data,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    tunerPlotStyle = tunerPlotStyle
-                )
-            }
+        Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+            AudioPermissionBanner(permission)
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                when (configuration.orientation) {
+                    Configuration.ORIENTATION_LANDSCAPE -> {
+                        ScientificTunerLandscape(
+                            data = data,
+                            modifier = Modifier.fillMaxSize(),
+                            tunerPlotStyle = tunerPlotStyle
+                        )
+                    }
 
-            else -> {
-                ScientificTunerPortrait(
-                    data = data,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    tunerPlotStyle = tunerPlotStyle
-                )
+                    else -> {
+                        ScientificTunerPortrait(
+                            data = data,
+                            modifier = Modifier.fillMaxSize(),
+                            tunerPlotStyle = tunerPlotStyle
+                        )
+                    }
+                }
             }
         }
     }

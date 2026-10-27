@@ -115,7 +115,8 @@ class TemperamentEditorViewModel @AssistedInject constructor(
         fun create(temperament: EditableTemperament): TemperamentEditorViewModel
     }
 
-    private val stableId = temperament.stableId
+    // Becomes the id which the first save assigned, so saving again replaces instead of adding.
+    private var stableId = temperament.stableId
 
     private val _name = mutableStateOf(temperament.name)
     override val name: State<String> get() = _name
@@ -298,7 +299,7 @@ class TemperamentEditorViewModel @AssistedInject constructor(
             stableId = stableId
         )
 
-        pref.addNewOrReplaceTemperament(temperament)
+        stableId = pref.addNewOrReplaceTemperament(temperament)
 
         return true
     }

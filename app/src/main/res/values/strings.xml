@@ -324,6 +324,8 @@
     <string name="delete_items">Delete items</string>
     <string name="database_empty_share">There are no items to share.</string>
     <string name="audio_record_permission_rationale">Grant microphone access to start tuning.</string>
+    <string name="audio_record_permission_blocked">The microphone is switched off for this app. Turn it on in Settings to start tuning.</string>
+    <string name="grant_permission">Allow</string>
     <string name="writing_wave_file">Writing wave file: %s</string>
     <string name="failed_writing_wave_file">Did not write wave file.</string>
     <string name="instruments">Instruments</string>
@@ -372,6 +374,7 @@
     <string name="stretch_tuning_info">Stretch tuning info</string>
     <string name="stretched_frequency">Stretched frequency</string>
     <string name="input_is_no_number">Input is no valid number.</string>
+    <string name="frequency_out_of_range">For this note, enter a frequency between %1$s and %2$s Hz.</string>
     <string name="value_must_be_larger_zero">Value must be larger than zero.</string>
     <string name="cent_symbol">¢</string>
     <string name="cent_2f">%+.2f ¢</string>
@@ -384,21 +387,17 @@
     <string name="octave_notation_helmholtz_numbered">Helmholtz numbered</string>
     <string name="octave_notation_helmholtz_numbered_description">… C₁ C c c¹ …</string>
     <string name="octave_representation">Octave representation</string>
-    <string name="language">Language</string>
-    <string name="english" translatable="false">English</string>
-    <string name="german" translatable="false">Deutsch</string>
-    <string name="system_default">System default</string>
-    <string name="french" translatable="false">Français</string>
-    <string name="hungarian" translatable="false">Magyar</string>
-    <string name="polish" translatable="false">Polski</string>
-    <string name="ukrainian" translatable="false">Українська</string>
-    <string name="simplified_chinese" translatable="false">简体中文</string>
-    <string name="romanian" translatable="false">Română</string>
 
     <!-- ============================================================ -->
     <!-- About dialog: the donation row under the licence -->
 
     <!-- The donation link label, beside a drawing of a llama. A fixed phrase: a verb and an object, so the reader knows what pressing it does -->
+    <string name="about_privacy_title">Privacy</string>
+    <string name="about_privacy_text">The microphone is used only while a tuner, the instrument editor or the reference-pitch Detect button is open. The sound is analysed for pitch as it arrives and is not stored.\n\nIf you switch on the optional recording, the last seconds are held in memory and saved only where you choose.\n\nYour settings, instruments and temperaments stay on this phone. The app has no internet access, so nothing is sent anywhere, and nothing is collected about you.\n\nThere are no ads, no analytics and no tracking. Backups and exports go only where you choose to save them.</string>
+    <string name="about_terms_title">Terms</string>
+    <string name="about_terms_text">This app is free software under the GNU General Public License v3 or later. It comes with no warranty: use it at your own risk.</string>
+    <string name="about_libraries_title">Libraries</string>
+    <string name="about_libraries_text">Apache License 2.0: AndroidX (Core, AppCompat, Activity, Lifecycle, Navigation, DataStore, Preference, Compose), Material Components, Kotlin coroutines, serialization and collections, Dagger Hilt, Accompanist, Mudita Mellow Design (MMD).\n\nGonville music font by Simon Tatham: unrestricted use.</string>
     <string name="about_feed_the_llamas">feed the llamas</string>
     <!-- Toast when the donation link cannot be opened -->
     <string name="about_no_browser">There is no browser on this phone to open that with.</string>

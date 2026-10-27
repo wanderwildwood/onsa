@@ -21,6 +21,7 @@ package com.wanderwildwood.onsa.ui.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalCursorBlinkEnabled
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -91,7 +92,12 @@ val OnDarkTunerColors = OnLightTunerColors
 fun TunerTheme(
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalTunerColors provides OnLightTunerColors) {
+    // A steady cursor: a blinking one repaints the e-ink panel twice a second for as long as a
+    // field has focus.
+    CompositionLocalProvider(
+        LocalTunerColors provides OnLightTunerColors,
+        LocalCursorBlinkEnabled provides false
+    ) {
         ThemeMMD(colorScheme = monochrome, content = content)
     }
 }

@@ -45,6 +45,7 @@ import com.wanderwildwood.onsa.ui.plot.LineCoordinates
 import com.wanderwildwood.onsa.ui.plot.VerticalLinesPositions
 import com.wanderwildwood.onsa.ui.screens.ScientificTunerData
 import com.wanderwildwood.onsa.ui.tuning.PitchHistoryState
+import com.wanderwildwood.onsa.ui.tuning.UpdateLimiter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -84,6 +85,8 @@ class ScientificTunerViewModel @Inject constructor (
     override var targetNote: MusicalNote
             by mutableStateOf(musicalScale.value.referenceNote)
 
+    private val plotLimiter = UpdateLimiter(100L)
+
     private val instrumentChromaticFlow = MutableStateFlow(instrumentChromatic)
     private val tuner = Tuner(
         pref,
@@ -92,6 +95,10 @@ class ScientificTunerViewModel @Inject constructor (
         viewModelScope,
         onResultAvailableListener = object : Tuner.OnResultAvailableListener {
             override fun onFrequencyDetected(result: FrequencyDetectionCollectedResults) {
+                // A new picture is drawn at most ten times a second (see UpdateLimiter); the
+                // panel cannot show more, and each one is a redraw of three plots.
+                if (!plotLimiter.allow())
+                    return
                 // Set frequency plot
                 frequencyPlotData = frequencyPlotData.mutate(
                     result.frequencySpectrum.frequencies,

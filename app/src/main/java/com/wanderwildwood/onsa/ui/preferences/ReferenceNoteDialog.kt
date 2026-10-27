@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,9 +45,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,6 +73,8 @@ import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.ParsePosition
+import kotlin.math.ceil
+import kotlin.math.floor
 
 /** Parse a string, which is allowed to have white spaces.
  * @param string String to be parsed.
@@ -87,6 +92,15 @@ private fun DecimalFormat.toFloatOrNull(string: String): Float? {
     } catch (ex: Exception) {
         null
     }
+}
+
+/** Range which the reference frequency of a note may have: a little over a semitone either side
+ * of the pitch the note has in standard tuning (A = 440 Hz), so A allows 400 to 480 Hz.
+ * @param standardFrequency Frequency of the note when the default reference note has 440 Hz.
+ * @return Allowed frequencies, both ends included.
+ */
+fun referenceFrequencyRange(standardFrequency: Float): ClosedFloatingPointRange<Float> {
+    return (standardFrequency * 400f / 440f)..(standardFrequency * 480f / 440f)
 }
 
 /** Interface for frequency detector as used by the RereferenceNoteDialog. */
@@ -144,7 +158,37 @@ fun ReferenceNoteDialog(
     val validFrequencyPositive by remember { derivedStateOf {
         (numberFormat.toFloatOrNull(frequencyAsString) ?: 1.0f) > 0.0f
     }}
+    // What the selected note is in standard tuning, seen from the note scale which we got.
+    val allowedRange by remember(initialState) { derivedStateOf {
+        val defaultNote = initialState.temperament.noteNames(initialState.rootNote).defaultReferenceNote
+        val defaultIndex = initialState.getNoteIndex2(defaultNote)
+        val selectedFrequency = initialState.getNoteFrequency(selectedNoteIndex + initialState.noteIndexBegin)
+        val defaultFrequency = if (defaultIndex in initialState.noteIndexBegin until initialState.noteIndexEnd)
+            initialState.getNoteFrequency(defaultIndex)
+        else
+            0f
+        if (defaultFrequency > 0f && selectedFrequency > 0f)
+            referenceFrequencyRange(440f * selectedFrequency / defaultFrequency)
+        else
+            referenceFrequencyRange(440f)
+    }}
+    val validFrequencyInRange by remember { derivedStateOf {
+        val value = numberFormat.toFloatOrNull(frequencyAsString)
+        value == null || value <= 0f || value in allowedRange
+    }}
+    val frequencyOk = validFrequencyString && validFrequencyPositive && validFrequencyInRange
+    val confirm = {
+        val note = initialState.getNote(selectedNoteIndex + initialState.noteIndexBegin)
+        onReferenceNoteChange(
+            initialState.copy(
+                _referenceNote = note,
+                referenceFrequency = numberFormat.toFloatOrNull(frequencyAsString)
+                    ?: initialState.referenceFrequency
+            )
+        )
+    }
     var frequencyDetectorStarted by rememberSaveable { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
     val permission = rememberPermissionState(permission = Manifest.permission.RECORD_AUDIO)
     val permissionGranted by remember { derivedStateOf { permission.status.isGranted }}
 
@@ -158,17 +202,8 @@ fun ReferenceNoteDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             OutlinedButtonMMD(
-                onClick = {
-                    val note = initialState.getNote(selectedNoteIndex + initialState.noteIndexBegin)
-                    onReferenceNoteChange(
-                        initialState.copy(
-                            _referenceNote = note,
-                            referenceFrequency = numberFormat.toFloatOrNull(frequencyAsString)
-                                ?: initialState.referenceFrequency
-                        )
-                    )
-                },
-                enabled = validFrequencyString && validFrequencyPositive,
+                onClick = confirm,
+                enabled = frequencyOk,
                 modifier = Modifier.fillMaxWidth(),
             ) { TextMMD(stringResource(id = R.string.done)) }
         },
@@ -216,13 +251,29 @@ fun ReferenceNoteDialog(
                         onValueChange = { frequencyAsString = it },
                         label = { TextMMD(stringResource(id = R.string.frequency))},
                         suffix = { TextMMD(stringResource(id = R.string.hertz_str, ""))},
-                        isError = !(validFrequencyString && validFrequencyPositive),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        isError = !frequencyOk,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(onDone = {
+                            if (frequencyOk) {
+                                focusManager.clearFocus()
+                                confirm()
+                            }
+                        }),
                         modifier = Modifier.fillMaxWidth(),
                         supportingText = if (!validFrequencyString) {
                             { TextMMD(stringResource(R.string.input_is_no_number))}
                         } else if (!validFrequencyPositive) {
                             { TextMMD(stringResource(R.string.value_must_be_larger_zero))}
+                        } else if (!validFrequencyInRange) {
+                            { TextMMD(stringResource(
+                                R.string.frequency_out_of_range,
+                                decimalFormat.format(ceil(allowedRange.start)),
+                                decimalFormat.format(floor(allowedRange.endInclusive))
+                            ))}
                         } else {
                             null
                         }
