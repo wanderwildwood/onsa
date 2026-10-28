@@ -49,6 +49,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -84,6 +85,9 @@ fun AboutDialog(
                 aboutSection(resources, R.string.about_terms_title, R.string.about_terms_text)
                 aboutSection(resources, R.string.about_libraries_title, R.string.about_libraries_text)
                 item {
+                    SourceLink()
+                }
+                item {
                     Llama()
                 }
             }
@@ -114,6 +118,31 @@ private fun AboutDialogTest() {
     TunerTheme {
         AboutDialog()
     }
+}
+
+/**
+ * This app's own source code, which opens in a browser: the licence promises the source, so
+ * its address is a link. A phone with no browser says so rather than leaving a press that
+ * does nothing.
+ */
+@Composable
+private fun SourceLink() {
+    val context = LocalContext.current
+    TextMMD(
+        "github.com/wanderwildwood/onsa",
+        modifier = Modifier
+            .clickable {
+                runCatching {
+                    context.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/wanderwildwood/onsa")),
+                    )
+                }.onFailure {
+                    Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
+                }
+            }
+            .heightIn(min = 48.dp)
+            .wrapContentHeight(Alignment.CenterVertically),
+    )
 }
 
 /**
