@@ -63,6 +63,14 @@ class PreferenceResources @Inject constructor(
         screenAlwaysOnPref.set(screenAlwaysOn)
     }
 
+    // Turn sideways with the phone. The Kompakt never turns a screen by itself, so the app
+    // watches the phone and turns when it is held sideways; on by default.
+    private val turnWithPhonePref = createPreference("turnwithphone", true)
+    val turnWithPhone = turnWithPhonePref.asStateFlow()
+    fun writeTurnWithPhone(turnWithPhone: Boolean) {
+        turnWithPhonePref.set(turnWithPhone)
+    }
+
     // display on lock screen
     private val displayOnLockScreenPref = createPreference("onlockscreen", false)
     val displayOnLockScreen = displayOnLockScreenPref.asStateFlow()

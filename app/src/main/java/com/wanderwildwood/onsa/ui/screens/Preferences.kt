@@ -21,13 +21,14 @@ package com.wanderwildwood.onsa.ui.screens
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
@@ -38,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.text.TextMMD
@@ -104,6 +106,15 @@ fun Preferences(
                     name = stringResource(id = R.string.keep_screen_on),
                     checked = screenAlwaysOn,
                     onCheckChange = { pref.writeScreenAlwaysOn(it) }
+                )
+            }
+
+            item {
+                val turnWithPhone by pref.turnWithPhone.collectAsStateWithLifecycle()
+                SwitchPreference(
+                    name = stringResource(id = R.string.turn_with_phone),
+                    checked = turnWithPhone,
+                    onCheckChange = { pref.writeTurnWithPhone(it) }
                 )
             }
 
@@ -217,7 +228,8 @@ fun Preferences(
                 )
             }
             item {
-                HorizontalDividerMMD()
+                // Space, not a line, sets the next group apart (house style: no rules in Settings).
+                Spacer(Modifier.height(12.dp))
             }
             item {
                 Section(title = stringResource(id = R.string.expert))
@@ -342,7 +354,8 @@ fun Preferences(
                 )
             }
             item {
-                HorizontalDividerMMD()
+                // Space, not a line, sets the next group apart (house style: no rules in Settings).
+                Spacer(Modifier.height(12.dp))
             }
             item {
                 Section(title = stringResource(id = R.string.others))

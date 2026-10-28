@@ -385,6 +385,59 @@ fun InstrumentTunerLandscape(
             !checkInstrumentCompatibility(musicalScaleAsState, instrumentAsState)
         }
 
+        // As in the approved sketch: what the pitch is doing on the left, the note and
+        // the strings on the right, each with its note names on its right-hand side.
+        PitchHistory(
+            state = data.pitchHistoryState,
+            musicalScale = musicalScaleAsState,
+            notePrintOptions = notePrintOptionsAsState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.5f)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    scope.launch { data.pitchHistoryGestureBasedViewPort.finish() }
+                },
+            gestureBasedViewPort = data.pitchHistoryGestureBasedViewPort,
+            tuningState = data.tuningState,
+            targetNote = data.targetNote,
+            toleranceInCents = toleranceInCentsAsState,
+            plotWindowPadding = DpRect(
+                bottom = tunerPlotStyle.margin,
+                top = tunerPlotStyle.margin,
+                left = tunerPlotStyle.margin,
+                right = noteWidthDp
+            ),
+            lineWidth = tunerPlotStyle.plotLineWidth,
+            lineColor = tunerPlotStyle.plotLineColor,
+            lineWidthInactive = tunerPlotStyle.plotLineWidthInactive,
+            lineColorInactive = tunerPlotStyle.inactiveColor,
+            pointSize = tunerPlotStyle.plotPointSize,
+            pointSizeInactive = tunerPlotStyle.plotPointSizeInactive,
+            colorInTune = tunerPlotStyle.positiveColor,
+            colorOutOfTune = tunerPlotStyle.negativeColor,
+            colorInactive = tunerPlotStyle.inactiveColor,
+            centDeviationStyle = tunerPlotStyle.toleranceTickFontStyle,
+            //centDeviationColor = ,
+            targetNoteLineWidth = tunerPlotStyle.targetNoteLineWith,
+            colorOnInTune = tunerPlotStyle.onPositiveColor,
+            colorOnOutOfTune = tunerPlotStyle.onNegativeColor,
+            colorOnInactive = tunerPlotStyle.onInactiveColor,
+            toleranceLineColor = tunerPlotStyle.toleranceColor,
+            toleranceLabelStyle = tunerPlotStyle.toleranceTickFontStyle,
+            toleranceLabelColor = tunerPlotStyle.toleranceColor,
+            tickLineWidth = tunerPlotStyle.tickLineWidth,
+            tickLineColor = tunerPlotStyle.tickLineColor,
+            tickLabelStyle = tunerPlotStyle.stringFontStyle,
+            plotWindowOutline = if (data.pitchHistoryGestureBasedViewPort.isActive)
+                tunerPlotStyle.plotWindowOutlineDuringGesture
+            else
+                tunerPlotStyle.plotWindowOutline
+        )
+        Spacer(modifier = Modifier.width(tunerPlotStyle.margin))
+
         Column(modifier = Modifier.weight(0.5f)) {
             InstrumentButton(
                 iconResourceId = instrumentAsState.icon.resourceId,
@@ -392,9 +445,9 @@ fun InstrumentTunerLandscape(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = noteWidthDp,
+                        start = 0.dp,
                         top = tunerPlotStyle.margin,
-                        end = 0.dp,
+                        end = noteWidthDp,
                         bottom = 0.dp
                     ),
                 outline = tunerPlotStyle.plotWindowOutline,
@@ -426,7 +479,7 @@ fun InstrumentTunerLandscape(
                 unknownTuningColor = tunerPlotStyle.inactiveStringColor,
                 onUnknownTuningColor = tunerPlotStyle.onInactiveStringColor,
                 fontSize = tunerPlotStyle.stringFontStyle.fontSize,
-                sidebarPosition = StringsSidebarPosition.Start,
+                sidebarPosition = StringsSidebarPosition.End,
                 sidebarWidth = noteWidthDp,
                 outline = if (data.stringsState.scrollMode == StringsScrollMode.Manual)
                     tunerPlotStyle.plotWindowOutlineDuringGesture
@@ -441,7 +494,7 @@ fun InstrumentTunerLandscape(
                     note = data.targetNoteForLockButton,
                     modifier = Modifier
                         .padding(
-                            start = noteWidthDp,
+                            end = noteWidthDp,
                             top = tunerPlotStyle.margin - 4.dp,
                             bottom = tunerPlotStyle.margin - 4.dp
                         )
@@ -454,57 +507,6 @@ fun InstrumentTunerLandscape(
                 Spacer(Modifier.height(tunerPlotStyle.margin))
             }
         }
-        Spacer(modifier = Modifier.width(tunerPlotStyle.margin))
-
-        PitchHistory(
-            state = data.pitchHistoryState,
-            musicalScale = musicalScaleAsState,
-            notePrintOptions = notePrintOptionsAsState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    scope.launch { data.pitchHistoryGestureBasedViewPort.finish() }
-                },
-            gestureBasedViewPort = data.pitchHistoryGestureBasedViewPort,
-            tuningState = data.tuningState,
-            targetNote = data.targetNote,
-            toleranceInCents = toleranceInCentsAsState,
-            plotWindowPadding = DpRect(
-                bottom = tunerPlotStyle.margin,
-                top = tunerPlotStyle.margin,
-                left = 0.dp,
-                right = noteWidthDp
-            ),
-            lineWidth = tunerPlotStyle.plotLineWidth,
-            lineColor = tunerPlotStyle.plotLineColor,
-            lineWidthInactive = tunerPlotStyle.plotLineWidthInactive,
-            lineColorInactive = tunerPlotStyle.inactiveColor,
-            pointSize = tunerPlotStyle.plotPointSize,
-            pointSizeInactive = tunerPlotStyle.plotPointSizeInactive,
-            colorInTune = tunerPlotStyle.positiveColor,
-            colorOutOfTune = tunerPlotStyle.negativeColor,
-            colorInactive = tunerPlotStyle.inactiveColor,
-            centDeviationStyle = tunerPlotStyle.toleranceTickFontStyle,
-            //centDeviationColor = ,
-            targetNoteLineWidth = tunerPlotStyle.targetNoteLineWith,
-            colorOnInTune = tunerPlotStyle.onPositiveColor,
-            colorOnOutOfTune = tunerPlotStyle.onNegativeColor,
-            colorOnInactive = tunerPlotStyle.onInactiveColor,
-            toleranceLineColor = tunerPlotStyle.toleranceColor,
-            toleranceLabelStyle = tunerPlotStyle.toleranceTickFontStyle,
-            toleranceLabelColor = tunerPlotStyle.toleranceColor,
-            tickLineWidth = tunerPlotStyle.tickLineWidth,
-            tickLineColor = tunerPlotStyle.tickLineColor,
-            tickLabelStyle = tunerPlotStyle.stringFontStyle,
-            plotWindowOutline = if (data.pitchHistoryGestureBasedViewPort.isActive)
-                tunerPlotStyle.plotWindowOutlineDuringGesture
-            else
-                tunerPlotStyle.plotWindowOutline
-        )
     }
 }
 

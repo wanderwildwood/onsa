@@ -85,6 +85,10 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
     @Inject
     lateinit var temperaments: TemperamentResources
 
+    // Sideways when the phone is. The manifest keeps this activity through a turn
+    // (configChanges), so the microphone runs on and only the layout is drawn again.
+    private val turner = TurnWithPhone(this)
+
     private val loadInstrumentIntentChannel = Channel<List<Instrument>>(Channel.CONFLATED)
     private val loadTemperamentIntentChannel = Channel<List<EditableTemperament>>(Channel.CONFLATED)
 
@@ -106,6 +110,12 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
 
         if (savedInstanceState == null)
             handleFileLoadingIntent(intent)
+
+        turner.set(pref.turnWithPhone.value)
+        lifecycleScope.launch {
+            // Read again whenever the setting changes, so the switch takes effect at once.
+            pref.turnWithPhone.collect { turner.set(it) }
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -227,6 +237,16 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
 //        Log.v("Tuner", "Migrating instruments? ${pref.isMigratingFromV6}")
 //        if (pref.isMigratingFromV6)
 //            instruments.migratingFromV6(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        turner.resume()
+    }
+
+    override fun onPause() {
+        turner.pause()
+        super.onPause()
     }
 
     override fun onNewIntent(intent: Intent) {

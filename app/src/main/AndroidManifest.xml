@@ -13,6 +13,7 @@
         android:fullBackupContent="true"
         android:theme="@style/Theme.Onsa">
         <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
