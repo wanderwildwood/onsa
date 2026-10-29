@@ -397,11 +397,9 @@
     <string name="about_privacy_text">The microphone is used only while a tuner, the instrument editor or the reference-pitch Detect button is open. The sound is analysed for pitch as it arrives and is not stored.\n\nIf you switch on the optional recording, the last seconds are held in memory and saved only where you choose.\n\nYour settings, instruments and temperaments stay on this phone. The app has no internet access, so nothing is sent anywhere, and nothing is collected about you.\n\nThere are no ads, no analytics and no tracking. Backups and exports go only where you choose to save them.</string>
     <string name="about_terms_title">Terms</string>
     <string name="about_terms_text">This app is free software under the GNU General Public License v3 or later. It comes with no warranty: use it at your own risk.</string>
-    <string name="about_libraries_title">Libraries</string>
-    <string name="about_libraries_text">Apache License 2.0: AndroidX (Core, AppCompat, Activity, Lifecycle, Navigation, DataStore, Preference, Compose), Material Components, Kotlin coroutines, serialization and collections, Dagger Hilt, Accompanist, Mudita Mellow Design (MMD).\n\nGonville music font by Simon Tatham: unrestricted use.</string>
     <string name="about_feed_the_llamas">feed the llamas</string>
     <!-- Toast when the donation link cannot be opened -->
-    <string name="about_no_browser">There is no browser on this phone to open that with.</string>
+    <string name="about_no_browser">No browser is installed.</string>
 
     <!-- ============================================================ -->
     <!-- Icon descriptions, read aloud by a screen reader and never shown on screen.
@@ -457,4 +455,19 @@
     <string name="cd_record">record</string>
     <!-- In the reference note dialog: stop listening for the frequency to use as reference -->
     <string name="cd_stop_frequency_detection">stop frequency detection</string>
+
+    <!-- About: Back out of a page of its own -->
+    <string name="about_back">Back</string>
+    <!-- Licences page, reached from About -->
+    <string name="licences_title">Licences</string>
+    <string name="licences_source_heading">Source code</string>
+    <string name="licences_source">Source: %1$s</string>
+    <string name="licences_licence_heading">Licence</string>
+    <string name="licences_licence">Tuner is free software under the GNU General Public License, version 3 or later, as the app it is forked from is. Copyright wander wildwood, and Michael Moessner for the parts that are his. The full texts are below.</string>
+    <string name="licences_built_heading">Built with</string>
+    <string name="licences_gpl3">GNU General Public License, version 3</string>
+    <string name="licences_apache">Apache License, version 2.0</string>
+    <string name="licences_ofl">SIL Open Font License, version 1.1</string>
+    <string name="licences_gonville">Gonville licence, Simon Tatham</string>
+    <string name="licences_no_browser">No browser is installed.</string>
 </resources>

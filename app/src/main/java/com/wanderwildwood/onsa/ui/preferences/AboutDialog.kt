@@ -21,11 +21,15 @@ package com.wanderwildwood.onsa.ui.preferences
 import android.content.res.Resources
 import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -49,66 +53,89 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+
+private const val MAIN = 0
+private const val PRIVACY = 1
+private const val TERMS = 2
+private const val LICENCES = 3
 
 @Composable
 fun AboutDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {}
 ) {
+    var page by rememberSaveable { mutableIntStateOf(MAIN) }
     EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             OutlinedButtonMMD(
-                onClick = onDismiss,
+                onClick = { if (page == MAIN) onDismiss() else page = MAIN },
                 modifier = Modifier.fillMaxWidth(),
-            ) { TextMMD(stringResource(id = R.string.acknowledged)) }
+            ) {
+                TextMMD(
+                    stringResource(id = if (page == MAIN) R.string.acknowledged else R.string.about_back)
+                )
+            }
         },
         title = {
-            TextMMD(stringResource(id = R.string.about))
+            TextMMD(
+                when (page) {
+                    PRIVACY -> stringResource(R.string.about_privacy_title)
+                    TERMS -> stringResource(R.string.about_terms_title)
+                    LICENCES -> stringResource(R.string.licences_title)
+                    else -> stringResource(R.string.about)
+                }
+            )
         },
         text = {
             val resources = LocalContext.current.resources
+            val licenceTexts = if (page == LICENCES) rememberLicenceTexts() else emptyList()
             // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
             PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
-                item {
-                    TextMMD(stringResource(id = R.string.about_message, BuildConfig.VERSION_NAME))
-                }
-                item {
-                    Spacer(Modifier.height(14.dp))
-                }
-                aboutSection(resources, R.string.about_privacy_title, R.string.about_privacy_text)
-                aboutSection(resources, R.string.about_terms_title, R.string.about_terms_text)
-                aboutSection(resources, R.string.about_libraries_title, R.string.about_libraries_text)
-                item {
-                    SourceLink()
-                }
-                item {
-                    Llama()
+                when (page) {
+                    PRIVACY -> paragraphs(resources, R.string.about_privacy_text)
+                    TERMS -> paragraphs(resources, R.string.about_terms_text)
+                    LICENCES -> licencesItems(licenceTexts)
+                    else -> {
+                        item {
+                            TextMMD(stringResource(id = R.string.about_message, BuildConfig.VERSION_NAME))
+                        }
+                        item { NavRow(stringResource(R.string.about_privacy_title)) { page = PRIVACY } }
+                        item { NavRow(stringResource(R.string.about_terms_title)) { page = TERMS } }
+                        item { NavRow(stringResource(R.string.licences_title)) { page = LICENCES } }
+                        item {
+                            Llama()
+                        }
+                    }
                 }
             }
         },
     )
 }
 
-/** A heading and its paragraphs, one list row each, so a page turns on whole rows. */
-private fun LazyListScope.aboutSection(resources: Resources, title: Int, text: Int) {
-    val heading = resources.getString(title)
-    item {
-        TextMMD(
-            heading,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(top = 6.dp)
-        )
-    }
+/** A text's paragraphs, one list row each, so a page turns on whole rows. */
+private fun LazyListScope.paragraphs(resources: Resources, text: Int) {
     resources.getString(text).split("\n\n").forEach { paragraph ->
         item {
             TextMMD(paragraph, modifier = Modifier.padding(bottom = 8.dp))
         }
+    }
+}
+
+/** A row that opens a page of its own: 48 dp tall to press, with an arrow at the end. */
+@Composable
+private fun NavRow(text: String, onPress: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable(onClick = onPress),
+    ) {
+        TextMMD(text, style = MaterialTheme.typography.bodyLarge)
+        TextMMD("\u203A", style = MaterialTheme.typography.bodyLarge)
     }
 }
 
@@ -118,31 +145,6 @@ private fun AboutDialogTest() {
     TunerTheme {
         AboutDialog()
     }
-}
-
-/**
- * This app's own source code, which opens in a browser: the licence promises the source, so
- * its address is a link. A phone with no browser says so rather than leaving a press that
- * does nothing.
- */
-@Composable
-private fun SourceLink() {
-    val context = LocalContext.current
-    TextMMD(
-        "github.com/wanderwildwood/onsa",
-        modifier = Modifier
-            .clickable {
-                runCatching {
-                    context.startActivity(
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/wanderwildwood/onsa")),
-                    )
-                }.onFailure {
-                    Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
-                }
-            }
-            .heightIn(min = 48.dp)
-            .wrapContentHeight(Alignment.CenterVertically),
-    )
 }
 
 /**
