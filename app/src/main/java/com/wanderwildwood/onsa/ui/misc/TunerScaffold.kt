@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -120,7 +122,8 @@ fun TunerScaffold(
                             IconButton(onClick = onPreferenceButtonClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.settings_24px),
-                                    stringResource(R.string.cd_settings)
+                                    contentDescription = stringResource(R.string.cd_settings),
+                                    modifier = Modifier.size(22.dp),
                                 )
                             }
                         }
@@ -212,7 +215,8 @@ fun TunerScaffoldWithoutBottomBar(
                             IconButton(onClick = onPreferenceButtonClicked) {
                                 Icon(
                                     painter = painterResource(R.drawable.settings_24px),
-                                    stringResource(R.string.cd_settings)
+                                    contentDescription = stringResource(R.string.cd_settings),
+                                    modifier = Modifier.size(22.dp),
                                 )
                             }
                         }
