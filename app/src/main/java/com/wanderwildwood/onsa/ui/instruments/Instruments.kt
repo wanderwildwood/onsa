@@ -84,7 +84,7 @@ interface InstrumentsData {
     val listData: EditableListData<Instrument>
     /** How many tunings each instrument has, built-in and the reader's together. */
     val tuningCounts: StateFlow<Map<InstrumentGroup, Int>>
-    fun saveInstruments(context: Context, uri: Uri, instruments: List<Instrument>)
+    fun saveInstruments(context: Context, uri: Uri, instruments: List<Instrument>, onDone: (Boolean) -> Unit = {})
     /** All of the reader's own instruments, including those filed under an instrument. */
     fun allCustomInstruments(): List<Instrument>
 }
@@ -121,18 +121,21 @@ fun Instruments(
     ) { uri ->
         if (uri != null) {
             val instruments = instrumentsToSave()
-            state.saveInstruments(context, uri, instruments)
-            state.listData.clearSelectedItems()
             val filename = getFilenameFromUri(context, uri)
-            Toast.makeText(
-                context,
-                context.resources.getQuantityString(
-                    R.plurals.database_num_saved,
-                    instruments.size,
-                    instruments.size,
-                    filename
-                ),
-                Toast.LENGTH_LONG).show()
+            state.saveInstruments(context, uri, instruments) { written ->
+                Toast.makeText(
+                    context,
+                    if (written)
+                        context.resources.getQuantityString(
+                            R.plurals.database_num_saved,
+                            instruments.size,
+                            instruments.size,
+                            filename
+                        )
+                    else context.getString(R.string.failed_to_archive_items),
+                    Toast.LENGTH_LONG).show()
+            }
+            state.listData.clearSelectedItems()
         } else {
             Toast.makeText(context,
                 R.string.failed_to_archive_items, Toast.LENGTH_LONG).show()
@@ -407,7 +410,7 @@ private class TestInstrumentsData : InstrumentsData {
         activeItem = activeInstrument
     )
 
-    override fun saveInstruments(context: Context, uri: Uri, instruments: List<Instrument>) {}
+    override fun saveInstruments(context: Context, uri: Uri, instruments: List<Instrument>, onDone: (Boolean) -> Unit) {}
 }
 
 

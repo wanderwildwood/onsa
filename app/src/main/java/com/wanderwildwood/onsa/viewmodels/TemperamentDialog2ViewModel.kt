@@ -62,14 +62,18 @@ class TemperamentDialog2ViewModel @Inject constructor(
     override fun saveTemperaments(
         context: Context,
         uri: Uri,
-        temperaments: List<Temperament3Custom>
+        temperaments: List<Temperament3Custom>,
+        onDone: (Boolean) -> Unit
     ) {
         applicationScope.launch(Dispatchers.IO) {
-            context.contentResolver?.openOutputStream(uri, "wt")?.use { stream ->
+            val written = runCatching {
+                val stream = context.contentResolver?.openOutputStream(uri, "wt")
+                    ?: throw java.io.IOException("no stream")
                 stream.bufferedWriter().use { writer ->
                     TemperamentIO.writeTemperaments(temperaments, writer, context)
                 }
-            }
+            }.isSuccess
+            kotlinx.coroutines.withContext(Dispatchers.Main) { onDone(written) }
         }
     }
 

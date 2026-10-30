@@ -144,13 +144,21 @@ class InstrumentViewModel @Inject constructor(
         instruments.writeCurrentInstrument(instrument)
     }
 
-    override fun saveInstruments(context: Context, uri: Uri, instruments: List<Instrument>) {
+    override fun saveInstruments(
+        context: Context,
+        uri: Uri,
+        instruments: List<Instrument>,
+        onDone: (Boolean) -> Unit
+    ) {
         applicationScope.launch(Dispatchers.IO) {
-            context.contentResolver?.openOutputStream(uri, "wt")?.use { stream ->
-                stream.write(
-                    InstrumentIO.instrumentsListToString(context, instruments).toByteArray()
-                )
-            }
+            val written = runCatching {
+                val stream = context.contentResolver?.openOutputStream(uri, "wt")
+                    ?: throw java.io.IOException("no stream")
+                stream.use {
+                    it.write(InstrumentIO.instrumentsListToString(context, instruments).toByteArray())
+                }
+            }.isSuccess
+            kotlinx.coroutines.withContext(Dispatchers.Main) { onDone(written) }
         }
     }
 }

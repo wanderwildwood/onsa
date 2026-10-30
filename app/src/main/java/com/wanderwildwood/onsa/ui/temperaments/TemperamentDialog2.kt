@@ -86,7 +86,8 @@ interface TemperamentsDialog2Data {
     fun saveTemperaments(
         context: Context,
         uri: Uri,
-        temperaments: List<Temperament3Custom>
+        temperaments: List<Temperament3Custom>,
+        onDone: (Boolean) -> Unit = {}
     )
 }
 
@@ -104,20 +105,23 @@ private fun rememberImportExportCallbacks(
     ) { uri ->
         if (uri != null) {
             val temperaments = stateUpdated.listData.extractSelectedItems()
+            val filename = getFilenameFromUri(context, uri)
             stateUpdated.saveTemperaments(
                 context, uri, temperaments.filterIsInstance<Temperament3Custom>()
-            )
+            ) { written ->
+                Toast.makeText(
+                    context,
+                    if (written)
+                        context.resources.getQuantityString(
+                            R.plurals.database_num_saved,
+                            temperaments.size,
+                            temperaments.size,
+                            filename
+                        )
+                    else context.getString(R.string.failed_to_archive_items),
+                    Toast.LENGTH_LONG).show()
+            }
             stateUpdated.listData.clearSelectedItems()
-            val filename = getFilenameFromUri(context, uri)
-            Toast.makeText(
-                context,
-                context.resources.getQuantityString(
-                    R.plurals.database_num_saved,
-                    temperaments.size,
-                    temperaments.size,
-                    filename
-                ),
-                Toast.LENGTH_LONG).show()
         } else {
             Toast.makeText(context,
                 R.string.failed_to_archive_items, Toast.LENGTH_LONG).show()
@@ -439,7 +443,8 @@ private class TestTemperamentDialog2Data : TemperamentsDialog2Data {
     override fun saveTemperaments(
         context: Context,
         uri: Uri,
-        temperaments: List<Temperament3Custom>
+        temperaments: List<Temperament3Custom>,
+        onDone: (Boolean) -> Unit
     ) { }
 }
 

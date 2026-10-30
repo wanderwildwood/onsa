@@ -1,5 +1,6 @@
 package com.wanderwildwood.onsa.ui.preferences
 
+import com.wanderwildwood.onsa.ui.theme.openLink
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -178,7 +179,7 @@ private fun Link(
     address: String,
 ) {
     val context = LocalContext.current
-    val none = stringResource(R.string.licences_no_browser)
+    val none = stringResource(R.string.about_no_browser_address, address)
     TextMMD(
         text = text,
         style = MaterialTheme.typography.bodySmall,
@@ -188,8 +189,7 @@ private fun Link(
                 .fillMaxWidth()
                 .heightIn(min = 48.dp)
                 .clickable {
-                    runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(address))) }
-                        .onFailure { Toast.makeText(context, none, Toast.LENGTH_SHORT).show() }
+                    openLink(context, address, none)
                 }
                 .wrapContentHeight(Alignment.CenterVertically),
     )

@@ -30,7 +30,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,6 +61,7 @@ class TunerAudioPermission(
     val granted: Boolean,
     val showBanner: Boolean,
     val blocked: Boolean,
+    val firstAsk: Boolean,
     val onButtonClicked: () -> Unit
 )
 
@@ -71,7 +71,11 @@ fun openAppSettings(context: Context) {
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
         Uri.fromParts("package", context.packageName, null)
     ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    context.startActivity(intent)
+    try {
+        context.startActivity(intent)
+    } catch (_: android.content.ActivityNotFoundException) {
+        android.widget.Toast.makeText(context, R.string.settings_not_found, android.widget.Toast.LENGTH_LONG).show()
+    }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -88,15 +92,12 @@ fun rememberTunerAudioPermission(): TunerAudioPermission {
     }
     val granted by remember { derivedStateOf { permission.status.isGranted }}
 
-    LaunchedEffect(permission.status) {
-        if (!permission.status.isGranted && !askedOnce)
-            permission.launchPermissionRequest()
-    }
     val blocked = !granted && askedOnce && !permission.status.shouldShowRationale
     return TunerAudioPermission(
         granted = granted,
-        showBanner = !granted && askedOnce,
+        showBanner = !granted,
         blocked = blocked,
+        firstAsk = !askedOnce,
         onButtonClicked = {
             if (blocked)
                 openAppSettings(context)
@@ -123,6 +124,8 @@ fun AudioPermissionBanner(permission: TunerAudioPermission, modifier: Modifier =
             stringResource(
                 if (permission.blocked)
                     R.string.audio_record_permission_blocked
+                else if (permission.firstAsk)
+                    R.string.audio_record_permission_first
                 else
                     R.string.audio_record_permission_rationale
             ),
@@ -134,7 +137,9 @@ fun AudioPermissionBanner(permission: TunerAudioPermission, modifier: Modifier =
         ) {
             TextMMD(
                 stringResource(
-                    if (permission.blocked) R.string.settings else R.string.grant_permission
+                    if (permission.blocked) R.string.open_app_settings
+                    else if (permission.firstAsk) R.string.continue_label
+                    else R.string.grant_permission
                 )
             )
         }

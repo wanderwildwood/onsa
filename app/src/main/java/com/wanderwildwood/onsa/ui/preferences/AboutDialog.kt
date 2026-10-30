@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.preferences
 
+import com.wanderwildwood.onsa.ui.theme.openLink
 import android.content.res.Resources
 import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyListScope
@@ -95,7 +96,7 @@ fun AboutDialog(
             val resources = LocalContext.current.resources
             val licenceTexts = if (page == LICENCES) rememberLicenceTexts() else emptyList()
             // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
-            PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
+            PagedColumn(modifier = Modifier.heightIn(max = (androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp - 200).coerceIn(120, 420).dp)) {
                 when (page) {
                     PRIVACY -> paragraphs(resources, R.string.about_privacy_text)
                     TERMS -> paragraphs(resources, R.string.about_terms_text)
@@ -171,13 +172,7 @@ private fun Llama() {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable {
-                    runCatching {
-                        context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://wanderthe.dev")),
-                        )
-                    }.onFailure {
-                        Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
-                    }
+                    openLink(context, "https://wanderthe.dev", context.getString(R.string.about_no_browser_address, "wanderthe.dev"))
                 }
                 .heightIn(min = 48.dp)
                 .padding(vertical = 4.dp),
@@ -194,13 +189,7 @@ private fun Llama() {
                     // The short square.link form, not the long checkout.square.site address it
                     // redirects to -- the short one is what the site itself links to, so a
                     // regenerated checkout follows it and a published app does not break.
-                    runCatching {
-                        context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://square.link/u/AGu8oT10")),
-                        )
-                    }.onFailure {
-                        Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
-                    }
+                    openLink(context, "https://square.link/u/AGu8oT10", context.getString(R.string.about_no_browser_address, "square.link/u/AGu8oT10"))
                 }
                 .heightIn(min = 48.dp)
                 .padding(vertical = 4.dp),

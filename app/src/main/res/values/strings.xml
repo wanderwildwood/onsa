@@ -37,7 +37,7 @@
     <string name="about_message">Tuner\nVersion: %s\nLicense: GPLv3 or later\n\nAfter Tuner by Michael Moessner\nhttps://codeberg.org/thetwom/Tuner\n\nBanjo tunings by carefulcarpenter\nhttps://github.com/heavencanthandle/onsa</string>
     <string name="reset_all_settings">Reset all settings</string>
     <!-- What the row says once it is armed. The warning takes the dash and the question
-         follows a semicolon; an armed row disarms itself after four seconds. -->
+         follows a semicolon; an armed row disarms itself after six seconds. -->
     <string name="reset_all_settings_armed">Reset all settings — every one goes back to how it shipped; tap again</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -326,6 +326,11 @@
     <string name="database_empty_share">There are no items to share.</string>
     <string name="audio_record_permission_rationale">Grant microphone access to start tuning.</string>
     <string name="audio_record_permission_blocked">The microphone is switched off for this app. Turn it on in Settings to start tuning.</string>
+    <string name="audio_record_permission_first">The tuner listens through the microphone to hear the note. The sound stays on this phone and is never recorded or sent anywhere.</string>
+    <string name="continue_label">Continue</string>
+    <string name="open_app_settings">Open app settings</string>
+    <string name="settings_not_found">The phone has no Settings page to open for this app.</string>
+    <string name="about_no_browser_address">No browser is installed. The address is %1$s.</string>
     <string name="grant_permission">Allow</string>
     <string name="writing_wave_file">Writing wave file: %s</string>
     <string name="failed_writing_wave_file">Did not write wave file.</string>
