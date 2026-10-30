@@ -12,7 +12,7 @@ sixteen greys, a slow redraw, and is read at arm's length on a music stand.
 
 | | | | |
 |---|---|---|---|
-| ![Tuner](screenshots/01-tuner.png) | ![Instruments](screenshots/02-instruments.png) | ![Temperaments](screenshots/03-temperaments.png) | ![Strings](screenshots/04-strings.png) |
+| ![Tuner](screenshots/01-tuner.png) | ![Instruments](screenshots/02-instruments.png) | ![Temperaments](screenshots/03-temperaments.png) | ![Settings](screenshots/04-settings.png) |
 
 ## What it is
 
