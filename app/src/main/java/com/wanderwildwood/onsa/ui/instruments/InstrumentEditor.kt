@@ -35,6 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextButton
+import com.wanderwildwood.onsa.ui.theme.HouseButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -132,9 +133,7 @@ fun InstrumentEditor(
                     }
                 },
                 actions = {
-                    TextButton(onClick = { onSaveNewInstrumentClicked() }) {
-                        TextMMD(stringResource(id = R.string.save))
-                    }
+                    HouseButton(stringResource(id = R.string.save), { onSaveNewInstrumentClicked() })
                 }
             )
         },

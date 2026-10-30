@@ -36,6 +36,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextButton
+import com.wanderwildwood.onsa.ui.theme.HouseButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
@@ -103,12 +104,11 @@ fun TemperamentEditor(
                     }
                 },
                 actions = {
-                    TextButton(
+                    HouseButton(
+                        label = stringResource(id = R.string.save),
                         onClick = { onSaveClicked() },
-                        enabled = !state.hasErrors.value
-                    ) {
-                        TextMMD(stringResource(id = R.string.save))
-                    }
+                        enabled = !state.hasErrors.value,
+                    )
                 }
             )
         }

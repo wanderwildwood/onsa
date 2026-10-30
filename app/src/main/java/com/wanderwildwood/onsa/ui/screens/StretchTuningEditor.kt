@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
+import com.wanderwildwood.onsa.ui.theme.HouseButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -167,12 +168,11 @@ private fun StretchTuningPortrait(
                     }
                 },
                 actions = {
-                    TextButton(
+                    HouseButton(
+                        label = stringResource(id = R.string.save),
                         onClick = { onSaveClicked() },
-                        enabled = stretchTuningData.isMonotonic
-                    ) {
-                        TextMMD(stringResource(id = R.string.save))
-                    }
+                        enabled = stretchTuningData.isMonotonic,
+                    )
                 }
             )
         },
@@ -319,12 +319,11 @@ private fun StretchTuningLandscape(
                     }
                 },
                 actions = {
-                    TextButton(
+                    HouseButton(
+                        label = stringResource(id = R.string.save),
                         onClick = { onSaveClicked() },
-                        enabled = stretchTuningData.isMonotonic
-                    ) {
-                        TextMMD(stringResource(id = R.string.save))
-                    }
+                        enabled = stretchTuningData.isMonotonic,
+                    )
                 }
             )
         },
