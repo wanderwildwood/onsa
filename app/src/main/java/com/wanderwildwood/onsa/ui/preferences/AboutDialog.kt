@@ -42,6 +42,10 @@ import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.BuildConfig
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
+import com.wanderwildwood.onsa.ui.theme.EInkDialog
+import com.wanderwildwood.onsa.ui.LicencesScreen
+import com.wanderwildwood.onsa.ui.rememberLicencesData
+import com.wanderwildwood.onsa.ui.rememberLicencesLabels
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import android.content.Intent
 import android.net.Uri
@@ -70,6 +74,13 @@ fun AboutDialog(
     onDismiss: () -> Unit = {}
 ) {
     var page by rememberSaveable { mutableIntStateOf(MAIN) }
+    if (page == LICENCES) {
+        val room = (androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp * 0.62f).dp
+        EInkDialog(onDismiss = { page = MAIN }) {
+            LicencesScreen(rememberLicencesData(), rememberLicencesLabels(), onBack = { page = MAIN }, modifier = Modifier.fillMaxWidth().height(room + 110.dp))
+        }
+        return
+    }
     EInkAlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
@@ -87,20 +98,17 @@ fun AboutDialog(
                 when (page) {
                     PRIVACY -> stringResource(R.string.about_privacy_title)
                     TERMS -> stringResource(R.string.about_terms_title)
-                    LICENCES -> stringResource(R.string.licences_title)
                     else -> stringResource(R.string.about)
                 }
             )
         },
         text = {
             val resources = LocalContext.current.resources
-            val licenceTexts = if (page == LICENCES) rememberLicenceTexts() else emptyList()
             // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
             PagedColumn(modifier = Modifier.heightIn(max = (androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp - 200).coerceIn(120, 420).dp)) {
                 when (page) {
                     PRIVACY -> paragraphs(resources, R.string.about_privacy_text)
                     TERMS -> paragraphs(resources, R.string.about_terms_text)
-                    LICENCES -> licencesItems(licenceTexts)
                     else -> {
                         item {
                             TextMMD(stringResource(id = R.string.about_message, BuildConfig.VERSION_NAME))

@@ -513,7 +513,6 @@ fun Strings(
                     .nestedScroll(nestedScrollConnection),
                 contentPadding = PaddingValues(vertical = 4.dp),
                 state = state.listState,
-                isScrollbarVisible = false,
             ) {
                 items(numStrings, key = { strings?.get(it)?.key ?: it }) { index ->
                     val key = strings?.get(index)?.key ?: index

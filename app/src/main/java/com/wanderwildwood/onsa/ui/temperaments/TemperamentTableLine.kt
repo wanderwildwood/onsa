@@ -32,7 +32,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TextButton
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -458,10 +458,12 @@ fun TemperamentTableLine(
                         notePrintOptions = notePrintOptions,
                         modifier = Modifier.padding(top = 4.dp, start=4.dp, end = 4.dp)
                     )
-                    TextButton(
+                    OutlinedButtonMMD(
                         onClick = { onNoteEditorCloseClicked() },
-                        modifier = Modifier.fillMaxWidth()
-                        ) {
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 48.dp)
+                    ) {
                         Icon(
                             painter = painterResource(R.drawable.keyboard_arrow_up_24px),
                             contentDescription = stringResource(R.string.cd_close)
