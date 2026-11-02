@@ -1,214 +1,49 @@
-/*
-* Copyright 2024 Michael Moessner
-*
-* This file is part of Tuner.
-*
-* Tuner is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Tuner is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Tuner.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package com.wanderwildwood.onsa.ui.preferences
 
-import com.wanderwildwood.onsa.ui.theme.openLink
-import android.content.res.Resources
-import android.widget.Toast
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.mudita.mmd.components.buttons.OutlinedButtonMMD
-import com.wanderwildwood.onsa.ui.PagedColumn
-import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.BuildConfig
 import com.wanderwildwood.onsa.R
-import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
-import com.wanderwildwood.onsa.ui.theme.EInkDialog
+import com.wanderwildwood.onsa.ui.AboutData
+import com.wanderwildwood.onsa.ui.AboutLabels
+import com.wanderwildwood.onsa.ui.AboutLinkData
+import com.wanderwildwood.onsa.ui.AboutSection
+import com.wanderwildwood.onsa.ui.HouseAboutDialog
 import com.wanderwildwood.onsa.ui.LicencesScreen
+import com.wanderwildwood.onsa.ui.SOURCE_URL
 import com.wanderwildwood.onsa.ui.rememberLicencesData
 import com.wanderwildwood.onsa.ui.rememberLicencesLabels
-import com.wanderwildwood.onsa.ui.theme.TunerTheme
-import android.content.Intent
-import android.net.Uri
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-
-private const val MAIN = 0
-private const val PRIVACY = 1
-private const val TERMS = 2
-private const val LICENCES = 3
-
-@Composable
-fun AboutDialog(
-    modifier: Modifier = Modifier,
-    onDismiss: () -> Unit = {}
-) {
-    var page by rememberSaveable { mutableIntStateOf(MAIN) }
-    if (page == LICENCES) {
-        val room = (androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp * 0.62f).dp
-        EInkDialog(onDismiss = { page = MAIN }) {
-            LicencesScreen(rememberLicencesData(), rememberLicencesLabels(), onBack = { page = MAIN }, modifier = Modifier.fillMaxWidth().height(room + 110.dp))
-        }
-        return
-    }
-    EInkAlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            OutlinedButtonMMD(
-                onClick = { if (page == MAIN) onDismiss() else page = MAIN },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                TextMMD(
-                    stringResource(id = if (page == MAIN) R.string.acknowledged else R.string.about_back)
-                )
-            }
-        },
-        title = {
-            TextMMD(
-                when (page) {
-                    PRIVACY -> stringResource(R.string.about_privacy_title)
-                    TERMS -> stringResource(R.string.about_terms_title)
-                    else -> stringResource(R.string.about)
-                }
-            )
-        },
-        text = {
-            val resources = LocalContext.current.resources
-            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
-            PagedColumn(modifier = Modifier.heightIn(max = (androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp - 200).coerceIn(120, 420).dp)) {
-                when (page) {
-                    PRIVACY -> paragraphs(resources, R.string.about_privacy_text)
-                    TERMS -> paragraphs(resources, R.string.about_terms_text)
-                    else -> {
-                        item {
-                            TextMMD(stringResource(id = R.string.about_message, BuildConfig.VERSION_NAME))
-                        }
-                        item { NavRow(stringResource(R.string.about_privacy_title)) { page = PRIVACY } }
-                        item { NavRow(stringResource(R.string.about_terms_title)) { page = TERMS } }
-                        item { NavRow(stringResource(R.string.licences_title)) { page = LICENCES } }
-                        item {
-                            Llama()
-                        }
-                    }
-                }
-            }
-        },
-    )
-}
-
-/** A text's paragraphs, one list row each, so a page turns on whole rows. */
-private fun LazyListScope.paragraphs(resources: Resources, text: Int) {
-    resources.getString(text).split("\n\n").forEach { paragraph ->
-        item {
-            TextMMD(paragraph, modifier = Modifier.padding(bottom = 8.dp))
-        }
-    }
-}
-
-/** A row that opens a page of its own: 48 dp tall to press, with an arrow at the end. */
-@Composable
-private fun NavRow(text: String, onPress: () -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable(onClick = onPress),
-    ) {
-        TextMMD(text, style = MaterialTheme.typography.bodyLarge)
-        TextMMD("\u203A", style = MaterialTheme.typography.bodyLarge)
-    }
-}
-
-@Preview(widthDp = 300, heightDp = 500)
-@Composable
-private fun AboutDialogTest() {
-    TunerTheme {
-        AboutDialog()
-    }
-}
 
 /**
- * A llama at the foot of the About, which opens the page a donation goes to.
- * It shares one line with the site's name, which opens the site; the llama and its
- * words open the page.
- *
- * Three words rather than an address: a verb and an object, so what happens when you press
- * them is not a surprise even though the page is not named. The drawing is his own, and it is
- * ink rather than an emoji, which is a colour glyph and reaches the panel as a pale smudge.
- *
- * The Kompakt may have nothing registered for a web address, so the intent is allowed to fail
- * quietly rather than take the dialog down with it.
+ * This app's About: only the words and the address. The dialog, its one Close button, the
+ * Licences row, the links and the llama are the shared HouseAbout.kt, the same in every app.
  */
 @Composable
-private fun Llama() {
+fun AboutDialog(modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
     val context = LocalContext.current
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            // The site's address opens the site, the way the llama beside it opens its page.
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .clickable {
-                    openLink(context, "https://wanderthe.dev", context.getString(R.string.about_no_browser_address, "wanderthe.dev"))
-                }
-                .heightIn(min = 48.dp)
-                .padding(vertical = 4.dp),
-        ) {
-            TextMMD("wanderthe.dev")
-        }
-        Spacer(Modifier.width(6.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .clickable {
-                    // Straight to the checkout. The Donate button on the site only leads
-                    // here anyway, so the page in between is a press the reader does not need.
-                    // The short square.link form, not the long checkout.square.site address it
-                    // redirects to -- the short one is what the site itself links to, so a
-                    // regenerated checkout follows it and a published app does not break.
-                    openLink(context, "https://square.link/u/AGu8oT10", context.getString(R.string.about_no_browser_address, "square.link/u/AGu8oT10"))
-                }
-                .heightIn(min = 48.dp)
-                .padding(vertical = 4.dp),
-        ) {
-            Image(
-                painter = painterResource(R.drawable.llama),
-                contentDescription = null,
-                modifier = Modifier.size(22.dp),
-            )
-            Spacer(Modifier.width(6.dp))
-            TextMMD(stringResource(R.string.about_feed_the_llamas))
-        }
+    val data = AboutData(
+        title = stringResource(R.string.about_title, BuildConfig.VERSION_NAME),
+        sections = listOf(
+            AboutSection(stringResource(R.string.about_privacy_title), stringResource(R.string.about_privacy_text)),
+            AboutSection(stringResource(R.string.about_terms_title), stringResource(R.string.about_terms_text)),
+            AboutSection(null, stringResource(R.string.about_licence)),
+            AboutSection(null, stringResource(R.string.about_after)),
+        ),
+        sourceUrl = SOURCE_URL,
+        links = listOf(
+            AboutLinkData("codeberg.org/thetwom/Tuner", "https://codeberg.org/thetwom/Tuner"),
+            AboutLinkData("github.com/heavencanthandle/onsa", "https://github.com/heavencanthandle/onsa"),
+        ),
+    )
+    val labels = AboutLabels(
+        close = stringResource(R.string.about_close),
+        licences = stringResource(R.string.licences_title),
+        feedTheLlamas = stringResource(R.string.about_feed_the_llamas),
+        noBrowser = { address -> context.getString(R.string.about_no_browser_address, address) },
+    )
+    HouseAboutDialog(data, labels, R.drawable.llama, onDismiss) { modifier, back ->
+        LicencesScreen(rememberLicencesData(), rememberLicencesLabels(), onBack = back, modifier = modifier)
     }
 }

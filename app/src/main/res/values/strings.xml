@@ -34,7 +34,10 @@
         <item quantity="other">Average over %d pitch results</item>
     </plurals>
     <string name="about">About</string>
-    <string name="about_message">Tuner\nVersion: %s\nLicense: GPLv3 or later\n\nAfter Tuner by Michael Moessner\nhttps://codeberg.org/thetwom/Tuner\n\nBanjo tunings by carefulcarpenter\nhttps://github.com/heavencanthandle/onsa</string>
+    <string name="about_title">Tuner %1$s</string>
+    <string name="about_close">Close</string>
+    <string name="about_licence">GNU General Public License v3 or later</string>
+    <string name="about_after">After Tuner by Michael Moessner. Banjo tunings by carefulcarpenter.</string>
     <string name="reset_all_settings">Reset all settings</string>
     <!-- What the row says once it is armed. The warning takes the dash and the question
          follows a semicolon; an armed row disarms itself after six seconds. -->
@@ -402,9 +405,8 @@
     <string name="about_privacy_text">The microphone is used only while a tuner, the instrument editor or the reference-pitch Detect button is open. The sound is analysed for pitch as it arrives and is not stored.\n\nIf you switch on the optional recording, the last seconds are held in memory and saved only where you choose.\n\nYour settings, instruments and temperaments stay on this phone. The app has no internet access, so nothing is sent anywhere, and nothing is collected about you.\n\nThere are no ads, no analytics and no tracking. Backups and exports go only where you choose to save them.</string>
     <string name="about_terms_title">Terms</string>
     <string name="about_terms_text">This app is free software under the GNU General Public License v3 or later. It comes with no warranty: use it at your own risk.</string>
-    <string name="about_feed_the_llamas">feed the llamas</string>
+    <string name="about_feed_the_llamas">Feed the llamas</string>
     <!-- Toast when the donation link cannot be opened -->
-    <string name="about_no_browser">No browser is installed.</string>
 
     <!-- ============================================================ -->
     <!-- Icon descriptions, read aloud by a screen reader and never shown on screen.
@@ -462,7 +464,6 @@
     <string name="cd_stop_frequency_detection">stop frequency detection</string>
 
     <!-- About: Back out of a page of its own -->
-    <string name="about_back">Back</string>
     <!-- Licences page, reached from About -->
     <string name="licences_title">Licences</string>
     <string name="licences_back">Back</string>
