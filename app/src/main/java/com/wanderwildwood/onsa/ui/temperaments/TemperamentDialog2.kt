@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -97,6 +98,7 @@ private fun rememberImportExportCallbacks(
     onLoadTemperaments: (temperaments: List<EditableTemperament>) -> Unit
 ): OverflowMenuCallbacks {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val stateUpdated by rememberUpdatedState(newValue = state)
     val onLoadTemperamentsUpdated by rememberUpdatedState(newValue = onLoadTemperaments)
 
@@ -112,13 +114,13 @@ private fun rememberImportExportCallbacks(
                 Toast.makeText(
                     context,
                     if (written)
-                        context.resources.getQuantityString(
+                        resources.getQuantityString(
                             R.plurals.database_num_saved,
                             temperaments.size,
                             temperaments.size,
                             filename
                         )
-                    else context.getString(R.string.failed_to_archive_items),
+                    else resources.getString(R.string.failed_to_archive_items),
                     Toast.LENGTH_LONG).show()
             }
             stateUpdated.listData.clearSelectedItems()
