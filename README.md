@@ -2,11 +2,11 @@
 
 音叉 *onsa*
 
-A chromatic and instrument tuner for an E Ink phone. Black on white, no colour anywhere,
+A chromatic and instrument tuner for an E Ink phone. Black on white, no color anywhere,
 and the screen stays awake while you play.
 
 Built for the [Mudita Kompakt](https://mudita.com/products/kompakt/), whose 4.3" panel has
-sixteen greys, a slow redraw, and is read at arm's length on a music stand.
+sixteen grays, a slow redraw, and is read at arm's length on a music stand.
 
 ## Screenshots
 
@@ -26,15 +26,15 @@ None of that is mine. What is mine is what it looks like and how it behaves on t
 
 ## What changed for E Ink
 
-**One appearance.** Light, dark, black-night and dynamic colour are gone. The panel has one
+**One appearance.** Light, dark, black-night and dynamic color are gone. The panel has one
 appearance — dark marks on a light ground, in daylight — and a theme setting the hardware
-cannot honour is a setting that lies. The Appearance row is gone from settings with it.
+cannot honor is a setting that lies. The Appearance row is gone from settings with it.
 
 **In tune is not green.** Upstream says in-tune and out-of-tune in green and red. On sixteen
-greys those arrive as two near-identical mid-tones, so an app leaning on them says nothing
+grays those arrive as two near-identical mid-tones, so an app leaning on them says nothing
 and says it confidently. Both are black here, and the reading is carried by where the
-needle sits against the centre line — which is how a mechanical tuner did it before anyone
-had a colour display.
+needle sits against the center line — which is how a mechanical tuner did it before anyone
+had a color display.
 
 **The screen stays on by default.** Upstream makes this a setting and defaults it off; it is
 still a setting, and it now starts on. A tuner sits on a music stand and is glanced at
@@ -89,7 +89,7 @@ For updates without doing this by hand, add this repository to
 
     https://github.com/wanderwildwood/onsa
 
-## Licence
+## License
 
 **GNU General Public License v3.0 or later.** See [LICENSE](LICENSE).
 
