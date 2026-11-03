@@ -97,6 +97,9 @@ private class ResizeableArray(private var maxNumValues: Int) {
 
     val size get() = values.size
     fun add(value: Float) {
+        if (maxNumValues == 0)
+            return
+
         val c = values.coordinates
         if (c.size == maxNumValues)
             c.removeAt(0)
@@ -157,12 +160,12 @@ class PitchHistoryState(
          * @param windowSize Number of samples for one chunk of data which is used for evaluation.
          * @param overlap Overlap between to succeeding data chunks, where 0 is no overlap and 1 is
          *   100% overlap (1.0 is of course not allowed).
-         * @return Number of samples, which must be stored in the pitch history, so that the we match
+         * @return Number of samples, which must be stored in the pitch history, so that we match
          *   the given duration.
          */
         fun computePitchHistorySize(
             duration: Float, sampleRate: Int, windowSize: Int, overlap: Float
-        ) = (duration / (windowSize.toFloat() / sampleRate.toFloat() * (1.0f - overlap))).roundToInt()
+        ) = max(1, (duration / (windowSize.toFloat() / sampleRate.toFloat() * (1.0f - overlap))).roundToInt())
     }
 }
 

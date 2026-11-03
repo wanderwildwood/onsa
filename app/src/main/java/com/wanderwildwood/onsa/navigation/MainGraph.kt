@@ -71,22 +71,22 @@ import com.wanderwildwood.onsa.stretchtuning.StretchTuning
 import com.wanderwildwood.onsa.ui.screens.StretchTuningOverview
 import com.wanderwildwood.onsa.viewmodels.StretchTuningOverviewViewModel
 
-@Composable
-private fun createTemperamentDialogViewModel(
-    controller: NavController, backStackEntry: NavBackStackEntry
-): TemperamentDialog2ViewModel? {
-    val parentEntry = remember(backStackEntry) {
-        try {
-            controller.getBackStackEntry<TemperamentDialogRoute>()
-        } catch (_: IllegalArgumentException) {
-            null
-        }
-    }
-    return if (parentEntry == null)
-        null
-    else
-        hiltViewModel<TemperamentDialog2ViewModel>(parentEntry)
-}
+//@Composable
+//private fun createTemperamentDialogViewModel(
+//    controller: NavController, backStackEntry: NavBackStackEntry
+//): TemperamentDialog2ViewModel? {
+//    val parentEntry = remember(backStackEntry) {
+//        try {
+//            controller.getBackStackEntry<TemperamentDialogRoute>()
+//        } catch (_: IllegalArgumentException) {
+//            null
+//        }
+//    }
+//    return if (parentEntry == null)
+//        null
+//    else
+//        hiltViewModel<TemperamentDialog2ViewModel>(parentEntry)
+//}
 
 
 fun NavGraphBuilder.mainGraph(
@@ -264,12 +264,12 @@ fun NavGraphBuilder.mainGraph(
         )
     }
 
-    composable<TemperamentDialogRoute> { route ->
+    composable<TemperamentDialogRoute> { //route ->
         val resources = LocalResources.current
-        val viewModel: TemperamentDialog2ViewModel = createTemperamentDialogViewModel(
-            controller = controller,
-            backStackEntry = route
-        )!!
+        val viewModel: TemperamentDialog2ViewModel = hiltViewModel() // createTemperamentDialogViewModel(
+            // controller = controller,
+            // backStackEntry = route
+        //)!!
         val context = LocalContext.current
 
         TemperamentsDialog2(
