@@ -50,16 +50,19 @@ fun Label(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
-    onClick: () -> Unit = {}
+    onClick: (() -> Unit)? = null
 ) {
     Surface(
         modifier = modifier
             .clip(MaterialTheme.shapes.extraSmall)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
-                enabled = true,
-                onClick = onClick
+            .then(
+                // Only a label that does something is a touch target.
+                if (onClick != null) Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(),
+                    enabled = true,
+                    onClick = onClick
+                ) else Modifier
             ),
         color = if (color == Color.Unspecified) MaterialTheme.colorScheme.inverseSurface else color
     ) {

@@ -139,7 +139,7 @@ fun NoteDetector(
 
     val singleNoteSize = DpSize(
         if (minSingleNoteSize.width >= 48.dp) minSingleNoteSize.width else 48.dp,
-        if (minSingleNoteSize.height >= 40.dp) minSingleNoteSize.height else 40.dp
+        if (minSingleNoteSize.height >= 48.dp) minSingleNoteSize.height else 48.dp
     )
 
     BoxWithConstraints(modifier = modifier) {

@@ -200,13 +200,8 @@ fun ReferenceNoteDialog(
 
     EInkAlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = {
-            OutlinedButtonMMD(
-                onClick = confirm,
-                enabled = frequencyOk,
-                modifier = Modifier.fillMaxWidth(),
-            ) { TextMMD(stringResource(id = R.string.done)) }
-        },
+        // Done sits right under the frequency field (below), so the keyboard cannot cover it.
+        confirmButton = {},
         dismissButton = {
             OutlinedButtonMMD(
                 onClick = onDismiss,
@@ -278,6 +273,14 @@ fun ReferenceNoteDialog(
                             null
                         }
                     )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedButtonMMD(
+                        onClick = confirm,
+                        enabled = frequencyOk,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { TextMMD(stringResource(id = R.string.done)) }
                 }
                 item {
                     if (permissionGranted) {

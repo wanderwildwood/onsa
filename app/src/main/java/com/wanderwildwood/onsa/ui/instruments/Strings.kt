@@ -386,7 +386,7 @@ fun Strings(
         notePrintOptions = notePrintOptions,
         fontSize = fontSizeResolved,
         octaveRange = minOctave..maxOctave
-    ) + DpSize(16.dp, 4.dp)
+    ).let { DpSize(maxOf(it.width + 16.dp, 48.dp), maxOf(it.height + 4.dp, 48.dp)) }
 
     val tuningColor = remember(tuningState, inTuneColor, outOfTuneColor, unknownTuningColor) {
         when (tuningState) {
