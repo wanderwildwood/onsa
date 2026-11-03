@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -201,6 +202,7 @@ fun NavGraphBuilder.mainGraph(
         val active by viewModel.instruments.currentInstrument.collectAsStateWithLifecycle()
         val tunings = remember(group, custom) { viewModel.tuningsOf(group, custom) }
         val context = LocalContext.current
+        val resources = LocalResources.current
         val snackbarHostState = remember { SnackbarHostStateMMD() }
         val scope = rememberCoroutineScope()
         InstrumentGroupPage(
@@ -223,8 +225,8 @@ fun NavGraphBuilder.mainGraph(
                 viewModel.deleteCustomInstrument(tuning)
                 scope.launch {
                     val result = snackbarHostState.showSnackbar(
-                        context.resources.getQuantityString(R.plurals.items_deleted, 1, 1),
-                        actionLabel = context.getString(R.string.undo),
+                        resources.getQuantityString(R.plurals.items_deleted, 1, 1),
+                        actionLabel = resources.getString(R.string.undo),
                         duration = SnackbarDurationMMD.Long
                     )
                     if (result == SnackbarResultMMD.ActionPerformed)

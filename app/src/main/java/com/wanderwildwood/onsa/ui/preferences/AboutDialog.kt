@@ -2,7 +2,7 @@ package com.wanderwildwood.onsa.ui.preferences
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import com.wanderwildwood.onsa.BuildConfig
 import com.wanderwildwood.onsa.R
@@ -22,7 +22,7 @@ import com.wanderwildwood.onsa.ui.rememberLicencesLabels
  */
 @Composable
 fun AboutDialog(modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val data = AboutData(
         title = stringResource(R.string.about_title, BuildConfig.VERSION_NAME),
         sections = listOf(
@@ -41,7 +41,7 @@ fun AboutDialog(modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
         close = stringResource(R.string.about_close),
         licences = stringResource(R.string.licences_title),
         feedTheLlamas = stringResource(R.string.about_feed_the_llamas),
-        noBrowser = { address -> context.getString(R.string.about_no_browser_address, address) },
+        noBrowser = { address -> resources.getString(R.string.about_no_browser_address, address) },
     )
     HouseAboutDialog(data, labels, R.drawable.llama, onDismiss) { modifier, back ->
         LicencesScreen(rememberLicencesData(), rememberLicencesLabels(), onBack = back, modifier = modifier)

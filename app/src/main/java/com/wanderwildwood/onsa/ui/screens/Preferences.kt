@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,6 +75,7 @@ fun Preferences(
 ) {
     val pref = viewModel.pref
     val context = LocalContext.current
+    val resources = LocalResources.current
 
     val notePrintOptions by pref.notePrintOptions.collectAsStateWithLifecycle()
     val musicalScale by viewModel.musicalScale.collectAsStateWithLifecycle()
@@ -208,8 +210,8 @@ fun Preferences(
                 SimplePreference(
                     name = stringResource(id = R.string.notation),
                     supporting = {
-                        val summary = remember(notePrintOptions, context) {
-                            "${context.getString(notePrintOptions.notationType.stringResourceId)}, ${context.getString(notePrintOptions.octaveNotation.stringResourceId)}"
+                        val summary = remember(notePrintOptions, resources) {
+                            "${resources.getString(notePrintOptions.notationType.stringResourceId)}, ${resources.getString(notePrintOptions.octaveNotation.stringResourceId)}"
                         }
                         TextMMD(summary)
                     },
