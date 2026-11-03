@@ -40,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.InstrumentGroup
+import com.wanderwildwood.onsa.instruments.stringsForNewTuning
 import com.wanderwildwood.onsa.instruments.toInstrumentGroup
 import com.wanderwildwood.onsa.ui.instruments.InstrumentGroupPage
 import com.wanderwildwood.onsa.instruments.Instrument
@@ -235,7 +236,8 @@ fun NavGraphBuilder.mainGraph(
                 val newInstrument = Instrument(
                     nameResource = null,
                     name = "",
-                    strings = arrayOf(musicalScale.referenceNote),
+                    // As many strings as the instrument has, from its first built-in tuning.
+                    strings = stringsForNewTuning(group, arrayOf(musicalScale.referenceNote)),
                     icon = group.icon,
                     stableId = Instrument.NO_STABLE_ID,
                     group = group

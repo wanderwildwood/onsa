@@ -37,6 +37,7 @@ import com.wanderwildwood.onsa.tuner.Tuner
 import com.wanderwildwood.onsa.ui.instruments.StringWithInfo
 import com.wanderwildwood.onsa.ui.instruments.StringsState
 import com.wanderwildwood.onsa.ui.notes.NoteDetectorState
+import com.wanderwildwood.onsa.instruments.stringsForNewTuning
 import com.wanderwildwood.onsa.ui.instruments.InstrumentEditorData
 import kotlinx.collections.immutable.mutate
 import kotlinx.collections.immutable.persistentListOf
@@ -61,6 +62,14 @@ class InstrumentEditorViewModel @AssistedInject constructor(
     override val icon = MutableStateFlow(instrument.icon)
     override val name = MutableStateFlow(instrument.getNameString(null))
     override val group = MutableStateFlow(instrument.group)
+
+    /**
+     * A new tuning's strings follow the instrument it is filed under until one of them is
+     * changed: pick Banjo for a blank new tuning and it has a banjo's five strings. A copy, or
+     * a tuning being edited, keeps its own.
+     */
+    private var stringsFollowInstrument =
+        instrument.stableId == Instrument.NO_STABLE_ID && instrument.getNameString(null).isEmpty()
 
     override val strings = MutableStateFlow(
         instrument.strings.mapIndexed { index, string ->
@@ -93,6 +102,11 @@ class InstrumentEditorViewModel @AssistedInject constructor(
                 icon.value == this.group.value?.icon
         this.group.value = group
         if (group != null && followsInstrument) icon.value = group.icon
+        if (group != null && stringsFollowInstrument) {
+            val notes = stringsForNewTuning(group, strings.value.map { it.note }.toTypedArray())
+            strings.value = notes.mapIndexed { index, note -> StringWithInfo(note, index) }.toPersistentList()
+            selectedStringIndex.value = notes.size - 1
+        }
     }
 
     override fun selectString(key: Int) {
@@ -101,6 +115,7 @@ class InstrumentEditorViewModel @AssistedInject constructor(
     }
 
     override fun modifySelectedString(note: MusicalNote) {
+        stringsFollowInstrument = false
         val stringsValue = strings.value
         val index = selectedStringIndex.value
         if (index in stringsValue.indices) {
@@ -113,6 +128,7 @@ class InstrumentEditorViewModel @AssistedInject constructor(
     }
 
     override fun addNote() {
+        stringsFollowInstrument = false
         val stringsValue = strings.value
         if (stringsValue.size == 0) {
             strings.value = persistentListOf(StringWithInfo(initializerNote.value, 1))
@@ -129,6 +145,7 @@ class InstrumentEditorViewModel @AssistedInject constructor(
     }
 
     override fun deleteNote() {
+        stringsFollowInstrument = false
         val stringsValue = strings.value
         val index = selectedStringIndex.value
         if (index in stringsValue.indices) {

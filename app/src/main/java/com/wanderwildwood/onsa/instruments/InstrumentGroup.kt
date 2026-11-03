@@ -2,6 +2,7 @@ package com.wanderwildwood.onsa.instruments
 
 import androidx.annotation.StringRes
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.notenames.MusicalNote
 
 /**
  * The instrument a tuning belongs to.
@@ -34,3 +35,16 @@ enum class InstrumentGroup(
 /** The group a saved name stands for, or null for one this version does not know. */
 fun String.toInstrumentGroup(): InstrumentGroup? =
     InstrumentGroup.entries.firstOrNull { it.name == this.trim() }
+
+/**
+ * The strings a new tuning of [group] starts with: those of the instrument's first built-in
+ * tuning (standard guitar, open G on a banjo), so it already has as many strings as the
+ * instrument and only the ones that differ need changing. [fallback] for no instrument, or one
+ * with no built-in tuning.
+ */
+fun stringsForNewTuning(
+    group: InstrumentGroup?,
+    fallback: Array<MusicalNote>,
+    database: List<Instrument> = instrumentDatabase
+): Array<MusicalNote> =
+    group?.let { g -> database.firstOrNull { it.group == g }?.strings?.copyOf() } ?: fallback
