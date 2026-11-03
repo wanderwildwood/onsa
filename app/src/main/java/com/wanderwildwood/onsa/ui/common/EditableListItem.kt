@@ -203,7 +203,7 @@ fun EditableListItem(
                                     onOptionsClicked(ListItemTask.Info)
                                 }
                             )
-                            HorizontalDividerMMD()
+                            DottedRule()
                         }
                         if (!readOnly) {
                             DropdownMenuItemMMD(
@@ -236,7 +236,7 @@ fun EditableListItem(
                             )
                         }
                         if (!readOnly) {
-                            HorizontalDividerMMD()
+                            DottedRule()
                             DropdownMenuItemMMD(
                                 text = { TextMMD(stringResource(id = R.string.delete)) },
                                 leadingIcon = {

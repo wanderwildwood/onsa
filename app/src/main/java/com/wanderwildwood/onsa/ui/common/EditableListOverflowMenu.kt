@@ -76,7 +76,7 @@ fun OverflowMenu(
                     expanded = false
                 }
             )
-            HorizontalDividerMMD()
+            DottedRule()
             DropdownMenuItemMMD(
                 text = { TextMMD(stringResource(id = R.string.share)) },
                 leadingIcon = {
@@ -117,7 +117,7 @@ fun OverflowMenu(
                 }
             )
             if (showSettings) {
-                HorizontalDividerMMD()
+                DottedRule()
                 DropdownMenuItemMMD(
                     text = { TextMMD(stringResource(id = R.string.settings)) },
                     leadingIcon = {
