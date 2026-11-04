@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
+import com.wanderwildwood.onsa.ui.theme.HouseTypeFloor
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.BorderStroke
@@ -53,7 +54,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.takeOrElse
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.notenames.MusicalNote
@@ -147,7 +147,7 @@ fun NoteSelector(
 ) {
     val fontSizeResolved = fontSize.takeOrElse {
         (textStyle?.fontSize ?: TextUnit.Unspecified).takeOrElse {
-            LocalTextStyle.current.fontSize.takeOrElse { 12.sp }
+            LocalTextStyle.current.fontSize.takeOrElse { HouseTypeFloor }
         }
     }
     val fontWeightResolved = textStyle?.fontWeight
@@ -216,7 +216,7 @@ fun NoteSelector(
 ) {
     val fontSizeResolved = fontSize.takeOrElse {
         (textStyle?.fontSize ?: TextUnit.Unspecified).takeOrElse {
-            LocalTextStyle.current.fontSize.takeOrElse { 12.sp }
+            LocalTextStyle.current.fontSize.takeOrElse { HouseTypeFloor }
         }
     }
     val fontWeightResolved = textStyle?.fontWeight

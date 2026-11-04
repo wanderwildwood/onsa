@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
+import com.wanderwildwood.onsa.ui.theme.HouseTypeFloor
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -117,7 +118,7 @@ fun NoteDetector(
 ) {
     val fontSizeResolved = fontSize.takeOrElse {
         (textStyle?.fontSize ?: TextUnit.Unspecified).takeOrElse {
-            LocalTextStyle.current.fontSize.takeOrElse { 12.sp }
+            LocalTextStyle.current.fontSize.takeOrElse { HouseTypeFloor }
         }
     }
     val fontWeightResolved = textStyle?.fontWeight

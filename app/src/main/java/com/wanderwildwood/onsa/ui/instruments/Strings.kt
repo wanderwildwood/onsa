@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.instruments
 
+import com.wanderwildwood.onsa.ui.theme.HouseTypeFloor
 import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.clickable
@@ -68,7 +69,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.takeOrElse
 import com.wanderwildwood.onsa.notedetection.TuningState
 import com.wanderwildwood.onsa.notenames.MusicalNote
@@ -346,7 +346,7 @@ fun Strings(
 ) {
     val scope = rememberCoroutineScope()
     val fontSizeResolved = fontSize.takeOrElse {
-        LocalTextStyle.current.fontSize.takeOrElse { 12.sp }
+        LocalTextStyle.current.fontSize.takeOrElse { HouseTypeFloor }
     }
 
     val minOctave = remember(strings, musicalScale) {

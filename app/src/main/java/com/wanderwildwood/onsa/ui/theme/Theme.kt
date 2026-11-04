@@ -98,6 +98,6 @@ fun TunerTheme(
         LocalTunerColors provides OnLightTunerColors,
         LocalCursorBlinkEnabled provides false
     ) {
-        ThemeMMD(colorScheme = monochrome) { ArmedScope(content = content) }
+        ThemeMMD(colorScheme = monochrome, typography = houseTypography) { ArmedScope(content = content) }
     }
 }

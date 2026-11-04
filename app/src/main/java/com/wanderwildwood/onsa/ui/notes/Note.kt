@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
+import com.wanderwildwood.onsa.ui.theme.HouseTypeFloor
 import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -433,7 +434,7 @@ fun Note(
     val resources = LocalResources.current
     val fontSizeResolved = fontSize.takeOrElse {
         (style?.fontSize ?: TextUnit.Unspecified).takeOrElse {
-            LocalTextStyle.current.fontSize.takeOrElse { 12.sp }
+            LocalTextStyle.current.fontSize.takeOrElse { HouseTypeFloor }
         }
     }
     val fontWeightResolved = fontWeight ?: style?.fontWeight
@@ -477,7 +478,7 @@ fun NoteWithEnharmonic(
     val resources = LocalResources.current
     val fontSizeResolved = fontSize.takeOrElse {
         (style?.fontSize ?: TextUnit.Unspecified).takeOrElse {
-            LocalTextStyle.current.fontSize.takeOrElse { 12.sp }
+            LocalTextStyle.current.fontSize.takeOrElse { HouseTypeFloor }
         }
     }
     val fontWeightResolved = fontWeight ?: style?.fontWeight
