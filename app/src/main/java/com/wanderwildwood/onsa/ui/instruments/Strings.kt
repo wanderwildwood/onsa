@@ -278,7 +278,8 @@ class StringsState(firstVisibleIndex: Int) {
             val height = listState.layoutInfo.viewportSize.height
             val itemHeight = listState.layoutInfo.visibleItemsInfo.getOrNull(0)?.size ?: 2
             val scrollOffset = (height - itemHeight) / 2 + listState.layoutInfo.viewportStartOffset
-            listState.animateScrollToItem(index, -scrollOffset)
+            // A jump, not a glide: on e-ink every step of a glide is one more redraw.
+            listState.scrollToItem(index, -scrollOffset)
         }
     }
 }
