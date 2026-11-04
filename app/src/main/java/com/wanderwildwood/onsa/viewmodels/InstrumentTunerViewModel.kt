@@ -42,9 +42,14 @@ import com.wanderwildwood.onsa.ui.notes.NotePrintOptions2
 import com.wanderwildwood.onsa.ui.plot.GestureBasedViewPort
 import com.wanderwildwood.onsa.ui.screens.InstrumentTunerData
 import com.wanderwildwood.onsa.ui.tuning.PitchHistoryState
+import com.wanderwildwood.onsa.ui.tuning.ShownReading
+import com.wanderwildwood.onsa.ui.tuning.ShownReadingGate
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -68,11 +73,19 @@ class InstrumentTunerViewModel @Inject constructor (
 
     override val pitchHistoryGestureBasedViewPort: GestureBasedViewPort
             = GestureBasedViewPort()
+    // The pitch detection updates these at its full rate; the screen sees them through
+    // [shownGate], at most twice a second and only when what it draws would change.
+    private var liveTuningState = TuningState.Unknown
+    private var liveTargetNote = autodetectedTargetNote
+
     override var tuningState by mutableStateOf(TuningState.Unknown)
         private set
 
     override var targetNote by mutableStateOf(autodetectedTargetNote)
         private set
+
+    private val shownGate = ShownReadingGate(liveReading())
+    private var shownClock: Job? = null
     override var targetNoteForLockButton: MusicalNote by mutableStateOf(autodetectedTargetNote)
         private set
 
@@ -96,12 +109,14 @@ class InstrumentTunerViewModel @Inject constructor (
         // leave tuningState unknown in case, this should only be changed by the
         // frequencyEvaluator callback
         resetTuningState(null)
+        showNow()
     }
 
     override fun onClearFixedTargetClicked() {
         selectedNoteKey = null
         handleTargetNoteOnSelectionChange(selectedNoteKey)
         resetTuningState(null)
+        showNow()
     }
 
     private val tuner = Tuner(
@@ -114,7 +129,7 @@ class InstrumentTunerViewModel @Inject constructor (
 
             override fun onFrequencyEvaluated(result: FrequencyEvaluationResult) {
                 if (result.smoothedFrequency > 0f) {
-                    pitchHistoryState.addFrequency(result.smoothedFrequency)
+                    pitchHistoryState.record(result.smoothedFrequency)
                     currentSmoothedFrequency = result.smoothedFrequency
 
                     result.target?.let { tuningTarget ->
@@ -123,6 +138,7 @@ class InstrumentTunerViewModel @Inject constructor (
                 }
                 //Log.v("Tuner", "ScientificTunerViewModel: dt = ${result.timeSinceThereIsNoFrequencyDetectionResult}")
                 resetTuningState(result.timeSinceThereIsNoFrequencyDetectionResult)
+                shownGate.offer(liveReading())
             }
         }
     )
@@ -155,16 +171,49 @@ class InstrumentTunerViewModel @Inject constructor (
     }
     override fun startTuner() {
         tuner.connect()
+        if (shownClock?.isActive != true) {
+            shownClock = viewModelScope.launch {
+                while (isActive) {
+                    delay(ShownReadingGate.INTERVAL_MS)
+                    shownGate.take()?.let { show(it) }
+                }
+            }
+        }
     }
     override fun stopTuner() {
         tuner.disconnect()
+        shownClock?.cancel()
+        shownClock = null
+    }
+
+    private fun liveReading(): ShownReading {
+        val scale = musicalScale.value
+        return ShownReading.of(
+            liveTargetNote,
+            liveTuningState,
+            currentSmoothedFrequency,
+            scale.getNoteFrequency(scale.getNoteIndex2(liveTargetNote))
+        )
+    }
+
+    private fun show(reading: ShownReading) {
+        targetNote = reading.targetNote
+        tuningState = reading.tuningState
+        pitchHistoryState.publish()
+    }
+
+    /** A tap on a string or the lock button: shown at once, not on the next tick. */
+    private fun showNow() {
+        val reading = liveReading()
+        shownGate.showNow(reading)
+        show(reading)
     }
 
     private fun handleTargetNoteOnSelectionChange(
         selectedNoteKey: Int? = null,
     ) {
         this.selectedNoteKey = selectedNoteKey
-        targetNote = if (selectedNoteKey == null) {
+        liveTargetNote = if (selectedNoteKey == null) {
             autodetectedTargetNote
         } else if (instrument.value.isChromatic) {
             musicalScale.value.getNote(
@@ -175,7 +224,7 @@ class InstrumentTunerViewModel @Inject constructor (
         }
 
         if (selectedNoteKey != null) {
-            targetNoteForLockButton = targetNote
+            targetNoteForLockButton = liveTargetNote
         }
     }
 
@@ -184,19 +233,19 @@ class InstrumentTunerViewModel @Inject constructor (
     ) {
         this.autodetectedTargetNote = autodetectedTargetNote
         if (selectedNoteKey == null)
-            targetNote = autodetectedTargetNote
+            liveTargetNote = autodetectedTargetNote
     }
 
     /** Only provide the timeWithoutFreqDetectionResult if available */
     private fun resetTuningState(timeSinceThereIsNoFrequencyDetectionResult: Float? = null) {
-        tuningState = if (timeSinceThereIsNoFrequencyDetectionResult == null
-            && tuningState == TuningState.Unknown) {
+        liveTuningState = if (timeSinceThereIsNoFrequencyDetectionResult == null
+            && liveTuningState == TuningState.Unknown) {
             TuningState.Unknown
         } else if (timeSinceThereIsNoFrequencyDetectionResult != null
             && timeSinceThereIsNoFrequencyDetectionResult > DURATION_FOR_MARKING_NOTEDETECTION_AS_INACTIVE) {
             TuningState.Unknown
         } else {
-            val noteIndex = musicalScale.value.getNoteIndex2(targetNote)
+            val noteIndex = musicalScale.value.getNoteIndex2(liveTargetNote)
             checkTuning(
                 currentSmoothedFrequency,
                 musicalScale.value.getNoteFrequency(noteIndex),

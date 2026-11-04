@@ -151,6 +151,20 @@ class PitchHistoryState(
         }
     }
 
+    /** Keep a value without telling the screen; [publish] does that. */
+    fun record(value: Float) {
+        history.add(value)
+        lastRecorded = value
+    }
+    private var lastRecorded: Float? = null
+
+    /** Show what has been [record]ed so far. */
+    fun publish() {
+        val value = lastRecorded ?: return
+        lineCoordinates = history.values
+        pointCoordinates = Offset(history.size - 1f, value)
+    }
+
     companion object {
         private const val PUBLISH_INTERVAL_MS = 100L
 
