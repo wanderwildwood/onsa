@@ -18,8 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.screens
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.wanderwildwood.onsa.ui.PagedColumn
 import com.mudita.mmd.components.lazy.LazyRowMMD
@@ -57,7 +55,7 @@ import com.wanderwildwood.onsa.viewmodels.PreferencesViewModel
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import androidx.compose.ui.platform.LocalResources
-import kotlinx.coroutines.delay
+import com.wanderwildwood.onsa.ui.theme.rememberArmedFlag
 
 @Composable
 fun Preferences(
@@ -372,15 +370,10 @@ fun Preferences(
             }
             item {
                 // The row asks, not a dialog. A dialog is two full-panel repaints to ask one
-                // question; the row is one, and it asks in the place the answer belongs. It
-                // disarms itself after six seconds, so a stray tap leaves nothing live.
-                var armed by remember { mutableStateOf(false) }
-                LaunchedEffect(armed) {
-                    if (armed) {
-                        delay(6000)
-                        armed = false
-                    }
-                }
+                // question; the row is one, and it asks in the place the answer belongs. It stays
+                // armed until the next other touch, Back or leaving, so a stray tap leaves
+                // nothing live and a slow reader is not rushed.
+                var armed by rememberArmedFlag()
                 SimplePreference(
                     name = stringResource(
                         id = if (armed) R.string.reset_all_settings_armed
