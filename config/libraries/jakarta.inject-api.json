@@ -1,0 +1,7 @@
+{
+  "uniqueId": "jakarta.inject:jakarta.inject-api",
+  "licenses": [
+    "Apache-2.0",
+    "jakarta.inject-api-notice"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "uniqueId": "banjo-tunings",
+  "name": "Banjo tunings",
+  "description": "The banjo tunings in the instrument list.",
+  "developers": [{ "name": "carefulcarpenter" }],
+  "website": "https://github.com/heavencanthandle/onsa",
+  "licenses": ["GPL-3.0-or-later"]
+}

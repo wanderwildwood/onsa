@@ -1,0 +1,14 @@
+{
+  "uniqueId": "gonville",
+  "name": "Gonville music symbols (modified)",
+  "description": "The music symbols (clefs, accidentals, notes) drawn in the app, from Simon Tatham's Gonville font, modified.",
+  "developers": [
+    {
+      "name": "Simon Tatham"
+    }
+  ],
+  "website": "https://www.chiark.greenend.org.uk/~sgtatham/gonville/",
+  "licenses": [
+    "gonville"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "uniqueId": "tuner-upstream",
+  "name": "Tuner, the app this is forked from",
+  "description": "The tuner itself: pitch detection, instruments, temperaments and the screens, from Tuner by Michael Moessner.",
+  "developers": [{ "name": "Michael Moessner" }],
+  "website": "https://codeberg.org/thetwom/Tuner",
+  "licenses": ["GPL-3.0-or-later"]
+}
