@@ -402,7 +402,7 @@
 
     <!-- The donation link label, beside a drawing of a llama. A fixed phrase: a verb and an object, so the reader knows what pressing it does -->
     <string name="about_privacy_title">Privacy</string>
-    <string name="about_privacy_text">The microphone is used only while a tuner, the instrument editor or the reference-pitch Detect button is open. The sound is analyzed for pitch as it arrives and is not stored.\n\nIf you switch on the optional recording, the last seconds are held in memory and saved only where you choose.\n\nYour settings, instruments and temperaments stay on this phone. The app has no internet access, so nothing is sent anywhere, and nothing is collected about you.\n\nThere are no ads, no analytics and no tracking. Backups and exports go only where you choose to save them.</string>
+    <string name="about_privacy_text">The microphone is used only while a tuner, the instrument editor or the reference-pitch Detect button is open. The sound is analyzed for pitch as it arrives and is not stored.\n\nIf you switch on the optional recording, the last seconds are held in memory and saved only where you choose.\n\nThe metronome does not use the microphone.\n\nYour settings, instruments, temperaments and saved tempos stay on this phone. The app has no internet access, so nothing is sent anywhere, and nothing is collected about you.\n\nThere are no ads, no analytics and no tracking. Backups and exports go only where you choose to save them.</string>
     <string name="about_terms_title">Terms</string>
     <string name="about_terms_text">This app is free software under the GNU General Public License v3 or later. It comes with no warranty: use it at your own risk.</string>
     <string name="about_feed_the_llamas">Feed the llamas</string>
@@ -484,4 +484,38 @@
     <string name="privacy_rights_title">Your rights</string>
     <string name="privacy_rights">Under the GDPR you can ask to see the data held about you, to have it corrected or deleted, to limit or object to its use, to take a copy with you, to withdraw consent, and to complain to a data protection authority. Since the app keeps what it stores only on your phone, you can do most of this yourself: delete or share your instruments and temperaments in the app, put every setting back with Reset all settings, clear the app\'s data in Android\'s settings, or uninstall the app.</string>
     <!-- /shared-about -->
+    <!-- Metronome: a screen of its own, opened from the tuner's top bar -->
+    <string name="metronome">Metronome</string>
+    <string name="cd_metronome">metronome</string>
+    <string name="metronome_bpm">bpm</string>
+    <string name="metronome_bpm_description">%1$d beats a minute; tap to type a tempo</string>
+    <string name="metronome_tempo">Tempo</string>
+    <string name="metronome_bpm_range">%1$d to %2$d beats a minute</string>
+    <string name="metronome_beats_in_a_bar">Beats in a bar</string>
+    <string name="metronome_accent">Accent the first beat</string>
+    <string name="metronome_subdivision">Between beats</string>
+    <string name="metronome_subdivision_none">Nothing</string>
+    <string name="metronome_subdivision_eighths">Eighths</string>
+    <string name="metronome_subdivision_triplets">Triplets</string>
+    <string name="metronome_subdivision_sixteenths">Sixteenths</string>
+    <string name="metronome_sound">Click</string>
+    <string name="metronome_sound_woodblock">Woodblock</string>
+    <string name="metronome_sound_claves">Claves</string>
+    <string name="metronome_sound_sticks">Sticks</string>
+    <string name="metronome_sound_hihat">Hi-hat</string>
+    <string name="metronome_sound_drum">Bass drum</string>
+    <string name="metronome_saved_tempos">Saved tempos</string>
+    <string name="metronome_tap">Tap</string>
+    <string name="metronome_start">Start</string>
+    <string name="metronome_stop">Stop</string>
+    <string name="metronome_cancel">Cancel</string>
+    <!-- Under the beat rings when beats come faster than twice a second: the e-ink panel is not asked to keep up -->
+    <string name="metronome_too_quick_to_show">Beats are shown up to 120 bpm</string>
+    <string name="metronome_playing">Metronome is playing</string>
+    <string name="metronome_notification_text">%1$d bpm, %2$d beats in a bar</string>
+    <string name="metronome_save_current">Save the current tempo</string>
+    <string name="metronome_nothing_saved">Nothing saved yet.</string>
+    <string name="metronome_preset_summary">%1$d bpm, %2$d beats</string>
+    <string name="metronome_name_tempo">Name this tempo</string>
+    <string name="metronome_delete_armed">Delete — tap again</string>
 </resources>

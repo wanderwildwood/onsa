@@ -52,6 +52,7 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanderwildwood.onsa.ui.misc.AudioPermissionBanner
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.ui.misc.MetronomeButton
 import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentIcon
 import com.wanderwildwood.onsa.notedetection.SortedAndDistinctInstrumentStrings
@@ -136,6 +137,7 @@ fun InstrumentTuner(
     onReferenceNoteClicked: () -> Unit,
     onTemperamentClicked: () -> Unit,
     onStretchTuningClicked: () -> Unit,
+    onMetronomeClicked: () -> Unit = {},
     onInstrumentButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
     tunerPlotStyle: TunerPlotStyle = TunerPlotStyle.create()
@@ -163,6 +165,7 @@ fun InstrumentTuner(
         onReferenceNoteClicked = onReferenceNoteClicked,
         onTemperamentClicked = onTemperamentClicked,
         onStretchTuningClicked = onStretchTuningClicked,
+        defaultModeTools = { MetronomeButton(onMetronomeClicked) },
         musicalScale = musicalScale,
         notePrintOptions = notePrintOptions,
         modifier = modifier

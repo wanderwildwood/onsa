@@ -65,6 +65,7 @@ import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
 import com.wanderwildwood.onsa.ui.misc.AudioPermissionBanner
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.ui.misc.MetronomeButton
 import com.wanderwildwood.onsa.misc.getFilenameFromUri
 import com.wanderwildwood.onsa.notedetection.TuningState
 import com.wanderwildwood.onsa.notenames.MusicalNote
@@ -133,6 +134,7 @@ fun ScientificTuner(
     onReferenceNoteClicked: () -> Unit,
     onTemperamentClicked: () -> Unit,
     onStretchTuningClicked: () -> Unit,
+    onMetronomeClicked: () -> Unit = {},
     modifier: Modifier = Modifier,
     tunerPlotStyle: TunerPlotStyle = TunerPlotStyle.create()
 ) {
@@ -175,6 +177,7 @@ fun ScientificTuner(
         onReferenceNoteClicked = onReferenceNoteClicked,
         onTemperamentClicked = onTemperamentClicked,
         onStretchTuningClicked = onStretchTuningClicked,
+        defaultModeTools = { MetronomeButton(onMetronomeClicked) },
         musicalScale = musicalScale,
         notePrintOptions = notePrintOptions,
         floatingActionButton = {

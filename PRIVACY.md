@@ -2,13 +2,24 @@
 
 Tuner listens to your instrument and has no way to tell anyone what it heard.
 
-## One permission
+## Permissions
 
-`app/src/main/AndroidManifest.xml` declares exactly one:
+`app/src/main/AndroidManifest.xml` declares one that touches anything of yours:
 
 ```
 android.permission.RECORD_AUDIO
 ```
+
+and three that only let the metronome keep playing with the screen off:
+
+```
+android.permission.FOREGROUND_SERVICE
+android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
+android.permission.WAKE_LOCK
+```
+
+While the metronome plays, a notification says so and has a Stop button; the phone is kept
+awake only for as long as it plays.
 
 A tuner has to hear the note. The audio is analyzed for pitch as it arrives and is not
 written anywhere by default. The one exception is the optional recording in Settings: when
@@ -19,11 +30,11 @@ There is **no `INTERNET` permission**. Without it Android will not let the app o
 network connection, so nothing it hears could leave the phone even by accident.
 
 The microphone is open only while the tuner, the instrument editor or the reference-pitch
-"Detect" button is in front, and stops when you leave.
+"Detect" button is in front, and stops when you leave. The metronome never opens it.
 
 ## What is stored
 
-Your settings, your instruments and your temperaments — reference frequency, temperament,
+Your settings, your instruments, your temperaments and your saved tempos — reference frequency, temperament,
 tolerance, notation, and any custom scales you enter. All local, all yours, and all
 exportable and deletable from within the app.
 
@@ -38,7 +49,8 @@ aapt2 dump badging app-release.apk | grep uses-permission
 ```
 
 That prints every permission the built app actually carries. `RECORD_AUDIO` should be the
-only one that means anything, and there should be no `INTERNET` in the list.
+only one that touches anything of yours, beside the three the metronome needs to keep playing,
+and there should be no `INTERNET` in the list.
 
 ## Terms
 

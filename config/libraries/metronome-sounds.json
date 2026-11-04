@@ -1,0 +1,8 @@
+{
+  "uniqueId": "metronome-sounds",
+  "name": "Metronome click sounds",
+  "description": "The five clicks of the metronome (woodblock, claves, sticks, hi-hat, bass drum), from Metronome by Michael Moessner.",
+  "developers": [{ "name": "Michael Moessner" }],
+  "website": "https://codeberg.org/thetwom/Metronome",
+  "licenses": ["GPL-3.0-or-later"]
+}

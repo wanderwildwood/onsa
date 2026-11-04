@@ -24,6 +24,13 @@ enter.
 
 None of that is mine. What is mine is what it looks like and how it behaves on this screen.
 
+**A metronome, too.** The icon beside the cog opens it: a tempo from 30 to 250 bpm, set by
+steps of one or five, typed in, or tapped; one to twelve beats in a bar with the first one
+accented; eighths, triplets or sixteenths between beats; five clicks to choose from; and saved
+tempos you name yourself. It keeps playing with the screen off, with a notification to stop it,
+and it never opens the microphone. A ring for each beat fills as the beat is heard, up to
+120 bpm. Faster than that the rings keep still, because the panel would only smear.
+
 ## What changed for E Ink
 
 **One appearance.** Light, dark, black-night and dynamic color are gone. The panel has one
@@ -69,6 +76,10 @@ key by design.
 After [Tuner](https://codeberg.org/thetwom/Tuner) by Michael Moessner. The pitch detection,
 the temperaments, the note naming and the instrument definitions (all but the banjo) are his,
 unchanged — that is the substance of the app, and roughly ten thousand lines of it.
+
+The metronome's five click sounds come from Michael Moessner's
+[Metronome](https://codeberg.org/thetwom/Metronome) (GPL-3.0). The metronome itself is
+written for this app.
 
 The 5-string banjo and its eleven tunings come from **carefulcarpenter** on the Mudita
 forum ([heavencanthandle](https://github.com/heavencanthandle) on GitHub), who added them in

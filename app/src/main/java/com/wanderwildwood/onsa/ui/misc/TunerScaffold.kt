@@ -275,3 +275,14 @@ private fun TunerScaffoldPreview() {
         }
     }
 }
+/** The door to the metronome, beside the cog in the tuner's top bar. */
+@Composable
+fun MetronomeButton(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(R.drawable.ic_metronome),
+            contentDescription = stringResource(R.string.cd_metronome),
+            modifier = Modifier.size(22.dp),
+        )
+    }
+}

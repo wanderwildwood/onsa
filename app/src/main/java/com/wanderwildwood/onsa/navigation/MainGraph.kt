@@ -57,6 +57,9 @@ import com.wanderwildwood.onsa.ui.instruments.Instruments
 import com.wanderwildwood.onsa.ui.preferences.ReferenceNoteDialog
 import com.wanderwildwood.onsa.ui.preferences.RootNoteDialog
 import com.wanderwildwood.onsa.ui.screens.InstrumentTuner
+import com.wanderwildwood.onsa.ui.screens.Metronome
+import com.wanderwildwood.onsa.ui.screens.MetronomeSavedTempos
+import com.wanderwildwood.onsa.viewmodels.MetronomeViewModel
 import com.wanderwildwood.onsa.ui.screens.ScientificTuner
 import com.wanderwildwood.onsa.ui.temperaments.TemperamentDetailsDialog
 import com.wanderwildwood.onsa.ui.temperaments.TemperamentsDialog2
@@ -120,7 +123,8 @@ fun NavGraphBuilder.mainGraph(
                     )
                 },
                 onTemperamentClicked = { controller.navigate(TemperamentDialogRoute) },
-                onStretchTuningClicked = { controller.navigate(StretchTuningOverviewRoute)}
+                onStretchTuningClicked = { controller.navigate(StretchTuningOverviewRoute)},
+                onMetronomeClicked = { controller.navigate(MetronomeRoute) }
             )
         } else {
             val viewModel: InstrumentTunerViewModel = hiltViewModel()
@@ -142,9 +146,30 @@ fun NavGraphBuilder.mainGraph(
                 onStretchTuningClicked = {
                     controller.navigate(StretchTuningOverviewRoute)
                 },
+                onMetronomeClicked = { controller.navigate(MetronomeRoute) },
                 data = viewModel
             )
         }
+    }
+
+    composable<MetronomeRoute> {
+        val viewModel: MetronomeViewModel = hiltViewModel()
+        Metronome(
+            data = viewModel,
+            onNavigateUp = { controller.navigateUp() },
+            onSavedTemposClicked = { controller.navigate(MetronomeSavedTemposRoute) }
+        )
+    }
+
+    composable<MetronomeSavedTemposRoute> {
+        // The same view model as the metronome screen beneath, so a tempo brought back here is
+        // the one the metronome plays.
+        val parent = remember(it) { controller.getBackStackEntry(MetronomeRoute) }
+        val viewModel: MetronomeViewModel = hiltViewModel(parent)
+        MetronomeSavedTempos(
+            data = viewModel,
+            onNavigateUp = { controller.navigateUp() }
+        )
     }
 
     composable<InstrumentsRoute> {
@@ -425,6 +450,12 @@ data object TunerRoute
 
 @Serializable
 data object InstrumentsRoute
+
+@Serializable
+data object MetronomeRoute
+
+@Serializable
+data object MetronomeSavedTemposRoute
 
 /** One instrument's page of tunings. The group travels by its name, as it is saved. */
 @Serializable
