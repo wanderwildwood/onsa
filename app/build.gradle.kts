@@ -18,8 +18,8 @@ android {
         applicationId = "com.wanderwildwood.onsa"
         minSdk = 23
         targetSdk = 36
-        versionCode = 45
-        versionName = "0.1.44"
+        versionCode = 46
+        versionName = "0.1.45"
         testInstrumentationRunner =  "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
