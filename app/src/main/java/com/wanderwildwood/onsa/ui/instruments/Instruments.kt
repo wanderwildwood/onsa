@@ -22,7 +22,6 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -64,6 +63,8 @@ import com.wanderwildwood.onsa.misc.toastPotentialFileCheckError
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteModifier
+import com.wanderwildwood.onsa.ui.FilesCreateDocument
+import com.wanderwildwood.onsa.ui.FilesOpenDocument
 import com.wanderwildwood.onsa.ui.common.EditableListPredefinedSectionImmutable
 import com.wanderwildwood.onsa.ui.common.EditableList
 import com.wanderwildwood.onsa.ui.common.EditableListData
@@ -119,7 +120,7 @@ fun Instruments(
     val listState = rememberLazyListState()
 
     val saveInstrumentLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("text/plain")
+        contract = FilesCreateDocument("text/plain")
     ) { uri ->
         if (uri != null) {
             val instruments = instrumentsToSave()
@@ -150,7 +151,7 @@ fun Instruments(
     }
 
     val importInstrumentLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument()
+        contract = FilesOpenDocument(writable = false)
     ) { uri ->
         if (uri != null) {
             val (readState, instruments) = InstrumentIO.readInstrumentsFromFile(context, uri)

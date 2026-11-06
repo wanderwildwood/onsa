@@ -5,7 +5,6 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -55,6 +54,8 @@ import com.wanderwildwood.onsa.misc.getFilenameFromUri
 import com.wanderwildwood.onsa.misc.toastPotentialFileCheckError
 import com.wanderwildwood.onsa.stretchtuning.StretchTuning
 import com.wanderwildwood.onsa.stretchtuning.StretchTuningIO
+import com.wanderwildwood.onsa.ui.FilesCreateDocument
+import com.wanderwildwood.onsa.ui.FilesOpenDocument
 import com.wanderwildwood.onsa.ui.common.EditableList
 import com.wanderwildwood.onsa.ui.common.EditableListData
 import com.wanderwildwood.onsa.ui.common.EditableListItem
@@ -85,7 +86,7 @@ private fun rememberImportExportCallbacks(
     val onLoadStretchTuningsUpdated by rememberUpdatedState(newValue = onLoadStretchTunings)
 
     val saveStretchTuningsLauncher =  rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("text/plain")
+        contract = FilesCreateDocument("text/plain")
     ) { uri ->
         if (uri != null) {
             val stretchTunings = stateUpdated.listData.extractSelectedItems()
@@ -116,7 +117,7 @@ private fun rememberImportExportCallbacks(
     }
 
     val importStretchTuningsLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument()
+        contract = FilesOpenDocument(writable = false)
     ) { uri ->
         if (uri != null) {
 //            val cR = context.contentResolver

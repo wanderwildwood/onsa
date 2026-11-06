@@ -13,6 +13,7 @@
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
         </intent>
+        <package android:name="com.wanderwildwood.tana" />
     </queries>
 
     <application

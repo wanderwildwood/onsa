@@ -23,7 +23,6 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -62,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.buttons.FloatingActionButtonMMD
+import com.wanderwildwood.onsa.ui.FilesCreateDocument
 import com.wanderwildwood.onsa.ui.misc.AudioPermissionBanner
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
@@ -147,7 +147,7 @@ fun ScientificTuner(
     val resources = LocalResources.current
 
     val writeWaveLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("audio/wav")
+        contract = FilesCreateDocument("audio/wav")
     ) { uri ->
         if (uri != null) {
             data.writeStoredWaveWriterSnapshot(context, uri, data.sampleRate)
