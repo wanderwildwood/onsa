@@ -116,6 +116,7 @@ fun TemperamentEditor(
         PagedColumn(
             modifier = modifier.imePadding().consumeWindowInsets(paddingValues),
             contentPadding = paddingValues,
+            showCutRow = true,
         ) {
             item {
                 TextFieldMMD(

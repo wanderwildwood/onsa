@@ -89,6 +89,7 @@ fun Preferences(
         PagedColumn(
             modifier = Modifier.consumeWindowInsets(paddingValues),
             contentPadding = paddingValues,
+            showCutRow = true,
         ) {
             item {
                 Section(

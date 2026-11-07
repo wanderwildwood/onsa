@@ -481,6 +481,7 @@ fun <T>EditableList(
         modifier = modifier.imePadding(),
         contentPadding = contentPadding,
         state = state.lazyListState,
+        showCutRow = true,
     ) {
         val showSections = (
                 (editableItems.size + state.numNonEmptyPredefinedLists) > 1 ||

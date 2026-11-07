@@ -78,7 +78,8 @@ fun InstrumentGroupPicker(
         title = { TextMMD(stringResource(id = R.string.pick_instrument_group)) },
         text = {
             PagedColumn(
-                modifier = Modifier.heightIn(max = 420.dp)
+                modifier = Modifier.heightIn(max = 420.dp),
+                showCutRow = true,
             ) {
                 item {
                     GroupChoice(

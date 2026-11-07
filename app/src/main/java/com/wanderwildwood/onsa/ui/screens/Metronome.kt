@@ -113,7 +113,8 @@ fun Metronome(
             BeatDots(data, settings)
             PagedColumn(
                 modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(end = 4.dp)
+                contentPadding = PaddingValues(end = 4.dp),
+                showCutRow = true,
             ) {
                 item {
                     BeatsRow(settings.beatsPerBar, onStep = data::stepBeats)
@@ -403,7 +404,8 @@ fun MetronomeSavedTempos(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize(),
-            contentPadding = PaddingValues(end = 4.dp)
+            contentPadding = PaddingValues(end = 4.dp),
+            showCutRow = true,
         ) {
             item {
                 SimplePreference(

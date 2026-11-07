@@ -84,6 +84,7 @@ fun InstrumentGroupPage(
                 top = paddingValues.calculateTopPadding(),
                 bottom = paddingValues.calculateBottomPadding() + maxExpectedHeightForFab
             ),
+            showCutRow = true,
         ) {
             items(tunings, key = { it.stableId }) { tuning ->
                 EditableListItem(

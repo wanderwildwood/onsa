@@ -77,6 +77,7 @@ fun StretchTuningTable(
         PagedColumn(
             contentPadding = contentPadding,
             state = lazyListState,
+            showCutRow = true,
         ) {
             items(
                 stretchTuningData.size,
