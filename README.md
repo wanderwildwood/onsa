@@ -1,6 +1,4 @@
-# Tuner
-
-音叉 *onsa*
+# 音叉 onsa — Tuner
 
 A chromatic and instrument tuner for an E Ink phone. Black on white, no color anywhere,
 and the screen stays awake while you play.
