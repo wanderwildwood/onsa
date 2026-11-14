@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The app's theme is AppCompat's own; it is named here only so values-v31 can add to it. -->
-    <style name="Theme.Onsa" parent="Theme.AppCompat.NoActionBar" />
+    <style name="Theme.Onsa" parent="Theme.AppCompat.NoActionBar">
+        <!-- No start-up window: in dark mode it would flash white before the first frame. -->
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 </resources>
