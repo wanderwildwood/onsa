@@ -50,6 +50,7 @@ import com.wanderwildwood.onsa.ui.preferences.Section
 import com.wanderwildwood.onsa.ui.preferences.SimplePreference
 import com.wanderwildwood.onsa.ui.preferences.SliderPreference
 import com.wanderwildwood.onsa.ui.preferences.SwitchPreference
+import com.wanderwildwood.onsa.ui.theme.DarkMode
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import com.wanderwildwood.onsa.viewmodels.PreferencesViewModel
 import kotlin.math.pow
@@ -116,6 +117,15 @@ fun Preferences(
                     name = stringResource(id = R.string.turn_with_phone),
                     checked = turnWithPhone,
                     onCheckChange = { pref.writeTurnWithPhone(it) }
+                )
+            }
+
+            item {
+                SwitchPreference(
+                    name = stringResource(id = R.string.settings_dark),
+                    checked = DarkMode.on,
+                    onCheckChange = { DarkMode.set(context, it) },
+                    supporting = stringResource(id = R.string.settings_dark_note)
                 )
             }
 
