@@ -525,4 +525,6 @@
     <string name="metronome_preset_summary">%1$d bpm, %2$d beats</string>
     <string name="metronome_name_tempo">Name this tempo</string>
     <string name="metronome_delete_armed">Delete — tap again</string>
+    <string name="settings_dark">Dark mode</string>
+    <string name="settings_dark_note">White on black, in this app. Home has one switch for every app.</string>
 </resources>
