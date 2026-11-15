@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +54,7 @@ import com.wanderwildwood.onsa.metronome.MetronomeSettings
 import com.wanderwildwood.onsa.metronome.Subdivision
 import com.wanderwildwood.onsa.ui.PagedColumn
 import com.wanderwildwood.onsa.ui.common.DottedRule
+import com.wanderwildwood.onsa.ui.common.onEachPress
 import com.wanderwildwood.onsa.ui.misc.TunerScaffoldWithoutBottomBar
 import com.wanderwildwood.onsa.ui.preferences.SimplePreference
 import com.wanderwildwood.onsa.ui.preferences.SwitchPreference
@@ -76,6 +78,9 @@ fun Metronome(
 ) {
     val settings by data.settings.collectAsStateWithLifecycle()
     val playing by data.playing.collectAsStateWithLifecycle()
+    val failed by data.failed.collectAsStateWithLifecycle()
+    // A sound that would not play is said until the next press, or until the screen is left.
+    DisposableEffect(Unit) { onDispose { data.clearFailed() } }
     var dialog by rememberSaveable { mutableStateOf(MetronomeDialog.None) }
 
     val leave = {
@@ -94,6 +99,7 @@ fun Metronome(
             Modifier
                 .padding(padding)
                 .fillMaxSize()
+                .onEachPress { data.clearFailed() }
         ) {
             TempoFigure(settings.bpm, onClick = { dialog = MetronomeDialog.Bpm })
             Row(
@@ -148,6 +154,14 @@ fun Metronome(
                         modifier = Modifier.clickable(onClick = onSavedTemposClicked)
                     )
                 }
+            }
+            if (failed) {
+                TextMMD(
+                    text = stringResource(R.string.metronome_could_not_play),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp)
+                )
             }
             Row(
                 Modifier

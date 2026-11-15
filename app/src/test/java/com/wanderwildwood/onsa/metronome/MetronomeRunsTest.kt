@@ -14,6 +14,38 @@ import java.util.concurrent.TimeUnit
 
 class MetronomeRunsTest {
     @Test
+    fun aRunWhoseSoundFailsStopsAndSaysSo() {
+        val runs = MetronomeRuns()
+        val run = runs.begin()!!
+        runs.failed(run)
+        assertFalse(runs.playing.value)
+        assertTrue(runs.failed.value)
+        runs.clearFailed()
+        assertFalse(runs.failed.value)
+    }
+
+    @Test
+    fun theNextStartTakesTheFailureAway() {
+        val runs = MetronomeRuns()
+        runs.failed(runs.begin()!!)
+        runs.begin()
+        assertFalse(runs.failed.value)
+        assertTrue(runs.playing.value)
+    }
+
+    @Test
+    fun aRunAlreadyEndedFailingChangesNothing() {
+        val runs = MetronomeRuns()
+        val old = runs.begin()!!
+        runs.end()
+        val now = runs.begin()!!
+        runs.failed(old)
+        assertFalse(runs.failed.value)
+        assertTrue(runs.isLive(now))
+        assertTrue(runs.playing.value)
+    }
+
+    @Test
     fun playingChangesInsideThePress() {
         val runs = MetronomeRuns()
         assertFalse(runs.playing.value)

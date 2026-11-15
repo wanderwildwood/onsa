@@ -22,6 +22,10 @@ class MetronomeRuns {
     private val _beat = MutableStateFlow(NO_BEAT)
     val beat = _beat.asStateFlow()
 
+    /** The last run stopped because its sound could not be played; said on screen until cleared. */
+    private val _failed = MutableStateFlow(false)
+    val failed = _failed.asStateFlow()
+
     @Volatile private var live: Run? = null
 
     /** Starts a run and returns it, or null when one is live already (nothing to start). */
@@ -30,6 +34,7 @@ class MetronomeRuns {
         if (live != null) return null
         val run = Run()
         live = run
+        _failed.value = false
         _playing.value = true
         return run
     }
@@ -58,6 +63,22 @@ class MetronomeRuns {
     @Synchronized
     fun finished(run: Run) {
         if (live === run) end()
+    }
+
+    /**
+     * The sound of [run] could not be played (no audio track, or it broke off). If [run] is still
+     * the live one, playing stops and [failed] says so; a run already ended changes nothing.
+     */
+    @Synchronized
+    fun failed(run: Run) {
+        if (live !== run) return
+        end()
+        _failed.value = true
+    }
+
+    /** The failure has been read: the next press or leaving the screen takes it away. */
+    fun clearFailed() {
+        _failed.value = false
     }
 
     companion object {

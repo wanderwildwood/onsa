@@ -25,6 +25,9 @@ class MetronomeViewModel @Inject constructor(
     val presets = resources.presets
     val playing = engine.playing
     val beat = engine.beat
+    val failed = engine.failed
+
+    fun clearFailed() = engine.clearFailed()
 
     private val tapTempo = TapTempo()
 

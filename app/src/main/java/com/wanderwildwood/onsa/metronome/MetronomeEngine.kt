@@ -35,6 +35,11 @@ class MetronomeEngine @Inject constructor(
      */
     val beat = runs.beat
 
+    /** The clicks stopped because the phone would not play them. */
+    val failed = runs.failed
+
+    fun clearFailed() = runs.clearFailed()
+
     @Volatile private var settings = MetronomeSettings()
 
     fun update(settings: MetronomeSettings) {
@@ -153,6 +158,10 @@ class MetronomeEngine @Inject constructor(
             }
         } catch (e: Exception) {
             Log.w("Metronome", "playback stopped", e)
+            runs.failed(run)
+            // The notification and the wake lock go with the sound: the service lets go only
+            // when it is told, and nothing else would tell it.
+            MetronomeService.quiet(context)
         } finally {
             try {
                 // Pause and flush, not stop: stop would play out what is still in the buffer.

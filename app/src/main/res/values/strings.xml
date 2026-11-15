@@ -521,6 +521,7 @@
     <string name="metronome_stop">Stop</string>
     <string name="metronome_cancel">Cancel</string>
     <!-- Under the beat rings when beats come faster than twice a second: the e-ink panel is not asked to keep up -->
+    <string name="metronome_could_not_play">The phone would not play the clicks, so the metronome stopped. Press Start to try again.</string>
     <string name="metronome_too_quick_to_show">Beats are shown up to 120 bpm</string>
     <string name="metronome_playing">Metronome is playing</string>
     <string name="metronome_notification_text">%1$d bpm, %2$d beats in a bar</string>
