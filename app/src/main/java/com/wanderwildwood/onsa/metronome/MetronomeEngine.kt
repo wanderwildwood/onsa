@@ -7,8 +7,6 @@ import android.media.AudioTrack
 import android.os.Process
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,8 +22,10 @@ import javax.inject.Singleton
 class MetronomeEngine @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val _playing = MutableStateFlow(false)
-    val playing = _playing.asStateFlow()
+    private val runs = MetronomeRuns()
+
+    /** Whether the metronome is meant to be playing. Changes inside [start] and [stop]. */
+    val playing = runs.playing
 
     /**
      * The beat being heard, from 0, or [NO_BEAT]. It moves only when the beat itself is heard,
@@ -33,33 +33,28 @@ class MetronomeEngine @Inject constructor(
      * panel is asked to redraw at most about twice a second. Faster than that it stays at
      * [TOO_QUICK] and the screen keeps still.
      */
-    private val _beat = MutableStateFlow(NO_BEAT)
-    val beat = _beat.asStateFlow()
+    val beat = runs.beat
 
     @Volatile private var settings = MetronomeSettings()
-    @Volatile private var running = false
-    private var thread: Thread? = null
 
     fun update(settings: MetronomeSettings) {
         this.settings = settings.valid()
     }
 
-    @Synchronized
+    /** Starts the clicks, or only takes the new [settings] when they are sounding already. */
     fun start(settings: MetronomeSettings) {
         update(settings)
-        if (thread?.isAlive == true) return
-        running = true
-        _playing.value = true
-        thread = Thread(::play, "metronome").also { it.start() }
+        val run = runs.begin() ?: return
+        Thread({ play(run) }, "metronome").start()
     }
 
-    @Synchronized
+    /**
+     * Stops the clicks. Returns at once: the audio thread is not waited for. It sees that its
+     * run is over within a chunk, cuts its own sound and goes; a start that comes before it
+     * has gone gets a thread and a track of its own (see [MetronomeRuns]).
+     */
     fun stop() {
-        running = false
-        thread?.join(500)
-        thread = null
-        _playing.value = false
-        _beat.value = NO_BEAT
+        runs.end()
     }
 
     private class Voice(val data: FloatArray, val step: Float, val gain: Float, var delay: Int) {
@@ -67,7 +62,7 @@ class MetronomeEngine @Inject constructor(
         val done get() = pos.toInt() + 1 >= data.size
     }
 
-    private fun play() {
+    private fun play(run: MetronomeRuns.Run) {
         Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO)
         val sounds = HashMap<ClickSound, FloatArray>()
         fun samples(sound: ClickSound) = sounds.getOrPut(sound) { readClick(context, sound.raw) }
@@ -102,7 +97,7 @@ class MetronomeEngine @Inject constructor(
             var tick = 0
             var beatInBar = 0
 
-            while (running) {
+            while (runs.isLive(run)) {
                 val s = settings
                 val chunkEnd = written + CHUNK
                 while (nextClick < chunkEnd) {
@@ -153,25 +148,25 @@ class MetronomeEngine @Inject constructor(
                 var latest = -1
                 while (heard.isNotEmpty() && heard.first().first <= head) latest = heard.removeFirst().second
                 if (latest >= 0) {
-                    _beat.value = if (60.0 / s.bpm >= MIN_SECONDS_PER_REDRAW) latest else TOO_QUICK
+                    runs.showBeat(run, if (60.0 / s.bpm >= MIN_SECONDS_PER_REDRAW) latest else TOO_QUICK)
                 }
             }
         } catch (e: Exception) {
             Log.w("Metronome", "playback stopped", e)
         } finally {
             try {
-                track?.stop()
+                // Pause and flush, not stop: stop would play out what is still in the buffer.
+                track?.pause()
+                track?.flush()
             } catch (_: IllegalStateException) {
             }
             track?.release()
-            running = false
-            _playing.value = false
-            _beat.value = NO_BEAT
+            runs.finished(run)
         }
     }
 
     companion object {
-        const val NO_BEAT = -1
+        const val NO_BEAT = MetronomeRuns.NO_BEAT
         const val TOO_QUICK = -2
         private const val RATE = 48000
         private const val CHUNK = RATE / 100
@@ -196,5 +191,13 @@ class TapTempo {
         if (gap <= 0) return null
         return (60000.0 / gap).toInt()
             .coerceIn(MetronomeSettings.MIN_BPM, MetronomeSettings.MAX_BPM)
+    }
+
+    /**
+     * Forgets the taps so far. Called when the tempo is set some other way or Start/Stop is
+     * pressed, so taps from before that can never be counted with taps after it.
+     */
+    fun reset() {
+        taps.clear()
     }
 }

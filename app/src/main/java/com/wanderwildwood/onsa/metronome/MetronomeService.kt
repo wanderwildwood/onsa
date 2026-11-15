@@ -22,6 +22,11 @@ import javax.inject.Inject
 /**
  * Keeps the metronome going with the screen off: a foreground service with a notification that
  * says so and stops it. It holds a partial wake lock only while it plays.
+ *
+ * The service does not start or stop the clicks on the screen's behalf. The view model does
+ * that itself, inside the press, and then sends a command; the service follows whatever
+ * [MetronomeEngine.playing] says when the command arrives (see [serviceStep]). Only the
+ * notification's Stop and the app being swiped away stop the clicks from here.
  */
 @AndroidEntryPoint
 class MetronomeService : Service() {
@@ -32,11 +37,45 @@ class MetronomeService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
+    /** True once this service has let go by its own hand; see [onDestroy]. */
+    private var hasLetGo = false
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action == ACTION_STOP) {
-            stopPlaying()
-            return START_NOT_STICKY
+        val step = serviceStep(
+            play = intent?.action == ACTION_PLAY,
+            stopAsked = intent?.action == ACTION_STOP,
+            playing = engine.playing.value
+        )
+        if (intent?.action == ACTION_STOP) engine.stop()
+        when (step) {
+            ServiceStep.Hold -> hold()
+            ServiceStep.HoldThenLetGo -> {
+                hold()
+                letGo(startId)
+            }
+            ServiceStep.LetGo -> letGo(startId)
+            ServiceStep.Nothing -> {}
         }
+        return START_NOT_STICKY
+    }
+
+    /** Swiping the app away stops the clicks too; nothing should tick on with no way back to it. */
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        engine.stop()
+        letGo(null)
+    }
+
+    override fun onDestroy() {
+        // Destroyed by the system rather than by letGo: nothing may tick on without the
+        // notification. After letGo the engine is left alone, since by now the reader may have
+        // pressed Start again and that run belongs to the next service.
+        if (!hasLetGo) engine.stop()
+        releaseWakeLock()
+        super.onDestroy()
+    }
+
+    private fun hold() {
+        hasLetGo = false
         ServiceCompat.startForeground(
             this, NOTIFICATION_ID, notification(),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
@@ -48,26 +87,23 @@ class MetronomeService : Service() {
                 .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "onsa:metronome")
                 .apply { setReferenceCounted(false); acquire(MAX_WAKE_MILLIS) }
         }
-        engine.start(resources.settings.value)
-        return START_NOT_STICKY
     }
 
-    /** Swiping the app away stops the clicks too; nothing should tick on with no way back to it. */
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        stopPlaying()
+    /**
+     * Drops the notification and the wake lock and stops, unless a command newer than
+     * [startId] is waiting: stopping regardless would throw that command away, and it may be
+     * the Start that follows this Stop. With [startId] null it stops whatever is waiting.
+     */
+    private fun letGo(startId: Int?) {
+        hasLetGo = true
+        releaseWakeLock()
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        if (startId == null) stopSelf() else stopSelf(startId)
     }
 
-    override fun onDestroy() {
-        engine.stop()
+    private fun releaseWakeLock() {
         wakeLock?.release()
         wakeLock = null
-        super.onDestroy()
-    }
-
-    private fun stopPlaying() {
-        engine.stop()
-        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-        stopSelf()
     }
 
     private fun notification(): Notification {
@@ -106,16 +142,31 @@ class MetronomeService : Service() {
     companion object {
         private const val CHANNEL_ID = "metronome"
         private const val NOTIFICATION_ID = 7
+        private const val ACTION_PLAY = "com.wanderwildwood.onsa.metronome.PLAY"
+        private const val ACTION_QUIET = "com.wanderwildwood.onsa.metronome.QUIET"
         private const val ACTION_STOP = "com.wanderwildwood.onsa.metronome.STOP"
         /** A safety net: a lock that is somehow never let go still lets go after four hours. */
         private const val MAX_WAKE_MILLIS = 4L * 60 * 60 * 1000
 
-        fun start(context: Context) {
-            ContextCompat.startForegroundService(context, Intent(context, MetronomeService::class.java))
+        /**
+         * Tells the service that the metronome was started, or that its settings changed while
+         * it plays (the notification shows the tempo). Call it after [MetronomeEngine.start].
+         */
+        fun play(context: Context) {
+            ContextCompat.startForegroundService(
+                context, Intent(context, MetronomeService::class.java).setAction(ACTION_PLAY)
+            )
         }
 
-        fun stop(context: Context) {
-            context.startService(Intent(context, MetronomeService::class.java).setAction(ACTION_STOP))
+        /** Tells the service that the metronome was stopped. Call it after [MetronomeEngine.stop]. */
+        fun quiet(context: Context) {
+            try {
+                context.startService(Intent(context, MetronomeService::class.java).setAction(ACTION_QUIET))
+            } catch (_: IllegalStateException) {
+                // The app is in the background, where a plain start is refused. A service that
+                // is up is taken down directly; one that is not has nothing to take down.
+                context.stopService(Intent(context, MetronomeService::class.java))
+            }
         }
     }
 }
