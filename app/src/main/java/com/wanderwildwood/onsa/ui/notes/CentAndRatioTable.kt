@@ -18,7 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
-import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -73,10 +72,11 @@ fun CentAndRatioTable(
         temperament.noteNames(rootNote)
     }
 
-    LazyRowMMD(
+    // Androidx's LazyRow, not MMD's: inside a paged list (an item of a LazyColumn, as in the
+    // key note dialog) LazyRowMMD came out with no height, so the table was not seen at all.
+    LazyRow(
         modifier = modifier,
         contentPadding = PaddingValues(horizontal = horizontalContentPadding),
-        isScrollbarVisible = false,
     ) {
         items(temperament.size + 1) {
             //val note = musicalScale.noteNameScale.getNoteOfIndex(rootNoteIndex + it)

@@ -118,18 +118,20 @@ fun RootNoteDialog(
         },
         text = {
             // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
-            PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
-                item {
-                    warning?.let {
-                        TextMMD(
-                            it,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 12.dp)
-                        )
-                    }
+            // 360 dp leaves room for the title and both buttons on a 600 dp screen; at 420 the
+            // dialog ran off the foot and its lower button was cut away.
+            PagedColumn(modifier = Modifier.heightIn(max = 360.dp)) {
+                // No row at all without a warning: an empty first row kept the list from knowing
+                // it was on its first page, so the up arrow was drawn as if there were one before.
+                if (warning != null) item {
+                    TextMMD(
+                        warning,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp)
+                    )
                 }
                 item {
                     TextMMD(

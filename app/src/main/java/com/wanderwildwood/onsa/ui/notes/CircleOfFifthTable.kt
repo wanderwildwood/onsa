@@ -18,7 +18,6 @@
 */
 package com.wanderwildwood.onsa.ui.notes
 
-import com.mudita.mmd.components.lazy.LazyRowMMD
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -149,12 +148,13 @@ fun CircleOfFifthTable(
 
     val fifthArray = rememberChain(temperament, rootNote)
 
-    LazyRowMMD(
+    // Androidx's LazyRow, not MMD's: inside a paged list (an item of a LazyColumn, as in the
+    // key note dialog) LazyRowMMD came out with no height, so the table was not seen at all.
+    LazyRow(
         modifier = modifier,
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = horizontalContentPadding),
-        isScrollbarVisible = false,
     ) {
         if (fifthArray.isNotEmpty()) {
             fifthArray.forEach { fifth ->
