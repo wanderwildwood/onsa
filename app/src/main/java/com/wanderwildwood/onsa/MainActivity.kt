@@ -47,6 +47,7 @@ import com.wanderwildwood.onsa.instruments.Instrument
 import com.wanderwildwood.onsa.instruments.InstrumentIO
 import com.wanderwildwood.onsa.instruments.InstrumentResources
 import com.wanderwildwood.onsa.misc.FileCheck
+import com.wanderwildwood.onsa.metronome.MetronomeEngine
 import com.wanderwildwood.onsa.misc.toastPotentialFileCheckError
 import com.wanderwildwood.onsa.navigation.InstrumentsRoute
 import com.wanderwildwood.onsa.navigation.StretchTuningOverviewRoute
@@ -85,6 +86,9 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
     @Inject
     lateinit var temperaments: TemperamentResources
 
+    @Inject
+    lateinit var metronome: MetronomeEngine
+
     // Sideways when the phone is. The manifest keeps this activity through a turn
     // (configChanges), so the microphone runs on and only the layout is drawn again.
     private val turner = TurnWithPhone(this)
@@ -103,6 +107,11 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
         )
         super.onCreate(savedInstanceState)
 //        Log.v("Tuner", "MainActivity2.onCreate: savedInstanceState = $savedInstanceState")
+
+        if (isSecondCopyFromLauncher(isTaskRoot, intent?.action, intent?.categories)) {
+            finish()
+            return
+        }
 
         runBlocking {
             migrateFromV6(this@MainActivity, pref, temperaments, instruments)
@@ -194,6 +203,7 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
                         onNavigateUpClicked = { controller.navigateUp() },
                         preferences = pref,
                         temperamentResources = temperaments,
+                        metronomePlaying = metronome.playing,
                         onLoadInstruments = {
                             loadInstruments(it, instruments, this@MainActivity)
                         },
@@ -288,6 +298,16 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
         }
     }
 }
+
+/**
+ * True for a second copy of the tuner that a launcher has put on top of the one already open.
+ * It happens when the app was first opened some other way than by the launcher's own icon (from
+ * the installer's Open, or from another launcher): the icon then starts a new tuner over the
+ * screen the reader left, which is how a playing metronome came to be hidden under a tuner that
+ * listened to its clicks. The copy closes at once and the screen underneath is what comes back.
+ */
+internal fun isSecondCopyFromLauncher(isTaskRoot: Boolean, action: String?, categories: Set<String>?): Boolean =
+    !isTaskRoot && action == Intent.ACTION_MAIN && categories?.contains(Intent.CATEGORY_LAUNCHER) == true
 
 private fun loadTemperaments(
     controller: NavController,

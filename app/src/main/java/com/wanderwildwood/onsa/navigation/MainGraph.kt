@@ -21,6 +21,7 @@ package com.wanderwildwood.onsa.navigation
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,6 +39,7 @@ import com.mudita.mmd.components.snackbar.SnackbarDurationMMD
 import com.mudita.mmd.components.snackbar.SnackbarHostStateMMD
 import com.mudita.mmd.components.snackbar.SnackbarResultMMD
 import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.instruments.InstrumentGroup
@@ -99,11 +101,24 @@ fun NavGraphBuilder.mainGraph(
     onNavigateUpClicked: () -> Unit,
     preferences: PreferenceResources,
     temperamentResources: TemperamentResources,
+    metronomePlaying: StateFlow<Boolean>,
     onLoadInstruments: (List<Instrument>) -> Unit,
     onLoadTemperaments: (List<EditableTemperament>) -> Unit,
     onLoadStretchTunings: (List<StretchTuning>) -> Unit
 ) {
     composable<TunerRoute> {
+        // The tuner never listens while the metronome plays: it would only hear the clicks, and
+        // nothing on it says that they are still sounding. Leaving the metronome screen stops
+        // it, so the tuner can only come up over a playing metronome by another road (a fresh
+        // copy of the app opened while the service plays on); it then hands over to the
+        // metronome screen, where Stop is.
+        val metronomeIsPlaying by metronomePlaying.collectAsStateWithLifecycle()
+        if (metronomeIsPlaying) {
+            LaunchedEffect(Unit) {
+                controller.navigate(MetronomeRoute) { launchSingleTop = true }
+            }
+            return@composable
+        }
         val isScientificTuner by preferences.scientificMode.collectAsStateWithLifecycle()
 //        Log.v("Tuner", "MainGraph : isScientificTuner = $isScientificTuner")
         if (isScientificTuner) {
