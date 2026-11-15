@@ -6,11 +6,8 @@ import com.wanderwildwood.onsa.ui.common.Notice
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -36,7 +33,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -312,17 +308,12 @@ fun TemperamentsDialog2(
         }
     ) { paddingValues ->
         val iconTextSize = with(LocalDensity.current) { 18.dp.toSp() }
-        val layoutDirection = LocalLayoutDirection.current
         EditableList(
             state = state.listData,
             // The page ends above the floating buttons, so they never cover the last row or its menu.
-            modifier = modifier.consumeWindowInsets(paddingValues).fillMaxSize().padding(bottom = maxExpectedHeightForFab),
-            contentPadding = PaddingValues(
-                start = paddingValues.calculateStartPadding(layoutDirection),
-                end = paddingValues.calculateEndPadding(layoutDirection),
-                top = paddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding()
-            ),
+            // The scaffold's bars pad the list itself, not its content: the page bar's arrows sit at
+            // the list's own top and foot, so with contentPadding the up arrow hid under the top bar.
+            modifier = modifier.padding(paddingValues).consumeWindowInsets(paddingValues).fillMaxSize().padding(bottom = maxExpectedHeightForFab),
             onActivateItemClicked = { onTemperamentClicked(it, state.proposeRootNote(it)) },
             snackbarHostState = snackbarHostState
         ) { item, itemInfo, itemModifier ->

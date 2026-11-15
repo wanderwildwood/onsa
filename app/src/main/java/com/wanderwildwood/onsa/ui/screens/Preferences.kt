@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
@@ -87,9 +88,10 @@ fun Preferences(
         title = stringResource(id = R.string.settings),
         showPreferenceButton = false,
     ) { paddingValues ->
+        // The scaffold's bars pad the column itself, not its content: the page bar's arrows sit
+        // at the column's own top and foot, so with contentPadding the up arrow hid under the top bar.
         PagedColumn(
-            modifier = Modifier.consumeWindowInsets(paddingValues),
-            contentPadding = paddingValues,
+            modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues),
             showCutRow = true,
         ) {
             item {
