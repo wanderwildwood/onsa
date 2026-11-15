@@ -32,6 +32,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.coerceIn
 import androidx.compose.ui.unit.dp
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import com.wanderwildwood.onsa.ui.PagedColumn
@@ -40,6 +43,17 @@ import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.notedetection.WindowingFunction
 import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
+
+/**
+ * How tall a list may be in a dialog that has a title and two full-width buttons under it: what
+ * the screen has left, so the last button is never cut by the dialog's foot.
+ */
+@Composable
+internal fun dialogListRoom(): Dp =
+    (LocalConfiguration.current.screenHeightDp.dp - 260.dp).coerceIn(160.dp, 420.dp)
+
+/** Room for the three choices. */
+private val WINDOWING_ROWS = 180.dp
 
 @Composable
 fun WindowingFunctionDialog(
@@ -70,8 +84,10 @@ fun WindowingFunctionDialog(
             TextMMD(stringResource(id = R.string.windowing_function))
         },
         text = {
-            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
-            PagedColumn(modifier = Modifier.heightIn(max = 420.dp).selectableGroup()) {
+            // Paged, not scrolled: a page turns on whole rows. The list is as tall as its three
+            // rows and no taller than the screen leaves once the title and the two buttons are in
+            // (420 dp pushed Abort off the foot).
+            PagedColumn(modifier = Modifier.heightIn(max = minOf(WINDOWING_ROWS, dialogListRoom())).selectableGroup()) {
                 for (w in WindowingFunction.entries) {
                     item {
                         RadioButtonLine(

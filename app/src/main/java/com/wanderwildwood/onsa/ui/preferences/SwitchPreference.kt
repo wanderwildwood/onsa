@@ -18,6 +18,8 @@
 */
 package com.wanderwildwood.onsa.ui.preferences
 
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,10 +58,11 @@ fun SwitchPreference(
         // No icon. The house style keeps a settings row to its label and its value: on a
         // 4.3" panel with sixteen greys an icon beside every row costs a column of width
         // and renders a small glyph as a smudge.
+        // The whole row takes the press, as in the other apps; the switch only shows the state.
         trailingContent = {
-            SwitchMMD(checked = checked, onCheckedChange = onCheckChange)
+            SwitchMMD(checked = checked, onCheckedChange = null)
         },
-        modifier = modifier
+        modifier = modifier.toggleable(value = checked, role = Role.Switch, onValueChange = onCheckChange)
     )
 }
 

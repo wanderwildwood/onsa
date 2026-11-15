@@ -54,6 +54,9 @@ import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import com.wanderwildwood.onsa.ui.theme.DarkWindow
 
+/** Room for the dialog's two fields and the gap between them. */
+private val NOTATION_FIELDS = 200.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotationDialog(
@@ -87,8 +90,9 @@ fun NotationDialog(
         text = {
             var isNotationExpanded by remember { mutableStateOf(false) }
             var isOctaveNotationExpanded by remember { mutableStateOf(false) }
-            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
-            PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
+            // Paged, not scrolled: a page turns on whole rows. Two fields: the list is as tall as
+            // they need and no taller than the screen leaves (420 dp pushed Abort off the foot).
+            PagedColumn(modifier = Modifier.heightIn(max = minOf(NOTATION_FIELDS, dialogListRoom()))) {
                 item {
                     ExposedDropdownMenuBox(
                         expanded = isNotationExpanded,
