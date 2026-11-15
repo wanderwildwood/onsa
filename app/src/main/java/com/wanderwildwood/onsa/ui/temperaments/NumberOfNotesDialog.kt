@@ -126,7 +126,7 @@ fun NumberOfNotesDialog(
                     IconButton(onClick = { numberOfNotes = TextFieldValue("") }) {
                         Icon(
                             painter = painterResource(R.drawable.close_24px),
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.cd_clear)
                         )
                     }
                 },

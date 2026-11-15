@@ -276,6 +276,8 @@ private fun BeatDots(data: MetronomeViewModel, settings: MetronomeSettings) {
 
 @Composable
 private fun BeatsRow(beats: Int, onStep: (Int) -> Unit) {
+    val fewer = stringResource(R.string.cd_fewer_beats)
+    val more = stringResource(R.string.cd_more_beats)
     Row(
         Modifier
             .fillMaxWidth()
@@ -290,6 +292,7 @@ private fun BeatsRow(beats: Int, onStep: (Int) -> Unit) {
         HouseButton(
             label = "−",
             onClick = { onStep(-1) },
+            modifier = Modifier.semantics { contentDescription = fewer },
             enabled = beats > 1,
             compact = true
         )
@@ -302,6 +305,7 @@ private fun BeatsRow(beats: Int, onStep: (Int) -> Unit) {
         HouseButton(
             label = "+",
             onClick = { onStep(1) },
+            modifier = Modifier.semantics { contentDescription = more },
             enabled = beats < MetronomeSettings.MAX_BEATS_PER_BAR,
             compact = true
         )

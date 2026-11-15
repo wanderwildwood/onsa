@@ -51,6 +51,10 @@ import com.wanderwildwood.onsa.ui.notes.Note
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions2
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 
 @Composable
 fun QuickSettingsBar(
@@ -64,6 +68,7 @@ fun QuickSettingsBar(
 ) {
     val context = LocalContext.current
     val decimalFormat = rememberNumberFormatter()
+    val preferFlat = stringResource(R.string.prefer_flat)
 
     BottomAppBar(
         modifier = modifier,
@@ -123,6 +128,10 @@ fun QuickSettingsBar(
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f)
+                .semantics {
+                    contentDescription = preferFlat
+                    toggleableState = ToggleableState(notePrintOptions.enharmonicVariant == 1)
+                }
                 .clickable { onSharpFlatClicked() },
             contentAlignment = Alignment.Center
         ) {

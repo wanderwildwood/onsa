@@ -213,7 +213,7 @@ fun InstrumentEditorPortrait(
                 ) {
                     Icon(
                         ImageVector.vectorResource(id = icon.resourceId),
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.pick_icon),
                         modifier = Modifier.size(36.dp)// .background(Color.Green)
                     )
                 }
@@ -373,7 +373,7 @@ fun InstrumentEditorLandscape(
                     ) {
                         Icon(
                             ImageVector.vectorResource(id = icon.resourceId),
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.pick_icon),
                             modifier = Modifier.size(36.dp)// .background(Color.Green)
                         )
                     }

@@ -61,6 +61,8 @@ import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.notenames.NoteNamesEDOGenerator
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.coroutines.flow.drop
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
 
 /** Select between available notes.
  * @param selectedIndex List index of selected note in noteNameScale.notes
@@ -176,6 +178,7 @@ fun NoteSelector(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .size(singleNoteSize)
+                    .semantics { selected = index == selectedIndex }
                     .clickable { onIndexChanged(index) }
             ) {
                 Note(
@@ -255,6 +258,7 @@ fun NoteSelector(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .size(singleNoteSize)
+                    .semantics { selected = index == selectedIndex }
                     .clickable { onIndexChanged(index) }
             ) {
                 Note(

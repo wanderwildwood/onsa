@@ -181,7 +181,7 @@ fun EditableListItem(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.more_vert_24px),
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.cd_menu),
                             tint = variantColor
                         )
                     }

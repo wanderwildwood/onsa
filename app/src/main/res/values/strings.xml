@@ -498,6 +498,9 @@
     <string name="metronome_bpm">bpm</string>
     <string name="metronome_bpm_description">%1$d beats a minute; tap to type a tempo</string>
     <string name="metronome_tempo">Tempo</string>
+    <!-- What a screen reader says for the − and + beside the beats in a bar -->
+    <string name="cd_fewer_beats">Fewer beats in a bar</string>
+    <string name="cd_more_beats">More beats in a bar</string>
     <string name="metronome_bpm_range">%1$d to %2$d beats a minute</string>
     <string name="metronome_beats_in_a_bar">Beats in a bar</string>
     <string name="metronome_accent">Accent the first beat</string>
