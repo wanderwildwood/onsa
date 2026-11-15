@@ -29,6 +29,13 @@ import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.ParsePosition
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 
 /** Parse a string, which is allowed to have white spaces.
  * @param string String to be parsed.
@@ -85,20 +92,26 @@ fun ModifyStretchTuningLineDialog(
         value != null
     }}
 
+    val canConfirm = validUnstretchedFrequencyString && validUnstretchedFrequencyPositive && validStretchInCents
+    val confirm = {
+        val unstretchedFrequency = numberFormat.toDoubleOrNull(
+            unstretchedFrequencyAsString
+        ) ?: initialUnstretchedFrequency
+        val stretchInCents = numberFormat.toDoubleOrNull(
+            stretchInCentsAsString
+        ) ?: initialStretchInCents
+        onConfirmedClicked(unstretchedFrequency, stretchInCents, key)
+    }
+    val frequencyField = remember { FocusRequester() }
+    val stretchField = remember { FocusRequester() }
+    val keyboard = LocalSoftwareKeyboardController.current
+
     EInkAlertDialog(
         onDismissRequest = onAbortClicked,
         confirmButton = {
             OutlinedButtonMMD(
-                onClick = {
-                    val unstretchedFrequency = numberFormat.toDoubleOrNull(
-                        unstretchedFrequencyAsString
-                    ) ?: initialUnstretchedFrequency
-                    val stretchInCents = numberFormat.toDoubleOrNull(
-                        stretchInCentsAsString
-                    ) ?: initialStretchInCents
-                    onConfirmedClicked(unstretchedFrequency, stretchInCents, key)
-                },
-                enabled = validUnstretchedFrequencyString && validUnstretchedFrequencyPositive && validStretchInCents,
+                onClick = confirm,
+                enabled = canConfirm,
                 modifier = Modifier.fillMaxWidth(),
             ) { TextMMD(stringResource(id = R.string.done)) }
         },
@@ -112,6 +125,13 @@ fun ModifyStretchTuningLineDialog(
             TextMMD(stringResource(R.string.stretched_frequency))
         },
         text = {
+            // The frequency field takes the focus as the dialog opens, asked from inside the
+            // dialog a frame after it is drawn; Next goes on to the stretch, and Done there is Done.
+            LaunchedEffect(Unit) {
+                withFrameNanos { }
+                runCatching { frequencyField.requestFocus() }
+                keyboard?.show()
+            }
             Column {
                 TextFieldMMD(
                     value = unstretchedFrequencyAsString,
@@ -119,8 +139,9 @@ fun ModifyStretchTuningLineDialog(
                     label = { TextMMD(stringResource(id = R.string.frequency))},
                     suffix = { TextMMD(stringResource(id = R.string.hertz_str, ""))},
                     isError = !(validUnstretchedFrequencyString && validUnstretchedFrequencyPositive),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = { stretchField.requestFocus() }),
+                    modifier = Modifier.fillMaxWidth().focusRequester(frequencyField),
                     maxLines = 1,
                     supportingText = if (!validUnstretchedFrequencyString) {
                         { TextMMD(stringResource(R.string.input_is_no_number))}
@@ -136,8 +157,9 @@ fun ModifyStretchTuningLineDialog(
                     label = { TextMMD(stringResource(id = R.string.stretch))},
                     suffix = { TextMMD(stringResource(id = R.string.cent_symbol))},
                     isError = !(validStretchInCents),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = { if (canConfirm) confirm() }),
+                    modifier = Modifier.fillMaxWidth().focusRequester(stretchField),
                     maxLines = 1,
                     supportingText = if (!validStretchInCents) {
                         { TextMMD(stringResource(R.string.input_is_no_number))}

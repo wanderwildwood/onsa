@@ -47,7 +47,8 @@ import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
-import kotlinx.coroutines.android.awaitFrame
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 
 @Composable
 fun NumberOfNotesDialog(
@@ -75,10 +76,7 @@ fun NumberOfNotesDialog(
         }
     }
     val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(focusRequester) {
-        awaitFrame()
-        focusRequester.requestFocus()
-    }
+    val keyboard = LocalSoftwareKeyboardController.current
 
     EInkAlertDialog(
         onDismissRequest = { onDismiss() },
@@ -97,6 +95,13 @@ fun NumberOfNotesDialog(
         },
         title = { TextMMD(stringResource(id = R.string.note_number)) },
         text = {
+            // Asked from inside the dialog, a frame after it is drawn: the field lives in the
+            // dialog's own window, which a request from the screen beneath does not reach.
+            LaunchedEffect(Unit) {
+                withFrameNanos { }
+                runCatching { focusRequester.requestFocus() }
+                keyboard?.show()
+            }
             TextFieldMMD(
                 value = numberOfNotes,
                 onValueChange = { numberOfNotes = it },

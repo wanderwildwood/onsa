@@ -61,7 +61,8 @@ import com.wanderwildwood.onsa.ui.theme.EInkDialog
 import com.wanderwildwood.onsa.ui.theme.HouseButton
 import com.wanderwildwood.onsa.ui.theme.rememberArmedKey
 import com.wanderwildwood.onsa.viewmodels.MetronomeViewModel
-import kotlinx.coroutines.android.awaitFrame
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 
 /**
  * The metronome. Back to the tuner stops it, since the tuner would only hear the clicks; the
@@ -347,11 +348,15 @@ private fun BpmDialog(initial: Int, onDismiss: () -> Unit, onDone: (Int) -> Unit
     val value = text.text.toIntOrNull()
     val valid = value != null && value in MetronomeSettings.MIN_BPM..MetronomeSettings.MAX_BPM
     val focus = remember { FocusRequester() }
-    LaunchedEffect(focus) {
-        awaitFrame()
-        focus.requestFocus()
-    }
+    val keyboard = LocalSoftwareKeyboardController.current
     EInkDialog(onDismiss = onDismiss) {
+        // Asked from inside the dialog, a frame after it is drawn: the field lives in the
+        // dialog's own window, which a request from the screen beneath does not reach.
+        LaunchedEffect(Unit) {
+            withFrameNanos { }
+            runCatching { focus.requestFocus() }
+            keyboard?.show()
+        }
         DialogTitle(stringResource(R.string.metronome_tempo))
         TextFieldMMD(
             value = text,
@@ -510,11 +515,15 @@ internal fun presetName(typed: String, default: String): String = typed.trim().i
 private fun NameDialog(initial: String, onDismiss: () -> Unit, onSave: (String) -> Unit) {
     var text by remember { mutableStateOf("") }
     val focus = remember { FocusRequester() }
-    LaunchedEffect(focus) {
-        awaitFrame()
-        focus.requestFocus()
-    }
+    val keyboard = LocalSoftwareKeyboardController.current
     EInkDialog(onDismiss = onDismiss) {
+        // Asked from inside the dialog, a frame after it is drawn: the field lives in the
+        // dialog's own window, which a request from the screen beneath does not reach.
+        LaunchedEffect(Unit) {
+            withFrameNanos { }
+            runCatching { focus.requestFocus() }
+            keyboard?.show()
+        }
         DialogTitle(stringResource(R.string.metronome_name_tempo))
         TextFieldMMD(
             value = text,
