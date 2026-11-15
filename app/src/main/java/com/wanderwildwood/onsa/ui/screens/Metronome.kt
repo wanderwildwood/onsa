@@ -497,10 +497,18 @@ private fun PresetRow(
     }
 }
 
+/** The name a tempo is saved under: what was typed, or [default] when nothing was. */
+internal fun presetName(typed: String, default: String): String = typed.trim().ifEmpty { default }
+
+/**
+ * The field opens empty, with the name the tempo gets by default shown in it as the placeholder
+ * (it goes at the first letter typed): typing gives it a name of your own and Save with nothing typed keeps the default.
+ * The default used to be put in the field as selected text, and a tap in the field dropped the
+ * selection and left the cursor in the middle of it.
+ */
 @Composable
 private fun NameDialog(initial: String, onDismiss: () -> Unit, onSave: (String) -> Unit) {
-    var text by remember { mutableStateOf(TextFieldValue(initial, TextRange(0, initial.length))) }
-    val valid = text.text.isNotBlank()
+    var text by remember { mutableStateOf("") }
     val focus = remember { FocusRequester() }
     LaunchedEffect(focus) {
         awaitFrame()
@@ -512,8 +520,9 @@ private fun NameDialog(initial: String, onDismiss: () -> Unit, onSave: (String) 
             value = text,
             onValueChange = { text = it },
             singleLine = true,
+            placeholder = { TextMMD(initial) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { if (valid) onSave(text.text) }),
+            keyboardActions = KeyboardActions(onDone = { onSave(presetName(text, initial)) }),
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focus)
@@ -523,8 +532,7 @@ private fun NameDialog(initial: String, onDismiss: () -> Unit, onSave: (String) 
             cancel = stringResource(R.string.metronome_cancel),
             confirm = stringResource(R.string.save),
             onCancel = onDismiss,
-            onConfirm = { if (valid) onSave(text.text) },
-            confirmEnabled = valid
+            onConfirm = { onSave(presetName(text, initial)) },
         )
     }
 }
