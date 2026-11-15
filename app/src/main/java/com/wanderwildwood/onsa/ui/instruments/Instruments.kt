@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -262,12 +263,13 @@ fun Instruments(
         val layoutDirection = LocalLayoutDirection.current
         EditableList(
             state = state.listData,
-            modifier = Modifier.consumeWindowInsets(paddingValues),
+            // The page ends above the floating button, so it never covers the last row or its menu.
+            modifier = Modifier.consumeWindowInsets(paddingValues).padding(bottom = maxExpectedHeightForFab),
             contentPadding = PaddingValues(
                 start = paddingValues.calculateStartPadding(layoutDirection),
                 end = paddingValues.calculateEndPadding(layoutDirection),
                 top = paddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding() + maxExpectedHeightForFab
+                bottom = paddingValues.calculateBottomPadding()
             ),
             onActivateItemClicked = {
                 if (it.isGroupRow && it.group != null) onInstrumentGroupClicked(it.group)

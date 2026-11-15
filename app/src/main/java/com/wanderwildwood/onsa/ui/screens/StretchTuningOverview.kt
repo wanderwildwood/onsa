@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -291,12 +292,13 @@ fun StretchTuningOverview(
         val layoutDirection = LocalLayoutDirection.current
         EditableList(
             state = state.listData,
-            modifier = modifier.consumeWindowInsets(paddingValues).fillMaxSize(),
+            // The page ends above the floating buttons, so they never cover the last row or its menu.
+            modifier = modifier.consumeWindowInsets(paddingValues).fillMaxSize().padding(bottom = maxExpectedHeightForFab),
             contentPadding = PaddingValues(
                 start = paddingValues.calculateStartPadding(layoutDirection),
                 end = paddingValues.calculateEndPadding(layoutDirection),
                 top = paddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding() + maxExpectedHeightForFab
+                bottom = paddingValues.calculateBottomPadding()
             ),
             onActivateItemClicked = { onStretchTuningClicked(it) },
             snackbarHostState = snackbarHostState
