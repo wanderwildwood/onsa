@@ -351,6 +351,7 @@
     <string name="octave_offset">Octave offset</string>
     <string name="ratio">ratio</string>
     <string name="temperament_name">Temperament name</string>
+    <string name="temperament_name_taken">Another temperament has this name.</string>
     <string name="temperament_abbreviation">Abbreviation</string>
     <string name="temperament_description">Description</string>
     <string name="decreasing_value_error">Value must be greater than the previous one.</string>

@@ -105,6 +105,16 @@ private fun checkIfDefaultNoteNames(
     return useDefaultNoteNames
 }
 
+/**
+ * True when [name] is already the name of one of [others] (the other custom temperaments),
+ * whatever the capitals and the spaces around it. An empty name is never taken. Two with one
+ * name can still be saved; the editor only says so, since the list cannot tell them apart.
+ */
+internal fun isNameTaken(name: String, others: List<String>): Boolean {
+    val wanted = name.trim()
+    return wanted.isNotEmpty() && others.any { it.trim().equals(wanted, ignoreCase = true) }
+}
+
 @HiltViewModel (assistedFactory = TemperamentEditorViewModel.Factory::class)
 class TemperamentEditorViewModel @AssistedInject constructor(
     @Assisted temperament: EditableTemperament,
@@ -120,6 +130,13 @@ class TemperamentEditorViewModel @AssistedInject constructor(
 
     private val _name = mutableStateOf(temperament.name)
     override val name: State<String> get() = _name
+
+    private fun otherNames() = pref.customTemperaments.value
+        .filter { it.stableId != stableId }
+        .map { it._name }
+
+    private val _nameTaken = mutableStateOf(isNameTaken(temperament.name, otherNames()))
+    override val nameTaken: State<Boolean> get() = _nameTaken
 
     private val _abbreviation = mutableStateOf(temperament.abbreviation)
     override val abbreviation: State<String> get() = _abbreviation
@@ -220,6 +237,7 @@ class TemperamentEditorViewModel @AssistedInject constructor(
 
     override fun modifyName(value: String) {
         _name.value = value
+        _nameTaken.value = isNameTaken(value, otherNames())
     }
 
     override fun modifyAbbreviation(value: String) {

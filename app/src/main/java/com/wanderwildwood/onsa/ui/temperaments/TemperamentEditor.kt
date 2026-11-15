@@ -70,6 +70,9 @@ interface TemperamentEditorState {
     val temperamentValues: State<PersistentList<TemperamentTableLineState>>
     val hasErrors: State<Boolean>
 
+    /** Another custom temperament already has this name. A warning only; saving still works. */
+    val nameTaken: State<Boolean>
+
     fun modifyName(value: String)
     fun modifyAbbreviation(value: String)
     fun modifyDescription(value: String)
@@ -123,6 +126,9 @@ fun TemperamentEditor(
                     value = state.name.value,
                     onValueChange = { state.modifyName(it) },
                     label = { TextMMD(stringResource(id = R.string.temperament_name)) },
+                    supportingText = if (state.nameTaken.value) {
+                        { TextMMD(stringResource(id = R.string.temperament_name_taken)) }
+                    } else null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
@@ -259,6 +265,7 @@ private class TemperamentEditorStateTest : TemperamentEditorState {
         }.toPersistentList()
     )
     override val hasErrors = mutableStateOf(false)
+    override val nameTaken = mutableStateOf(false)
 
     override fun onCentValueChanged(index: Int, value: String) {
         temperamentValues.value.getOrNull(index)?.changeCentOrRatio(value)
