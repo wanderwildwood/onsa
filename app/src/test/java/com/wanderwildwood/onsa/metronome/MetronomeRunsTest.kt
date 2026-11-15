@@ -14,6 +14,23 @@ import java.util.concurrent.TimeUnit
 
 class MetronomeRunsTest {
     @Test
+    fun aWriteThatFailsBreaksTheSoundOff() {
+        val writes = TrackWrites()
+        assertTrue(writes.accept(480))
+        assertFalse(writes.accept(-6)) // ERROR_DEAD_OBJECT
+        assertFalse(TrackWrites().accept(-3)) // ERROR_INVALID_OPERATION
+    }
+
+    @Test
+    fun writesThatTakeNothingBreakTheSoundOffOnlyInARow() {
+        val writes = TrackWrites()
+        repeat(TrackWrites.MAX_EMPTY - 1) { assertTrue(writes.accept(0)) }
+        assertTrue(writes.accept(480))
+        repeat(TrackWrites.MAX_EMPTY - 1) { assertTrue(writes.accept(0)) }
+        assertFalse(writes.accept(0))
+    }
+
+    @Test
     fun aRunWhoseSoundFailsStopsAndSaysSo() {
         val runs = MetronomeRuns()
         val run = runs.begin()!!

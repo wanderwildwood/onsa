@@ -101,6 +101,7 @@ class MetronomeEngine @Inject constructor(
             var nextClick = 0.0
             var tick = 0
             var beatInBar = 0
+            val writes = TrackWrites()
 
             while (runs.isLive(run)) {
                 val s = settings
@@ -146,7 +147,9 @@ class MetronomeEngine @Inject constructor(
                 }
                 for (i in 0 until CHUNK) out[i] = out[i].coerceIn(-1f, 1f)
 
-                track.write(out, 0, CHUNK, AudioTrack.WRITE_BLOCKING)
+                val wrote = track.write(out, 0, CHUNK, AudioTrack.WRITE_BLOCKING)
+                // A dead track says so here rather than by throwing: hand it to the catch below.
+                if (!writes.accept(wrote)) throw IllegalStateException("AudioTrack.write returned $wrote")
                 written = chunkEnd
 
                 val head = track.playbackHeadPosition.toLong() and 0xffffffffL

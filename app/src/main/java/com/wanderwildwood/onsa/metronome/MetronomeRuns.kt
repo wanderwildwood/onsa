@@ -86,6 +86,31 @@ class MetronomeRuns {
     }
 }
 
+/**
+ * Reads what each blocking AudioTrack.write said. A lost audio route or a dead track makes write
+ * return an error code rather than throw, and does not block: the clicks would go silent while
+ * the loop spun and the notification stayed. A negative count, or [MAX_EMPTY] writes in a row
+ * that took nothing, means the sound has broken off.
+ */
+class TrackWrites {
+    private var empty = 0
+
+    /** Whether the sound is still going after a write that returned [result]. */
+    fun accept(result: Int): Boolean {
+        if (result < 0) return false
+        if (result > 0) {
+            empty = 0
+            return true
+        }
+        empty++
+        return empty < MAX_EMPTY
+    }
+
+    companion object {
+        const val MAX_EMPTY = 5
+    }
+}
+
 /** What the service does with a command, given whether the metronome is meant to be playing. */
 enum class ServiceStep {
     /** Go to the foreground, show the notification, hold the wake lock. */
