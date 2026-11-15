@@ -47,6 +47,7 @@ import com.wanderwildwood.onsa.ui.common.OverflowMenuCallbacks
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import com.wanderwildwood.onsa.ui.theme.DarkWindow
 
 /** Get the width of a table column.
  * @param testString Test string based on which we compute the width. This should e.g. be the
@@ -90,6 +91,7 @@ private fun OverflowMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
+            DarkWindow()
             DropdownMenuItemMMD(
                 text = { TextMMD(stringResource(id = R.string.edit)) },
                 leadingIcon = {

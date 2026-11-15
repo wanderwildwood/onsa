@@ -52,6 +52,7 @@ import com.wanderwildwood.onsa.ui.notes.NotePrintOptions2
 import com.wanderwildwood.onsa.ui.notes.OctaveNotation
 import com.wanderwildwood.onsa.ui.theme.EInkAlertDialog
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
+import com.wanderwildwood.onsa.ui.theme.DarkWindow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,6 +106,7 @@ fun NotationDialog(
                             expanded = isNotationExpanded,
                             onDismissRequest = { isNotationExpanded = false },
                         ) {
+                            DarkWindow()
                             for (n in NotationType.entries) {
                                 DropdownMenuItemMMD(
                                     text = {
@@ -150,6 +152,7 @@ fun NotationDialog(
                             expanded = isOctaveNotationExpanded,
                             onDismissRequest = { isOctaveNotationExpanded = false },
                         ) {
+                            DarkWindow()
                             for (n in OctaveNotation.entries) {
                                 DropdownMenuItemMMD(
                                     text = {

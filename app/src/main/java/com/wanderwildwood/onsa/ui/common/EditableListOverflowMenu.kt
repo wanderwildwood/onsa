@@ -35,6 +35,7 @@ import com.mudita.mmd.components.menus.DropdownMenuItemMMD
 import com.mudita.mmd.components.menus.DropdownMenuMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
+import com.wanderwildwood.onsa.ui.theme.DarkWindow
 
 interface OverflowMenuCallbacks{
     fun onDeleteClicked()
@@ -63,6 +64,7 @@ fun OverflowMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
+            DarkWindow()
             DropdownMenuItemMMD(
                 text = { TextMMD(stringResource(id = R.string.delete_items)) },
                 leadingIcon = {

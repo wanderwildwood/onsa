@@ -55,6 +55,7 @@ import com.mudita.mmd.components.menus.DropdownMenuMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
+import com.wanderwildwood.onsa.ui.theme.DarkWindow
 
 enum class ListItemTask {
     Copy,
@@ -189,6 +190,7 @@ fun EditableListItem(
                         expanded = menuExpanded,
                         onDismissRequest = { menuExpanded = false },
                     ) {
+                        DarkWindow()
                         if (hasInfo) {
                             DropdownMenuItemMMD(
                                 text = { TextMMD(stringResource(id = R.string.details)) },
