@@ -20,10 +20,7 @@ package com.wanderwildwood.onsa.ui.preferences
 
 import android.os.Build
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -49,7 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.wanderwildwood.onsa.ui.PagedColumn
+import com.wanderwildwood.onsa.ui.FitPagedColumn
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.onsa.R
 import com.wanderwildwood.onsa.preferences.PreferenceResources
@@ -57,8 +54,9 @@ import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.temperaments.Temperament3
 import com.wanderwildwood.onsa.ui.misc.rememberNumberFormatter
-import com.wanderwildwood.onsa.ui.notes.CentAndRatioTable
-import com.wanderwildwood.onsa.ui.notes.CircleOfFifthTable
+import com.wanderwildwood.onsa.ui.notes.centAndRatioRows
+import com.wanderwildwood.onsa.ui.notes.chainOfFifths
+import com.wanderwildwood.onsa.ui.notes.circleOfFifthRows
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions
 import com.wanderwildwood.onsa.ui.notes.NotePrintOptions2
 import com.wanderwildwood.onsa.ui.notes.NoteSelector
@@ -88,8 +86,9 @@ fun RootNoteDialog(
             .coerceAtLeast(0)
     ) }
 
-    val hasChainOfFifths = remember(temperament) {
-        temperament.chainOfFifths() != null
+    val fifths = remember(temperament, selectedRootNoteIndex) {
+        if (temperament.chainOfFifths() == null) emptyArray()
+        else chainOfFifths(temperament, rootNotes[selectedRootNoteIndex])
     }
 
     val context = LocalContext.current
@@ -117,13 +116,16 @@ fun RootNoteDialog(
             TextMMD(temperament.name.value(context))
         },
         text = {
-            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
-            // 360 dp leaves room for the title and both buttons on a 600 dp screen; at 420 the
-            // dialog ran off the foot and its lower button was cut away.
-            PagedColumn(modifier = Modifier.heightIn(max = 360.dp)) {
+            // Paged, not scrolled: a page turns on whole rows, with no scrollbar. At most 360 dp
+            // leaves room for the title and both buttons on a 600 dp screen (at 420 the lower
+            // button was cut away); with less in it the list is only as tall as its rows, so no
+            // blank band is left above the buttons. The tables come as rows that wrap to the
+            // width, so every note is seen and a page fills to its foot.
+            FitPagedColumn(maxHeight = 360.dp) { width ->
+                val rows = mutableListOf<@Composable () -> Unit>()
                 // No row at all without a warning: an empty first row kept the list from knowing
                 // it was on its first page, so the up arrow was drawn as if there were one before.
-                if (warning != null) item {
+                if (warning != null) rows += {
                     TextMMD(
                         warning,
                         color = MaterialTheme.colorScheme.error,
@@ -133,18 +135,17 @@ fun RootNoteDialog(
                             .padding(vertical = 12.dp)
                     )
                 }
-                item {
+                rows += {
                     TextMMD(
                         stringResource(id = R.string.root_note),
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 4.dp),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
-                item {
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
-                item {
+                rows += {
                     NoteSelector(
                         selectedIndex = selectedRootNoteIndex,
                         notes = rootNotes,
@@ -152,10 +153,7 @@ fun RootNoteDialog(
                         onIndexChanged = { selectedRootNoteIndex = it }
                     )
                 }
-                item {
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
-                item {
+                rows += {
                     OutlinedButtonMMD(
                         onClick = {
                             selectedRootNoteIndex = 0
@@ -163,64 +161,55 @@ fun RootNoteDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
+                            .padding(top = 12.dp)
                     ) {
                         TextMMD(stringResource(id = R.string.use_default))
                     }
                 }
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-                item {
-                    HorizontalDividerMMD(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp))
-                }
-                item {
-                    TextMMD(
-                        stringResource(id = R.string.details),
-                        // temperament.name.value(context),
-                        modifier = Modifier
+                rows += {
+                    Column(Modifier.fillMaxWidth().padding(top = 16.dp)) {
+                        HorizontalDividerMMD(modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 4.dp),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.labelSmall
-                    )
+                            .padding(horizontal = 16.dp))
+                        TextMMD(
+                            stringResource(id = R.string.details),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 4.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 }
-                item {
-                    CentAndRatioTable(
-                        temperament,
-                        rootNotes[selectedRootNoteIndex],
-                        notePrintOptions = notePrintOptions,
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalContentPadding = 16.dp
-                    )
-                }
-                item {
-                    if (hasChainOfFifths) {
-                        Spacer(modifier = Modifier.height(16.dp))
+                rows += centAndRatioRows(
+                    temperament,
+                    rootNotes[selectedRootNoteIndex],
+                    notePrintOptions,
+                    width
+                )
+                if (fifths.isNotEmpty()) {
+                    rows += {
                         TextMMD(
                             stringResource(id = R.string.circle_of_fifths),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 4.dp),
+                                .padding(top = 16.dp, bottom = 4.dp),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.labelSmall
                         )
-                        CircleOfFifthTable(
-                            temperament = temperament,
-                            rootNote = rootNotes[selectedRootNoteIndex],
-                            notePrintOptions = notePrintOptions,
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalContentPadding = 16.dp
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                    rows += circleOfFifthRows(fifths, notePrintOptions, width)
+                    rows += {
                         TextMMD(
                             stringResource(id = R.string.pythagorean_comma_desc),
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(horizontal = 16.dp)
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 8.dp)
                         )
                     }
                 }
+                rows
             }
         },
     )

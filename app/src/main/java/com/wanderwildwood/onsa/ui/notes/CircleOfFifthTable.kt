@@ -60,9 +60,14 @@ data class Fifth(
 //
 @Composable
 private fun rememberChain(temperament: Temperament3, rootNote: MusicalNote?): Array<Fifth>{
-    return remember(temperament, rootNote) {
+    return remember(temperament, rootNote) { chainOfFifths(temperament, rootNote) }
+}
+
+/** The fifths of [temperament] in the order the circle of fifths shows them (the key note dialog
+ * lays them out in rows of its own, see [circleOfFifthRows]). */
+internal fun chainOfFifths(temperament: Temperament3, rootNote: MusicalNote?): Array<Fifth> {
         val chain = temperament.chainOfFifths()
-        if (chain == null) {
+        return if (chain == null) {
             arrayOf()
         } else {
             val unsorted = chain.getRatiosAlongFifths()
@@ -117,7 +122,6 @@ private fun rememberChain(temperament: Temperament3, rootNote: MusicalNote?): Ar
                 result
             }
         }
-    }
 }
 
 
