@@ -18,6 +18,7 @@
 */
 package com.wanderwildwood.onsa.ui.misc
 
+import com.wanderwildwood.onsa.ui.common.Notice
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -74,7 +75,7 @@ fun openAppSettings(context: Context) {
     try {
         context.startActivity(intent)
     } catch (_: android.content.ActivityNotFoundException) {
-        android.widget.Toast.makeText(context, R.string.settings_not_found, android.widget.Toast.LENGTH_LONG).show()
+        Notice.say(context, R.string.settings_not_found)
     }
 }
 

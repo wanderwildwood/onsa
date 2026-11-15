@@ -3,7 +3,7 @@ package com.wanderwildwood.onsa.ui.screens
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
+import com.wanderwildwood.onsa.ui.common.Notice
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
@@ -96,18 +96,9 @@ private fun rememberImportExportCallbacks(
             )
             stateUpdated.listData.clearSelectedItems()
             val filename = getFilenameFromUri(context, uri)
-            Toast.makeText(
-                context,
-                resources.getQuantityString(
-                    R.plurals.database_num_saved,
-                    stretchTunings.size,
-                    stretchTunings.size,
-                    filename
-                ),
-                Toast.LENGTH_LONG).show()
+            Notice.say(context, resources.getQuantityString(R.plurals.database_num_saved, stretchTunings.size, stretchTunings.size, filename))
         } else {
-            Toast.makeText(context,
-                R.string.failed_to_archive_items, Toast.LENGTH_LONG).show()
+            Notice.say(context, R.string.failed_to_archive_items)
         }
     }
 
@@ -143,7 +134,7 @@ private fun rememberImportExportCallbacks(
             override fun onShareClicked() {
                 val stretchTunings = stateUpdated.listData.extractSelectedItems()
                 if (stretchTunings.isEmpty()) {
-                    Toast.makeText(context, R.string.database_empty_share, Toast.LENGTH_LONG).show()
+                    Notice.say(context, R.string.database_empty_share)
                 } else {
                     val intent = ShareData.createShareDataIntent(
                         context,
@@ -156,7 +147,7 @@ private fun rememberImportExportCallbacks(
             }
             override fun onExportClicked() {
                 if (stateUpdated.listData.editableItems.value.isEmpty()) {
-                    Toast.makeText(context, R.string.database_empty, Toast.LENGTH_LONG).show()
+                    Notice.say(context, R.string.database_empty)
                 } else {
                     saveStretchTuningsLauncher.launch("stretch-tunings.txt")
                 }

@@ -24,12 +24,15 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
+import com.wanderwildwood.onsa.ui.common.Notice
+import com.wanderwildwood.onsa.ui.common.NoticeStrip
+import com.wanderwildwood.onsa.ui.common.onEachPress
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -193,8 +196,11 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
                     }
                 }
 
+                // A notice along the foot stays until the next press anywhere, which takes it
+                // down before that press does its own thing.
+                Column(Modifier.fillMaxSize().onEachPress { Notice.text = null }) {
                 NavHost(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.weight(1f),
                     navController = controller,
                     startDestination = TunerRoute
                 ) {
@@ -241,6 +247,8 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
                         controller = controller,
                         preferences = pref
                     )
+                }
+                NoticeStrip()
                 }
             }
         }
@@ -316,13 +324,7 @@ private fun loadTemperaments(
     context: Context
 ) {
     if (temperamentList.firstOrNull { it.hasErrors() } == null) {
-        Toast.makeText(
-            context,
-            context.resources.getQuantityString(
-                R.plurals.load_temperaments, temperamentList.size, temperamentList.size
-            ),
-            Toast.LENGTH_LONG
-        ).show()
+        Notice.say(context, context.resources.getQuantityString(R.plurals.load_temperaments, temperamentList.size, temperamentList.size))
 
         temperamentResources.appendTemperaments(
             temperamentList.mapNotNull { it.toTemperament3Custom() }
@@ -342,15 +344,7 @@ private fun loadStretchTunings(
     temperamentResources: TemperamentResources,
     context: Context
 ) {
-    Toast.makeText(
-        context,
-        context.resources.getQuantityString(
-            R.plurals.load_stretch_tunings,
-            stretchTuningsList.size,
-            stretchTuningsList.size
-        ),
-        Toast.LENGTH_LONG
-    ).show()
+    Notice.say(context, context.resources.getQuantityString(R.plurals.load_stretch_tunings, stretchTuningsList.size, stretchTuningsList.size))
 
     temperamentResources.appendStretchTunings(stretchTuningsList)
 }
@@ -360,15 +354,7 @@ private fun loadInstruments(
     instrumentResources: InstrumentResources,
     context: Context
 ) {
-    Toast.makeText(
-        context,
-        context.resources.getQuantityString(
-            R.plurals.load_instruments,
-            instrumentList.size,
-            instrumentList.size
-        ),
-        Toast.LENGTH_LONG
-    ).show()
+    Notice.say(context, context.resources.getQuantityString(R.plurals.load_instruments, instrumentList.size, instrumentList.size))
     instrumentResources.appendInstruments(instrumentList)
 }
 

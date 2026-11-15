@@ -21,7 +21,7 @@ package com.wanderwildwood.onsa.ui.screens
 import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
-import android.widget.Toast
+import com.wanderwildwood.onsa.ui.common.Notice
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -152,13 +152,9 @@ fun ScientificTuner(
         if (uri != null) {
             data.writeStoredWaveWriterSnapshot(context, uri, data.sampleRate)
             val filename = getFilenameFromUri(context, uri)
-            Toast.makeText(
-                context, resources.getString(R.string.writing_wave_file, filename), Toast.LENGTH_LONG
-            ).show()
+            Notice.say(context, resources.getString(R.string.writing_wave_file, filename))
         } else {
-            Toast.makeText(
-                context, resources.getString(R.string.failed_writing_wave_file), Toast.LENGTH_LONG
-            ).show()
+            Notice.say(context, resources.getString(R.string.failed_writing_wave_file))
         }
     }
 

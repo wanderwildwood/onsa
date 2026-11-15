@@ -20,7 +20,7 @@ package com.wanderwildwood.onsa.ui.instruments
 
 import android.content.Context
 import android.net.Uri
-import android.widget.Toast
+import com.wanderwildwood.onsa.ui.common.Notice
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -127,22 +127,11 @@ fun Instruments(
             val instruments = instrumentsToSave()
             val filename = getFilenameFromUri(context, uri)
             state.saveInstruments(context, uri, instruments) { written ->
-                Toast.makeText(
-                    context,
-                    if (written)
-                        resources.getQuantityString(
-                            R.plurals.database_num_saved,
-                            instruments.size,
-                            instruments.size,
-                            filename
-                        )
-                    else resources.getString(R.string.failed_to_archive_items),
-                    Toast.LENGTH_LONG).show()
+                Notice.say(context, if (written) resources.getQuantityString(R.plurals.database_num_saved, instruments.size, instruments.size, filename) else resources.getString(R.string.failed_to_archive_items))
             }
             state.listData.clearSelectedItems()
         } else {
-            Toast.makeText(context,
-                R.string.failed_to_archive_items, Toast.LENGTH_LONG).show()
+            Notice.say(context, R.string.failed_to_archive_items)
         }
     }
     val shareInstrumentLauncher = rememberLauncherForActivityResult(
@@ -174,7 +163,7 @@ fun Instruments(
         override fun onShareClicked() {
             val instruments = instrumentsToSave()
             if (instruments.isEmpty()) {
-                Toast.makeText(context, R.string.database_empty_share, Toast.LENGTH_LONG).show()
+                Notice.say(context, R.string.database_empty_share)
             } else {
                 val intent = ShareData.createShareDataIntent(
                     context,
@@ -188,7 +177,7 @@ fun Instruments(
         }
         override fun onExportClicked() {
             if (state.allCustomInstruments().isEmpty())
-                Toast.makeText(context, R.string.database_empty, Toast.LENGTH_LONG).show()
+                Notice.say(context, R.string.database_empty)
             else
                 saveInstrumentLauncher.launch("tuner.txt")
         }
