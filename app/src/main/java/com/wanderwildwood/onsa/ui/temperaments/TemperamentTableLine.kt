@@ -311,10 +311,13 @@ fun TemperamentTableLine(
                         TextMMD(
                             "${lineNumber + 1}",
                             style = MaterialTheme.typography.labelSmall,
+                            // Room for three digits on one line: at the house 16 sp a 16 dp cell
+                            // broke "10" into "1" over "0".
                             modifier = Modifier
-                                .width(32.dp)
-                                .padding(start = 16.dp),
+                                .width(40.dp)
+                                .padding(start = 8.dp),
                             textAlign = TextAlign.Center,
+                            maxLines = 1,
                             color = contentColor
                         )
                         ClickableNote(

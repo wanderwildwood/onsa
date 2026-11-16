@@ -116,9 +116,10 @@ fun TemperamentEditor(
             )
         }
     ) { paddingValues ->
+        // The scaffold's bars pad the column itself, not its content: the page bar's arrows sit at
+        // the column's own top and foot, so with contentPadding the up arrow hid under the top bar.
         PagedColumn(
-            modifier = modifier.imePadding().consumeWindowInsets(paddingValues),
-            contentPadding = paddingValues,
+            modifier = modifier.padding(paddingValues).consumeWindowInsets(paddingValues).imePadding(),
             showCutRow = true,
         ) {
             item {
