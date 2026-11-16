@@ -25,7 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -45,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -212,10 +213,25 @@ fun ReferenceNoteDialog(
             TextMMD(stringResource(id = R.string.reference_frequency))
         },
         text = {
-            // Paged, not scrolled: a page turns on whole rows, with no scrollbar.
-            PagedColumn(modifier = Modifier.heightIn(max = 420.dp)) {
-                item {
-                    warning?.let {
+            // Paged, not scrolled: a page turns on whole rows. The list is as tall as its rows when
+            // they all fit (the page bar then stays away), and no taller than the screen leaves.
+            val listState = rememberLazyListState()
+            val room = dialogListRoom()
+            val density = LocalDensity.current
+            val fitted by remember(listState) { derivedStateOf {
+                val info = listState.layoutInfo
+                rowsHeight(
+                    info.visibleItemsInfo.map { RowExtent(it.index, it.offset, it.size) },
+                    rowCount = info.totalItemsCount - 1, // the last item is the list's own blank tail
+                    viewportEnd = info.viewportEndOffset,
+                )
+            }}
+            val listHeight = fitted?.let { with(density) { it.toDp() } }?.coerceAtMost(room) ?: room
+            PagedColumn(modifier = Modifier.height(listHeight), state = listState) {
+                // Only when there is one: an empty first row (no height) is skipped by the list, which
+                // then thinks it is past its first page and shows a Previous arrow that does nothing.
+                warning?.let {
+                    item {
                         TextMMD(
                             it,
                             color = MaterialTheme.colorScheme.error,
@@ -282,47 +298,45 @@ fun ReferenceNoteDialog(
                         modifier = Modifier.fillMaxWidth(),
                     ) { TextMMD(stringResource(id = R.string.done)) }
                 }
-                item {
-                    if (permissionGranted) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        if (frequencyDetectorStarted) {
-                            Row {
-                                OutlinedButtonMMD(
-                                    onClick = {
-                                        frequencyAsString = "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue)
-                                    },
-                                    modifier = Modifier.weight(1f),
-                                    enabled = frequencyDetector.detectedFrequency.floatValue != 0f
-                                ) {
-                                    TextMMD(stringResource(
-                                        R.string.hertz_str,
-                                        "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue))
-                                    )
-                                }
-                                IconButton(
-                                    onClick = {
-                                        frequencyDetectorStarted = false
-                                        frequencyDetector.stopFrequencyDetection()
-                                    }
-                                ) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.close_24px),
-                                        contentDescription = stringResource(R.string.cd_stop_frequency_detection)
-                                    )
-                                }
-                            }
-                        } else {
+                if (permissionGranted) item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (frequencyDetectorStarted) {
+                        Row {
                             OutlinedButtonMMD(
                                 onClick = {
-                                    if (!frequencyDetectorStarted) {
-                                        frequencyDetectorStarted = true
-                                        frequencyDetector.startFrequencyDetection()
-                                    }
+                                    frequencyAsString = "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue)
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.weight(1f),
+                                enabled = frequencyDetector.detectedFrequency.floatValue != 0f
                             ) {
-                                TextMMD(stringResource(R.string.detect_frequency))
+                                TextMMD(stringResource(
+                                    R.string.hertz_str,
+                                    "%.2f".format(locale, frequencyDetector.detectedFrequency.floatValue))
+                                )
                             }
+                            IconButton(
+                                onClick = {
+                                    frequencyDetectorStarted = false
+                                    frequencyDetector.stopFrequencyDetection()
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.close_24px),
+                                    contentDescription = stringResource(R.string.cd_stop_frequency_detection)
+                                )
+                            }
+                        }
+                    } else {
+                        OutlinedButtonMMD(
+                            onClick = {
+                                if (!frequencyDetectorStarted) {
+                                    frequencyDetectorStarted = true
+                                    frequencyDetector.startFrequencyDetection()
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            TextMMD(stringResource(R.string.detect_frequency))
                         }
                     }
                 }
@@ -344,6 +358,21 @@ fun ReferenceNoteDialog(
             }
         },
     )
+}
+
+/** A row of a list as laid out: its index, where it starts and how tall it is, in pixels. */
+internal data class RowExtent(val index: Int, val offset: Int, val size: Int)
+
+/**
+ * The height of rows 0 until [rowCount] when every one of them is laid out whole above
+ * [viewportEnd]; null when some are not (the list then needs all the room it has).
+ */
+internal fun rowsHeight(rows: List<RowExtent>, rowCount: Int, viewportEnd: Int): Int? {
+    if (rowCount <= 0) return null
+    val real = rows.filter { it.index < rowCount }
+    if (real.size != rowCount || real.first().index != 0 || real.first().offset < 0) return null
+    val end = real.last().offset + real.last().size
+    return if (end <= viewportEnd) end else null
 }
 
 private class TestReferenceNoteDialogFrequencyDetector : ReferenceNoteDialogFrequencyDetector {
