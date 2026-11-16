@@ -391,6 +391,10 @@ fun HouseAboutDialog(
     }
     // The Licenses list keeps its place while a library's page is read.
     val licencesList = rememberLazyListState()
+    // "No browser" or "no mail app", with the address to type in by hand: it stays until it is
+    // closed (16 Nov 2026; it was a Toast, gone before a long address could be read).
+    var notice by rememberSaveable { mutableStateOf<String?>(null) }
+    val say: (String) -> Unit = { notice = it }
     EInkDialog(onDismiss = onDismiss) {
         TextMMD(
             text = data.title,
@@ -399,7 +403,7 @@ fun HouseAboutDialog(
             modifier = Modifier.padding(bottom = 6.dp),
         )
         PagedColumn(modifier = Modifier.fillMaxWidth().height(room)) {
-            aboutEntries(entries, data, labels, llamaRes, indent = true) { pageKey = it }
+            aboutEntries(entries, data, labels, llamaRes, indent = true, onNotice = say) { pageKey = it }
         }
         Spacer(Modifier.height(14.dp))
         HouseButton(label = labels.close, onClick = onDismiss, modifier = Modifier.fillMaxWidth())
@@ -426,7 +430,7 @@ fun HouseAboutDialog(
                             TextMMD(text = line, style = aboutBody(), modifier = Modifier.fillMaxWidth().padding(top = 4.dp))
                         }
                     }
-                    aboutEntries(page.items, data, labels, llamaRes, indent = false) { pageKey = it }
+                    aboutEntries(page.items, data, labels, llamaRes, indent = false, onNotice = say) { pageKey = it }
                 }
             }
             HouseButton(
@@ -437,6 +441,13 @@ fun HouseAboutDialog(
         }
     } else if (pageKey != null) {
         SideEffect { pageKey = null } // a saved key that names no row any more
+    }
+    notice?.let { text ->
+        EInkDialog(onDismiss = { notice = null }) {
+            TextMMD(text = text, style = aboutBody(), modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(14.dp))
+            HouseButton(label = labels.close, onClick = { notice = null }, modifier = Modifier.fillMaxWidth())
+        }
     }
 }
 
@@ -475,6 +486,7 @@ private fun LazyListScope.aboutEntries(
     labels: AboutLabels,
     llamaRes: Int,
     indent: Boolean,
+    onNotice: (String) -> Unit,
     onOpen: (String) -> Unit,
 ) {
     // The site's address and the llama are two rows of the list, so a page can end between them.
@@ -484,7 +496,7 @@ private fun LazyListScope.aboutEntries(
         val context = LocalContext.current
         when (item) {
             null -> AboutLine(aboutAddress(ABOUT_WEBSITE_URL)) {
-                openLink(context, ABOUT_WEBSITE_URL, labels.noBrowser(aboutAddress(ABOUT_WEBSITE_URL)))
+                openLink(context, ABOUT_WEBSITE_URL, labels.noBrowser(aboutAddress(ABOUT_WEBSITE_URL)), onNotice)
             }
             is AboutItem.Head -> AboutHead(if (indent) item else item.copy(depth = 0), labels, bold = !indent || item.depth == 0) { onOpen(item.key) }
             is AboutItem.Text -> TextMMD(
@@ -497,12 +509,12 @@ private fun LazyListScope.aboutEntries(
                 modifier = Modifier.fillMaxWidth().padding(start = if (indent) INDENT * item.depth else 0.dp, top = if (indent) 4.dp else 12.dp, bottom = if (indent) 4.dp else 0.dp),
             )
             is AboutItem.Link -> AboutLine(item.label, depth = if (indent) item.depth else 0) {
-                openLink(context, item.url, labels.noBrowser(aboutAddress(item.url)))
+                openLink(context, item.url, labels.noBrowser(aboutAddress(item.url)), onNotice)
             }
             is AboutItem.Contact -> AboutLine(item.label ?: labels.writeTo(item.address), depth = if (indent) item.depth else 0) {
-                openMail(context, item.address, data.title, labels.noMailApp(item.address))
+                openMail(context, item.address, data.title, labels.noMailApp(item.address), onNotice)
             }
-            AboutItem.Llama -> AboutLlama(labels, llamaRes)
+            AboutItem.Llama -> AboutLlama(labels, llamaRes, onNotice)
         }
     }
 }
@@ -580,15 +592,16 @@ private fun AboutHead(item: AboutItem.Head, labels: AboutLabels, bold: Boolean, 
  * email app it says so, address and all (the row shows the address in full too, so it can be copied
  * down by hand). No <queries> entry is needed: nothing is looked up first, the press is just caught.
  */
-fun openMail(context: Context, address: String, subject: String, noMailApp: String) {
+fun openMail(context: Context, address: String, subject: String, noMailApp: String, onNone: ((String) -> Unit)? = null) {
+    val say = onNone ?: { text -> Toast.makeText(context, text, Toast.LENGTH_LONG).show() }
     val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(aboutMailUri(address, subject)))
         .putExtra(Intent.EXTRA_SUBJECT, subject)
     try {
         context.startActivity(intent)
     } catch (_: ActivityNotFoundException) {
-        Toast.makeText(context, noMailApp, Toast.LENGTH_LONG).show()
+        say(noMailApp)
     } catch (_: SecurityException) {
-        Toast.makeText(context, noMailApp, Toast.LENGTH_LONG).show()
+        say(noMailApp)
     }
 }
 
@@ -614,7 +627,7 @@ private fun AboutLine(text: String, bold: Boolean = false, depth: Int = 0, onCli
  * "Feed the llamas" broke in two). The drawing is ink, not an emoji (STYLE.md).
  */
 @Composable
-private fun AboutLlama(labels: AboutLabels, llamaRes: Int) {
+private fun AboutLlama(labels: AboutLabels, llamaRes: Int, onNotice: (String) -> Unit) {
     val context = LocalContext.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -622,7 +635,7 @@ private fun AboutLlama(labels: AboutLabels, llamaRes: Int) {
             .fillMaxWidth()
             .padding(top = 4.dp)
             .heightIn(min = 48.dp)
-            .clickable { openLink(context, ABOUT_DONATE_URL, labels.noBrowser(aboutAddress(ABOUT_DONATE_URL))) },
+            .clickable { openLink(context, ABOUT_DONATE_URL, labels.noBrowser(aboutAddress(ABOUT_DONATE_URL)), onNotice) },
     ) {
         Image(painter = painterResource(llamaRes), contentDescription = null, modifier = Modifier.size(22.dp))
         Spacer(Modifier.width(6.dp))
