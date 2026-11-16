@@ -57,7 +57,9 @@ fun centAndRatioRows(
     notePrintOptions: NotePrintOptions2,
     width: Dp,
 ): List<@Composable () -> Unit> {
-    val perRow = cellsPerRow((width - CentMargin * 2 - BarAllowance).value, CentCell.value)
+    val names = temperament.noteNames(rootNote)
+    val cell = maxOf(CentCell.value, centCellWidth(names.notes.toList()))
+    val perRow = cellsPerRow((width - CentMargin * 2 - BarAllowance).value, cell)
     val ranges = rowRanges(temperament.size + 1, perRow)
     return ranges.mapIndexed { row, range ->
         @Composable {
