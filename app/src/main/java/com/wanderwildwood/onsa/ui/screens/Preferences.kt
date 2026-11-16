@@ -127,7 +127,6 @@ fun Preferences(
                     name = stringResource(id = R.string.settings_dark),
                     checked = DarkMode.on,
                     onCheckChange = { DarkMode.set(context, it) },
-                    supporting = stringResource(id = R.string.settings_dark_note)
                 )
             }
 
