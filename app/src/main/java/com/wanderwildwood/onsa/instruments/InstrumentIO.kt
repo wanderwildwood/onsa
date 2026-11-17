@@ -249,7 +249,7 @@ object InstrumentIO {
             val posStart = pos
             while (pos < string.length && string[pos] != '\n' && string[pos] != ']')
                 ++pos
-            if (string[pos] != ']')
+            if (pos >= string.length || string[pos] != ']')
                 return null
             ++pos
             if (pos - 1 <= posStart + 1) // allow empty int lists
@@ -275,7 +275,7 @@ object InstrumentIO {
             val posStart = pos
             while (pos < string.length && string[pos] != '\n' && string[pos] != ']')
                 ++pos
-            if (string[pos] != ']')
+            if (pos >= string.length || string[pos] != ']')
                 return null
             ++pos
             if (pos - 1 <= posStart + 1) // allow empty int lists
@@ -286,6 +286,9 @@ object InstrumentIO {
             } catch (_: NumberFormatException) {
                 null
             } catch (_: IllegalArgumentException) {
+                null
+            } catch (_: RuntimeException) {
+                // MusicalNote.fromString says "not a note" with a plain RuntimeException.
                 null
             }
         }

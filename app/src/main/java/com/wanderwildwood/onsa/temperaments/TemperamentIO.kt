@@ -266,7 +266,7 @@ object TemperamentIO {
             return null
         val numerator = values[0].toIntOrNull()
         val denominator = values[1].toIntOrNull()
-        return if (numerator != null && denominator != null)
+        return if (numerator != null && denominator != null && denominator != 0)
             RationalNumber(numerator, denominator)
         else
             null
