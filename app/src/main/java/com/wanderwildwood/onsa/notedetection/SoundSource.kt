@@ -113,6 +113,9 @@ fun CoroutineScope.launchSoundSourceJob(
                     0
                 }
 
+                // Nothing read, or an error (the recording never started, the audio server went
+                // away): wait a little before asking again rather than spin a core.
+                if (numRead <= 0) delay(if (numRead < 0) 200L else 20L)
                 //Log.v("TestRecordFlow", "SoundSource: numRead=$numRead, currentFrame=$currentFrame, windowSize=$windowSize")
                 if (numRead > 0) {
                     // add empty sampleData objects to the data queue

@@ -98,6 +98,10 @@ class MetronomeEngine @Inject constructor(
             val voices = ArrayList<Voice>()
             val heard = ArrayDeque<Pair<Long, Int>>() // (frame, beat) still to be heard
             var written = 0L
+            // The track's head is a 32-bit frame count that wraps after about a day at 48 kHz;
+            // this carries it on past the wrap.
+            var lastRawHead = 0L
+            var headWraps = 0L
             var nextClick = 0.0
             var tick = 0
             var beatInBar = 0
@@ -152,7 +156,10 @@ class MetronomeEngine @Inject constructor(
                 if (!writes.accept(wrote)) throw IllegalStateException("AudioTrack.write returned $wrote")
                 written = chunkEnd
 
-                val head = track.playbackHeadPosition.toLong() and 0xffffffffL
+                val rawHead = track.playbackHeadPosition.toLong() and 0xffffffffL
+                if (rawHead < lastRawHead) headWraps++
+                lastRawHead = rawHead
+                val head = rawHead + (headWraps shl 32)
                 var latest = -1
                 while (heard.isNotEmpty() && heard.first().first <= head) latest = heard.removeFirst().second
                 if (latest >= 0) {
