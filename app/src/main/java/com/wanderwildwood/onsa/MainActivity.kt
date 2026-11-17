@@ -34,7 +34,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.DisposableEffect
@@ -47,14 +46,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import com.wanderwildwood.onsa.instruments.Instrument
-import com.wanderwildwood.onsa.instruments.InstrumentIO
 import com.wanderwildwood.onsa.instruments.InstrumentResources
-import com.wanderwildwood.onsa.misc.FileCheck
 import com.wanderwildwood.onsa.metronome.MetronomeEngine
-import com.wanderwildwood.onsa.misc.toastPotentialFileCheckError
-import com.wanderwildwood.onsa.navigation.InstrumentsRoute
-import com.wanderwildwood.onsa.navigation.StretchTuningOverviewRoute
-import com.wanderwildwood.onsa.navigation.TemperamentDialogRoute
 import com.wanderwildwood.onsa.navigation.TunerRoute
 import com.wanderwildwood.onsa.navigation.instrumentEditorGraph
 import com.wanderwildwood.onsa.navigation.preferenceGraph
@@ -65,14 +58,11 @@ import com.wanderwildwood.onsa.navigation.stretchTuningEditorGraph
 import com.wanderwildwood.onsa.preferences.PreferenceResources
 import com.wanderwildwood.onsa.preferences.migrateFromV6
 import com.wanderwildwood.onsa.stretchtuning.StretchTuning
-import com.wanderwildwood.onsa.stretchtuning.StretchTuningIO
 import com.wanderwildwood.onsa.temperaments.EditableTemperament
-import com.wanderwildwood.onsa.temperaments.TemperamentIO
 import com.wanderwildwood.onsa.temperaments.TemperamentResources
 import com.wanderwildwood.onsa.temperaments.hasErrors
 import com.wanderwildwood.onsa.temperaments.toTemperament3Custom
 import com.wanderwildwood.onsa.ui.theme.TunerTheme
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -96,10 +86,6 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
     // (configChanges), so the microphone runs on and only the layout is drawn again.
     private val turner = TurnWithPhone(this)
 
-    private val loadInstrumentIntentChannel = Channel<List<Instrument>>(Channel.CONFLATED)
-    private val loadTemperamentIntentChannel = Channel<List<EditableTemperament>>(Channel.CONFLATED)
-
-    private val loadStretchTuningsIntentChannel = Channel<List< StretchTuning>>(Channel.CONFLATED)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Dark icons whatever the phone's dark-theme setting: the tuner is always white, and
@@ -119,9 +105,6 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
         runBlocking {
             migrateFromV6(this@MainActivity, pref, temperaments, instruments)
         }
-
-        if (savedInstanceState == null)
-            handleFileLoadingIntent(intent)
 
         turner.set(pref.turnWithPhone.value)
         lifecycleScope.launch {
@@ -145,40 +128,6 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
             TunerTheme {
                 val controller = rememberNavController()
 
-                // handle incoming intents for loading instruments
-                LaunchedEffect(loadInstrumentIntentChannel, controller) {
-                    for (instrumentList in loadInstrumentIntentChannel) {
-//                        Log.v("Tuner", "MainActivity2: Loading file ...")
-                        controller.popBackStack(TunerRoute, inclusive = false)
-                        controller.navigate(InstrumentsRoute)
-                        loadInstruments(instrumentList, instruments, this@MainActivity)
-                    }
-                }
-
-                // handle incoming intents for loading temperaments
-                LaunchedEffect(loadTemperamentIntentChannel, controller) {
-                    for (temperamentList in loadTemperamentIntentChannel) {
-//                        Log.v("Tuner", "MainActivity2: Loading file ...")
-                        controller.popBackStack(TunerRoute, inclusive = false)
-                        controller.navigate(TemperamentDialogRoute)
-//                         controller.navigate(TemperamentsManagerRoute(temperaments.musicalScale.value.temperament.stableId))
-                        loadTemperaments(
-                            controller, temperamentList, temperaments, this@MainActivity
-                        )
-                    }
-                }
-                // handle incoming intents for loading stretch tunings
-                LaunchedEffect(loadStretchTuningsIntentChannel, controller) {
-                    for (stretchTuningsList in loadStretchTuningsIntentChannel) {
-//                        Log.v("Tuner", "MainActivity2: Loading file ...")
-                        controller.popBackStack(TunerRoute, inclusive = false)
-                        controller.navigate(StretchTuningOverviewRoute)
-//                         controller.navigate(TemperamentsManagerRoute(temperaments.musicalScale.value.temperament.stableId))
-                        loadStretchTunings(
-                            stretchTuningsList, temperaments, this@MainActivity
-                        )
-                    }
-                }
 
                 DisposableEffect(controller) {
                     val listener = NavController.OnDestinationChangedListener { _, _, _ ->
@@ -267,44 +216,6 @@ class MainActivity : AppCompatActivity() {// ComponentActivity() {
         super.onPause()
     }
 
-    override fun onNewIntent(intent: Intent) {
-        handleFileLoadingIntent(intent)
-        super.onNewIntent(intent)
-    }
-
-    private fun handleFileLoadingIntent(intent: Intent?) {
-//        Log.v("Tuner", "MainActivity2.onNewIntent: action=${intent?.action}")
-        val uri = intent?.data
-        if ((intent?.action == Intent.ACTION_SEND || intent?.action == Intent.ACTION_VIEW) && uri != null) {
-//            Log.v("Tuner", "MainActivity2.onNewIntent: intent=${intent.data}")
-            val (stateInstruments, instruments) = InstrumentIO.readInstrumentsFromFile(
-                this, uri
-            )
-            val (stateTemperaments, temperaments) = TemperamentIO.readTemperamentsFromFile(
-                this, uri
-            )
-            val (stateStretchTunings, stretchTunings) = StretchTuningIO.readStretchTuningsFromFile(
-                this, uri
-            )
-            when {
-                stateInstruments == FileCheck.Ok && instruments.isNotEmpty() -> {
-                    loadInstrumentIntentChannel.trySend(instruments)
-                }
-                stateTemperaments == FileCheck.Ok && temperaments.isNotEmpty() -> {
-                    loadTemperamentIntentChannel.trySend(temperaments)
-                }
-                stateStretchTunings == FileCheck.Ok && stretchTunings.isNotEmpty() -> {
-                    loadStretchTuningsIntentChannel.trySend(stretchTunings)
-                }
-                stateInstruments == FileCheck.Empty || stateTemperaments == FileCheck.Empty || stateStretchTunings == FileCheck.Empty -> {
-                    FileCheck.Empty.toastPotentialFileCheckError(this, uri)
-                }
-                else -> {
-                    FileCheck.Invalid.toastPotentialFileCheckError(this, uri)
-                }
-            }
-        }
-    }
 }
 
 /**
