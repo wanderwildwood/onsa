@@ -121,6 +121,8 @@ private fun NoteSelectorBase(
             ),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             state = state,
+            // No scrollbar: a one-note-high row centred on the chosen note, where a bar would
+            // lie over the notes themselves; the notes either side show there is more.
             isScrollbarVisible = false,
             content = content,
         )

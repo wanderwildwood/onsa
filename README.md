@@ -1,6 +1,6 @@
 # 音叉 onsa — Tuner
 
-A chromatic and instrument tuner for an E Ink phone. Black on white, no color anywhere,
+A chromatic and instrument tuner for an E Ink phone. Black and white, no color anywhere,
 and the screen stays awake while you play.
 
 Built for the [Mudita Kompakt](https://mudita.com/products/kompakt/), whose 4.3" panel has
@@ -31,9 +31,10 @@ and it never opens the microphone. A ring for each beat fills as the beat is hea
 
 ## What changed for E Ink
 
-**One appearance.** Light, dark, black-night and dynamic color are gone. The panel has one
-appearance — dark marks on a light ground, in daylight — and a theme setting the hardware
-cannot honor is a setting that lies. The Appearance row is gone from settings with it.
+**One Dark mode switch.** Light, dark, black-night and dynamic color are gone, and the
+Appearance row with them. Black on white is the default; one Dark mode switch in Settings turns
+the whole app white on black. It follows Home's switch when Home is installed, and the phone's
+own dark setting where it has one.
 
 **In tune is not green.** Upstream says in-tune and out-of-tune in green and red. On sixteen
 grays those arrive as two near-identical mid-tones, so an app leaning on them says nothing
