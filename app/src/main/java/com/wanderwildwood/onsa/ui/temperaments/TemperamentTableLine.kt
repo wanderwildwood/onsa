@@ -54,7 +54,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.ConfigurationCompat
-import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.wanderwildwood.onsa.ui.common.DottedRule
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.wanderwildwood.onsa.R
@@ -512,11 +512,7 @@ fun TemperamentTableLine(
                 )
             }
 
-            HorizontalDividerMMD(
-                Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 4.dp)
-            )
+            DottedRule(Modifier.padding(top = 4.dp), start = 16.dp)
         }
     }
 }

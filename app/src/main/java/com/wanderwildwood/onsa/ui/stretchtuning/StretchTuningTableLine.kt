@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mudita.mmd.components.divider.HorizontalDividerMMD
+import com.wanderwildwood.onsa.ui.common.DottedRule
 import com.mudita.mmd.components.menus.DropdownMenuItemMMD
 import com.mudita.mmd.components.menus.DropdownMenuMMD
 import com.mudita.mmd.components.text.TextMMD
@@ -105,7 +105,7 @@ private fun OverflowMenu(
                     expanded = false
                 }
             )
-            HorizontalDividerMMD()
+            DottedRule()
             DropdownMenuItemMMD(
                 text = { TextMMD(stringResource(id = R.string.delete)) },
                 leadingIcon = {
@@ -213,7 +213,7 @@ fun StretchTuningTableLine(
                 )
             }
 
-            HorizontalDividerMMD()
+            DottedRule()
         }
     }
 }
