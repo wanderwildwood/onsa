@@ -2,8 +2,11 @@ package com.wanderwildwood.onsa.metronome
 
 import android.content.Context
 import android.media.AudioAttributes
+import android.media.AudioFocusRequest
 import android.media.AudioFormat
+import android.media.AudioManager
 import android.media.AudioTrack
+import android.os.Build
 import android.os.Process
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -50,16 +53,59 @@ class MetronomeEngine @Inject constructor(
     fun start(settings: MetronomeSettings) {
         update(settings)
         val run = runs.begin() ?: return
-        Thread({ play(run) }, "metronome").start()
+        // The clicks take the sound as music does: a call, or another app starting to play,
+        // stops them, rather than clicking on underneath. Refused (a call under way), they do
+        // not start, and the screen says the phone would not play them.
+        val focus = requestFocus(run)
+        if (focus == null) {
+            runs.failed(run)
+            MetronomeService.quiet(context)
+            return
+        }
+        Thread({
+            try {
+                play(run)
+            } finally {
+                runCatching { focus() }
+            }
+        }, "metronome").start()
     }
 
-    /**
-     * Stops the clicks. Returns at once: the audio thread is not waited for. It sees that its
-     * run is over within a chunk, cuts its own sound and goes; a start that comes before it
-     * has gone gets a thread and a track of its own (see [MetronomeRuns]).
-     */
-    fun stop() {
-        runs.end()
+    private val audioManager: AudioManager? get() = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+
+    private val attributes: AudioAttributes = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_MEDIA)
+        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+        .build()
+
+    /** Asks for the sound for [run]; what hands it back when the run ends, or null if refused. */
+    @Suppress("DEPRECATION") // the listener form, for Android 7 and older
+    private fun requestFocus(run: MetronomeRuns.Run): (() -> Unit)? {
+        val am = audioManager ?: return {}
+        val listener = AudioManager.OnAudioFocusChangeListener { change ->
+            if (stopsOn(change) && runs.isLive(run)) {
+                stop()
+                MetronomeService.quiet(context)
+            }
+        }
+        // A phone that cannot be asked at all plays as before, rather than not at all.
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val request = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(attributes)
+                    .setOnAudioFocusChangeListener(listener)
+                    .build()
+                val granted = am.requestAudioFocus(request) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+                if (granted) fun() { am.abandonAudioFocusRequest(request) } else null
+            } else {
+                val granted = am.requestAudioFocus(listener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN) ==
+                    AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+                if (granted) fun() { am.abandonAudioFocus(listener) } else null
+            }
+        } catch (e: RuntimeException) {
+            Log.w("Metronome", "audio focus could not be asked for", e)
+            fun() {}
+        }
     }
 
     private class Voice(val data: FloatArray, val step: Float, val gain: Float, var delay: Int) {
@@ -75,12 +121,7 @@ class MetronomeEngine @Inject constructor(
         try {
             val minBytes = AudioTrack.getMinBufferSize(RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_FLOAT)
             track = AudioTrack.Builder()
-                .setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build()
-                )
+                .setAudioAttributes(attributes)
                 .setAudioFormat(
                     AudioFormat.Builder()
                         .setSampleRate(RATE)
@@ -185,6 +226,13 @@ class MetronomeEngine @Inject constructor(
     }
 
     companion object {
+        /**
+         * Whether a change of audio focus stops the clicks: losing it for good or for a while (a
+         * call, a voice note, another player). A short duck for a notification sound does not.
+         */
+        fun stopsOn(change: Int): Boolean =
+            change == AudioManager.AUDIOFOCUS_LOSS || change == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
+
         const val NO_BEAT = MetronomeRuns.NO_BEAT
         const val TOO_QUICK = -2
         private const val RATE = 48000

@@ -10,16 +10,20 @@ Tuner listens to your instrument and has no way to tell anyone what it heard.
 android.permission.RECORD_AUDIO
 ```
 
-and three that only let the metronome keep playing with the screen off:
+and four that only let the metronome keep playing with the screen off and say so:
 
 ```
 android.permission.FOREGROUND_SERVICE
 android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
 android.permission.WAKE_LOCK
+android.permission.POST_NOTIFICATIONS
 ```
 
 While the metronome plays, a notification says so and has a Stop button; the phone is kept
-awake only for as long as it plays.
+awake only for as long as it plays. On Android 13 and later that notification needs
+notifications allowed, which the app asks for once, the first time the metronome is started; the
+metronome plays whatever the answer. The clicks stop when a call comes in or another app starts
+playing sound.
 
 A tuner has to hear the note. The audio is analyzed for pitch as it arrives and is not
 written anywhere by default. The one exception is the optional recording in Settings: when

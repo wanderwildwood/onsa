@@ -1,6 +1,9 @@
 package com.wanderwildwood.onsa.ui.screens
 
+import android.Manifest
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -51,6 +55,7 @@ import com.wanderwildwood.onsa.metronome.ClickSound
 import com.wanderwildwood.onsa.metronome.MetronomeEngine
 import com.wanderwildwood.onsa.metronome.MetronomePreset
 import com.wanderwildwood.onsa.metronome.MetronomeSettings
+import com.wanderwildwood.onsa.metronome.NotificationAsk
 import com.wanderwildwood.onsa.metronome.Subdivision
 import com.wanderwildwood.onsa.ui.PagedColumn
 import com.wanderwildwood.onsa.ui.common.DottedRule
@@ -82,6 +87,17 @@ fun Metronome(
     // A sound that would not play is said until the next press, or until the screen is left.
     DisposableEffect(Unit) { onDispose { data.clearFailed() } }
     var dialog by rememberSaveable { mutableStateOf(MetronomeDialog.None) }
+    // Android 13 and later: the notification with Stop needs notifications allowed. Asked once,
+    // at the first Start; the clicks start whatever the answer.
+    val context = LocalContext.current
+    val askNotifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+    val startStop = {
+        if (!playing && NotificationAsk.shouldAsk(context)) {
+            NotificationAsk.asked(context)
+            runCatching { askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS) }
+        }
+        data.startStop()
+    }
 
     val leave = {
         data.stop()
@@ -178,7 +194,7 @@ fun Metronome(
                 )
                 HouseButton(
                     label = stringResource(if (playing) R.string.metronome_stop else R.string.metronome_start),
-                    onClick = data::startStop,
+                    onClick = startStop,
                     on = playing,
                     modifier = Modifier
                         .weight(1f)
