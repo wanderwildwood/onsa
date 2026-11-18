@@ -244,11 +244,21 @@ private fun loadTemperaments(
         controller.navigate(
             TemperamentEditorGraphRoute(temperamentList[0])
         )
-    } else { // several temperaments, some with errors: nothing is loaded, and the notice says why
-        val numWithErrors = temperamentList.count { it.hasErrors() }
-        Notice.say(context, context.resources.getQuantityString(R.plurals.load_temperaments_with_errors, numWithErrors, numWithErrors, temperamentList.size))
+    } else { // several temperaments, some with errors: the clean ones are loaded, and the notice says how many were skipped
+        val clean = cleanToLoad(temperamentList, { it.hasErrors() }, { it.toTemperament3Custom() })
+        val numSkipped = temperamentList.size - clean.size
+        if (clean.isEmpty()) {
+            Notice.say(context, context.resources.getQuantityString(R.plurals.load_temperaments_with_errors, numSkipped, numSkipped, temperamentList.size))
+        } else {
+            Notice.say(context, context.resources.getQuantityString(R.plurals.load_temperaments_skipped, numSkipped, clean.size, temperamentList.size, numSkipped))
+            temperamentResources.appendTemperaments(clean)
+        }
     }
 }
+
+/** The items of a loaded file that have no errors and convert, in file order; the rest are skipped. */
+internal fun <T, R : Any> cleanToLoad(items: List<T>, hasErrors: (T) -> Boolean, convert: (T) -> R?): List<R> =
+    items.filterNot(hasErrors).mapNotNull(convert)
 
 private fun loadStretchTunings(
     stretchTuningsList: List<StretchTuning>,
