@@ -244,10 +244,10 @@ private fun loadTemperaments(
         controller.navigate(
             TemperamentEditorGraphRoute(temperamentList[0])
         )
+    } else { // several temperaments, some with errors: nothing is loaded, and the notice says why
+        val numWithErrors = temperamentList.count { it.hasErrors() }
+        Notice.say(context, context.resources.getQuantityString(R.plurals.load_temperaments_with_errors, numWithErrors, numWithErrors, temperamentList.size))
     }
-    // TODO: else branches:
-    //  - if several temperaments, where there are errors -> launch dialog telling this
-    //    maybe with options to load the correct ones?
 }
 
 private fun loadStretchTunings(

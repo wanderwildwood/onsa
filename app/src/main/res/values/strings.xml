@@ -162,6 +162,10 @@
         <item quantity="one">Loading %d temperament</item>
         <item quantity="other">Loading %d temperaments</item>
     </plurals>
+    <plurals name="load_temperaments_with_errors">
+        <item quantity="one">Nothing loaded: %1$d of %2$d temperaments has an error. A file with one temperament opens it in the editor to fix.</item>
+        <item quantity="other">Nothing loaded: %1$d of %2$d temperaments have errors. A file with one temperament opens it in the editor to fix.</item>
+    </plurals>
     <plurals name="load_stretch_tunings">
         <item quantity="one">Loading %d stretch tuning</item>
         <item quantity="other">Loading %d stretch tunings</item>
