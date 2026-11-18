@@ -42,6 +42,10 @@ Your settings, your instruments, your temperaments and your saved tempos — ref
 tolerance, notation, and any custom scales you enter. All local, all yours, and all
 exportable and deletable from within the app.
 
+Exports, saved recordings and Load from file go through the phone's own file picker, or through
+Cabinet when it is installed, and only when you ask. When Home is installed, the app asks it
+only whether its dark mode switch is on, and sends it nothing.
+
 ## No analytics
 
 No crash reporting, no telemetry, no advertising identifier, no third-party analytics SDK.
