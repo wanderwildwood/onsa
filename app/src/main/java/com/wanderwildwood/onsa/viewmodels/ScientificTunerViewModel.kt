@@ -172,9 +172,20 @@ class ScientificTunerViewModel @Inject constructor (
         }
     }
 
-    override fun writeStoredWaveWriterSnapshot(context: Context, uri: Uri, sampleRate: Int) {
+    override fun writeStoredWaveWriterSnapshot(
+        context: Context,
+        uri: Uri,
+        sampleRate: Int,
+        onDone: (Boolean) -> Unit
+    ) {
         applicationScope.launch {
-            tuner.writeStoredWaveWriterSnapshot(context, uri, sampleRate)
+            onDone(tuner.writeStoredWaveWriterSnapshot(context, uri, sampleRate))
+        }
+    }
+
+    override fun dropWaveWriterSnapshot() {
+        applicationScope.launch {
+            tuner.dropWaveWriterSnapshot()
         }
     }
 

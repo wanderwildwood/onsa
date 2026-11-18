@@ -24,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.channels.Channels
@@ -122,13 +123,35 @@ class WaveWriter {
         }
     }
 
-    suspend fun writeStoredSnapshot(context: Context?, uri: Uri?, sampleRate: Int) {
-        withContext(Dispatchers.IO) {
+    /** Write the stored snapshot to [uri] and let it go.
+     * @return true if the whole file was written, false if there was nothing to write or
+     *   the file could not be opened or written.
+     */
+    suspend fun writeStoredSnapshot(context: Context?, uri: Uri?, sampleRate: Int): Boolean {
+        return withContext(Dispatchers.IO) {
             mutex.withLock {
-                snapShot?.let {
-                    writeWave(context, uri, sampleRate, it)
-                }
+                val data = snapShot
+                snapShot = null
+                data != null && context != null && uri != null &&
+                        runCatching { writeWave(context, uri, sampleRate, data) }.isSuccess
             }
+        }
+    }
+
+    /** Let go of the stored snapshot without writing it, e.g. when saving was cancelled. */
+    suspend fun dropSnapshot() {
+        mutex.withLock {
+            snapShot = null
+        }
+    }
+
+    /** Wipe the recorded audio, e.g. when the tuner stops listening. */
+    suspend fun clear() {
+        mutex.withLock {
+            buffer?.fill(0f)
+            buffer = null
+            insertPosition = 0L
+            numValues = 0
         }
     }
 }
@@ -143,7 +166,9 @@ fun writeWave(context: Context?, uri: Uri?, sampleRate: Int, data: FloatArray) {
     val dataSize = data.size * bitsPerSample / 8
 
     //val fileSizeInBytes = 44 + bitsPerSample / 8 * data.size
-    context.contentResolver?.openOutputStream(uri, "wt")?.use { stream ->
+    val output = context.contentResolver?.openOutputStream(uri, "wt")
+        ?: throw IOException("no stream")
+    output.use { stream ->
         val channel = Channels.newChannel(stream)
 
         val buffer = ByteBuffer.allocate(64)

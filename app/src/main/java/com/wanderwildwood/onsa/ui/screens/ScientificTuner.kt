@@ -121,7 +121,8 @@ interface ScientificTunerData {
     fun stopTuner()
 
     fun storeCurrentWaveWriterSnapshot()
-    fun writeStoredWaveWriterSnapshot(context: Context, uri: Uri, sampleRate: Int)
+    fun writeStoredWaveWriterSnapshot(context: Context, uri: Uri, sampleRate: Int, onDone: (Boolean) -> Unit = {})
+    fun dropWaveWriterSnapshot()
 }
 
 @Composable
@@ -150,10 +151,12 @@ fun ScientificTuner(
         contract = FilesCreateDocument("audio/wav")
     ) { uri ->
         if (uri != null) {
-            data.writeStoredWaveWriterSnapshot(context, uri, data.sampleRate)
             val filename = getFilenameFromUri(context, uri)
-            Notice.say(context, resources.getString(R.string.writing_wave_file, filename))
+            data.writeStoredWaveWriterSnapshot(context, uri, data.sampleRate) { written ->
+                Notice.say(context, if (written) resources.getString(R.string.wave_file_written, filename) else resources.getString(R.string.failed_writing_wave_file))
+            }
         } else {
+            data.dropWaveWriterSnapshot()
             Notice.say(context, resources.getString(R.string.failed_writing_wave_file))
         }
     }
@@ -639,7 +642,8 @@ class TestScientificTunerData : ScientificTunerData {
     override fun stopTuner() {}
 
     override fun storeCurrentWaveWriterSnapshot() {}
-    override fun writeStoredWaveWriterSnapshot(context: Context, uri: Uri, sampleRate: Int) {}
+    override fun writeStoredWaveWriterSnapshot(context: Context, uri: Uri, sampleRate: Int, onDone: (Boolean) -> Unit) {}
+    override fun dropWaveWriterSnapshot() {}
 }
 
 @Preview(widthDp = 300, heightDp = 600, showBackground = true)

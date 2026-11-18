@@ -177,6 +177,8 @@ class Tuner(
                     // Log.v("Tuner", "Tuner: buffer after delay $v, $reconnect, $isActive")
                     if (isActive && r)
                         run()
+                    else if (!r)
+                        waveWriter.clear() // the recorded audio is kept only while the tuner listens
                     // Log.v("Tuner", "Tuner: after 'if run'")
                 }
         }
@@ -272,7 +274,12 @@ class Tuner(
         waveWriter.storeSnapshot()
     }
 
-    suspend fun writeStoredWaveWriterSnapshot(context: Context, uri: Uri, sampleRate: Int) {
-        waveWriter.writeStoredSnapshot(context, uri, sampleRate)
+    /** @return true if the wave file was written. */
+    suspend fun writeStoredWaveWriterSnapshot(context: Context, uri: Uri, sampleRate: Int): Boolean {
+        return waveWriter.writeStoredSnapshot(context, uri, sampleRate)
+    }
+
+    suspend fun dropWaveWriterSnapshot() {
+        waveWriter.dropSnapshot()
     }
 }

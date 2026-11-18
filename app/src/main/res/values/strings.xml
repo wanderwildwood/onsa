@@ -337,7 +337,7 @@
     <string name="settings_not_found">The phone has no Settings page to open for this app.</string>
     <string name="about_no_browser_address">No browser is installed. The address is %1$s.</string>
     <string name="grant_permission">Allow</string>
-    <string name="writing_wave_file">Writing wave file: %s</string>
+    <string name="wave_file_written">Wave file written: %s</string>
     <string name="failed_writing_wave_file">Did not write wave file.</string>
     <string name="instruments">Instruments</string>
     <string name="edit">Edit</string>
