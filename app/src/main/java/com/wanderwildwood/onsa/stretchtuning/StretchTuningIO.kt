@@ -11,7 +11,10 @@ import com.wanderwildwood.onsa.musicalscale.MusicalScale2
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteModifier
+import com.wanderwildwood.onsa.misc.readPickedText
 import com.wanderwildwood.onsa.temperaments.predefinedTemperamentEDO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.StringWriter
@@ -53,11 +56,16 @@ object StretchTuningIO {
             }
     }
 
-    fun readStretchTuningsFromFile(context: Context, uri: Uri): StretchTuningsAndFileCheckResult {
-        return context.contentResolver?.openInputStream(uri)?.use { reader ->
-            parseStretchTunings(reader.bufferedReader())
-        } ?: StretchTuningsAndFileCheckResult(FileCheck.Invalid, listOf())
-    }
+    /** Reads stretch tunings from a picked file, off the main thread. A file that cannot be read,
+     * is too large or does not parse comes back as [FileCheck.Invalid]. */
+    suspend fun readStretchTuningsFromFile(context: Context, uri: Uri): StretchTuningsAndFileCheckResult =
+        withContext(Dispatchers.IO) {
+            (try {
+                readPickedText(context, uri)?.let { parseStretchTunings(it.reader().buffered()) }
+            } catch (e: Exception) {
+                null
+            }) ?: StretchTuningsAndFileCheckResult(FileCheck.Invalid, listOf())
+        }
 
     fun parseStretchTunings(reader: BufferedReader): StretchTuningsAndFileCheckResult {
         return parseStretchTuningsImpl(reader)

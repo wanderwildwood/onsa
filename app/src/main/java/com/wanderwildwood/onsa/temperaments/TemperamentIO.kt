@@ -22,9 +22,12 @@ import android.content.Context
 import android.net.Uri
 import com.wanderwildwood.onsa.BuildConfig
 import com.wanderwildwood.onsa.misc.FileCheck
+import com.wanderwildwood.onsa.misc.readPickedText
 import com.wanderwildwood.onsa.notenames.BaseNote
 import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteModifier
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.StringWriter
@@ -105,11 +108,16 @@ object TemperamentIO {
         }
     }
 
-    fun readTemperamentsFromFile(context: Context, uri: Uri): TemperamentsAndFileCheckResult {
-        return context.contentResolver?.openInputStream(uri)?.use { reader ->
-            parseTemperaments(reader.bufferedReader())
-        } ?: TemperamentsAndFileCheckResult(FileCheck.Invalid, listOf())
-    }
+    /** Reads temperaments from a picked file, off the main thread. A file that cannot be read,
+     * is too large or does not parse comes back as [FileCheck.Invalid]. */
+    suspend fun readTemperamentsFromFile(context: Context, uri: Uri): TemperamentsAndFileCheckResult =
+        withContext(Dispatchers.IO) {
+            (try {
+                readPickedText(context, uri)?.let { parseTemperaments(it.reader().buffered()) }
+            } catch (e: Exception) {
+                null
+            }) ?: TemperamentsAndFileCheckResult(FileCheck.Invalid, listOf())
+        }
 
     fun parseTemperaments(reader: BufferedReader): TemperamentsAndFileCheckResult {
         val collectedTemperaments = ArrayList<EditableTemperament>()

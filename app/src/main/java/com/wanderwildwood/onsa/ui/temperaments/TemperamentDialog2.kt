@@ -99,6 +99,7 @@ private fun rememberImportExportCallbacks(
     val resources = LocalResources.current
     val stateUpdated by rememberUpdatedState(newValue = state)
     val onLoadTemperamentsUpdated by rememberUpdatedState(newValue = onLoadTemperaments)
+    val scope = rememberCoroutineScope()
 
     val saveTemperamentsLauncher =  rememberLauncherForActivityResult(
         contract = FilesCreateDocument("text/plain")
@@ -130,11 +131,13 @@ private fun rememberImportExportCallbacks(
 //            val cR = context.contentResolver
 //            Log.v("Tuner", "Temperaments import temperament file, mimetype=${cR.getType(uri)}")
 
-            val (readState, temperaments) = TemperamentIO.readTemperamentsFromFile(context, uri)
-            readState.toastPotentialFileCheckError(context, uri)
-            if (temperaments.isNotEmpty()) {
-                onLoadTemperamentsUpdated(temperaments)
-                state.listData.clearSelectedItems()
+            scope.launch {
+                val (readState, temperaments) = TemperamentIO.readTemperamentsFromFile(context, uri)
+                readState.toastPotentialFileCheckError(context, uri)
+                if (temperaments.isNotEmpty()) {
+                    onLoadTemperamentsUpdated(temperaments)
+                    stateUpdated.listData.clearSelectedItems()
+                }
             }
         }
     }

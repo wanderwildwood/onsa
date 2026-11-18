@@ -23,14 +23,18 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.core.database.getStringOrNull
 
+/** Display name of a picked document, or null when its provider gives none or refuses. */
 fun getFilenameFromUri(context: Context, uri: Uri): String? {
-    var filename: String? = null
-    context.contentResolver?.query(
-        uri, null, null, null, null)?.use { cursor ->
-        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-        cursor.moveToFirst()
-        filename = cursor.getStringOrNull(nameIndex)
-        cursor.close()
+    return try {
+        context.contentResolver?.query(
+            uri, null, null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (nameIndex >= 0 && cursor.moveToFirst())
+                cursor.getStringOrNull(nameIndex)
+            else
+                null
+        }
+    } catch (e: Exception) {
+        null
     }
-    return filename
 }

@@ -22,7 +22,10 @@ import android.content.Context
 import android.net.Uri
 import com.wanderwildwood.onsa.BuildConfig
 import com.wanderwildwood.onsa.misc.FileCheck
+import com.wanderwildwood.onsa.misc.readPickedText
 import com.wanderwildwood.onsa.notenames.MusicalNote
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.math.min
 
 object InstrumentIO {
@@ -48,14 +51,18 @@ object InstrumentIO {
         val instruments: List<Instrument>
     )
 
-    fun readInstrumentsFromFile(context: Context, uri: Uri): InstrumentsAndFileCheckResult  {
-//        val filename = getFilenameFromUri(context, uri)
-//            Log.v("Tuner", "InstrumentArchiving.loadInstruments: $filename")
-        val instrumentsStringRaw = context.contentResolver?.openInputStream(uri)?.use { stream ->
-            stream.reader().use {
-                it.readText()
+    /** Reads instruments from a picked file, off the main thread. A file that cannot be read,
+     * is too large or does not parse comes back as [FileCheck.Invalid]. */
+    suspend fun readInstrumentsFromFile(context: Context, uri: Uri): InstrumentsAndFileCheckResult =
+        withContext(Dispatchers.IO) {
+            try {
+                instrumentsFromText(readPickedText(context, uri))
+            } catch (e: Exception) {
+                InstrumentsAndFileCheckResult(FileCheck.Invalid, listOf())
             }
         }
+
+    private fun instrumentsFromText(instrumentsStringRaw: String?): InstrumentsAndFileCheckResult {
         // skip byte order mark if necessary
         val instrumentsString = if (instrumentsStringRaw?.getOrNull(0) == '\ufeff') {
             instrumentsStringRaw.substring(1)

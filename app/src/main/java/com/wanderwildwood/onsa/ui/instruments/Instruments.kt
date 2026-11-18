@@ -144,11 +144,13 @@ fun Instruments(
         contract = FilesOpenDocument(writable = false)
     ) { uri ->
         if (uri != null) {
-            val (readState, instruments) = InstrumentIO.readInstrumentsFromFile(context, uri)
-            readState.toastPotentialFileCheckError(context, uri)
-            if (instruments.isNotEmpty()) {
-                onLoadInstruments(instruments)
-                state.listData.clearSelectedItems()
+            scope.launch {
+                val (readState, instruments) = InstrumentIO.readInstrumentsFromFile(context, uri)
+                readState.toastPotentialFileCheckError(context, uri)
+                if (instruments.isNotEmpty()) {
+                    onLoadInstruments(instruments)
+                    state.listData.clearSelectedItems()
+                }
             }
         }
     }

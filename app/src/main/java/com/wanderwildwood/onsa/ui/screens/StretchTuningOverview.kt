@@ -85,6 +85,7 @@ private fun rememberImportExportCallbacks(
     val resources = LocalResources.current
     val stateUpdated by rememberUpdatedState(newValue = state)
     val onLoadStretchTuningsUpdated by rememberUpdatedState(newValue = onLoadStretchTunings)
+    val scope = rememberCoroutineScope()
 
     val saveStretchTuningsLauncher =  rememberLauncherForActivityResult(
         contract = FilesCreateDocument("text/plain")
@@ -115,11 +116,13 @@ private fun rememberImportExportCallbacks(
 //            val cR = context.contentResolver
 //            Log.v("Tuner", "Temperaments import temperament file, mimetype=${cR.getType(uri)}")
 
-            val (readState, stretchTunings) = StretchTuningIO.readStretchTuningsFromFile(context, uri)
-            readState.toastPotentialFileCheckError(context, uri)
-            if (stretchTunings.isNotEmpty()) {
-                onLoadStretchTuningsUpdated(stretchTunings)
-                state.listData.clearSelectedItems()
+            scope.launch {
+                val (readState, stretchTunings) = StretchTuningIO.readStretchTuningsFromFile(context, uri)
+                readState.toastPotentialFileCheckError(context, uri)
+                if (stretchTunings.isNotEmpty()) {
+                    onLoadStretchTuningsUpdated(stretchTunings)
+                    stateUpdated.listData.clearSelectedItems()
+                }
             }
         }
     }
