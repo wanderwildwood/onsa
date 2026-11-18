@@ -3,6 +3,8 @@ package com.wanderwildwood.onsa
 import com.wanderwildwood.onsa.misc.WaveWriter
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -13,10 +15,11 @@ class WaveWriterTest {
         writer.setBufferSize(4)
         writer.appendData(floatArrayOf(0.1f, 0.2f, 0.3f))
         writer.storeSnapshot()
+        assertNotNull(snapshotOf(writer))
         // no file to write to: the write fails and reports it
         assertFalse(writer.writeStoredSnapshot(null, null, 44100))
-        // and the snapshot is gone, so a second try has nothing to write
-        assertFalse(writer.writeStoredSnapshot(null, null, 44100))
+        // and the snapshot is gone all the same
+        assertNull(snapshotOf(writer))
     }
 
     @Test
@@ -25,8 +28,9 @@ class WaveWriterTest {
         writer.setBufferSize(4)
         writer.appendData(floatArrayOf(0.1f, 0.2f))
         writer.storeSnapshot()
+        assertNotNull(snapshotOf(writer))
         writer.dropSnapshot()
-        assertFalse(writer.writeStoredSnapshot(null, null, 44100))
+        assertNull(snapshotOf(writer))
     }
 
     @Test
