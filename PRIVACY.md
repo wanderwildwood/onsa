@@ -53,8 +53,8 @@ aapt2 dump badging app-release.apk | grep uses-permission
 ```
 
 That prints every permission the built app actually carries. `RECORD_AUDIO` should be the
-only one that touches anything of yours, beside the three the metronome needs to keep playing,
-and there should be no `INTERNET` in the list.
+only one that touches anything of yours, beside the four the metronome needs to keep playing
+and to show its Stop notification, and there should be no `INTERNET` in the list.
 
 ## Terms
 
