@@ -73,7 +73,7 @@ import kotlinx.coroutines.launch
 interface StretchTuningOverviewState {
     val defaultStretchTuning: StretchTuning
     val listData: EditableListData<StretchTuning>
-    fun saveStretchTunings(context: Context, uri: Uri, stretchTunings: List<StretchTuning>)
+    fun saveStretchTunings(context: Context, uri: Uri, stretchTunings: List<StretchTuning>, onDone: (Boolean) -> Unit = {})
 }
 
 @Composable
@@ -92,12 +92,13 @@ private fun rememberImportExportCallbacks(
     ) { uri ->
         if (uri != null) {
             val stretchTunings = stateUpdated.listData.extractSelectedItems()
+            val filename = getFilenameFromUri(context, uri)
             stateUpdated.saveStretchTunings(
                 context, uri, stretchTunings
-            )
+            ) { written ->
+                Notice.say(context, if (written) resources.getQuantityString(R.plurals.database_num_saved, stretchTunings.size, stretchTunings.size, filename) else resources.getString(R.string.failed_to_archive_items))
+            }
             stateUpdated.listData.clearSelectedItems()
-            val filename = getFilenameFromUri(context, uri)
-            Notice.say(context, resources.getQuantityString(R.plurals.database_num_saved, stretchTunings.size, stretchTunings.size, filename))
         } else {
             Notice.say(context, R.string.failed_to_archive_items)
         }
@@ -398,7 +399,8 @@ private class StretchTuningOverviewTestState : StretchTuningOverviewState {
     override fun saveStretchTunings(
         context: Context,
         uri: Uri,
-        stretchTunings: List<StretchTuning>
+        stretchTunings: List<StretchTuning>,
+        onDone: (Boolean) -> Unit
     ) {
 
     }

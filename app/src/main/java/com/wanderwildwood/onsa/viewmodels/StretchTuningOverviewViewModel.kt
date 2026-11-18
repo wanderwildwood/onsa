@@ -52,14 +52,18 @@ class StretchTuningOverviewViewModel @Inject constructor(
     override fun saveStretchTunings(
         context: Context,
         uri: Uri,
-        stretchTunings: List<StretchTuning>
+        stretchTunings: List<StretchTuning>,
+        onDone: (Boolean) -> Unit
     ) {
-       applicationScope.launch(Dispatchers.IO) {
-          context.contentResolver?.openOutputStream(uri, "wt")?.use { stream ->
-             stream.bufferedWriter().use { writer ->
-                 StretchTuningIO.writeStretchTunings(stretchTunings, writer, context)
-             }
-          }
-       }
+        applicationScope.launch(Dispatchers.IO) {
+            val written = runCatching {
+                val stream = context.contentResolver?.openOutputStream(uri, "wt")
+                    ?: throw java.io.IOException("no stream")
+                stream.bufferedWriter().use { writer ->
+                    StretchTuningIO.writeStretchTunings(stretchTunings, writer, context)
+                }
+            }.isSuccess
+            kotlinx.coroutines.withContext(Dispatchers.Main) { onDone(written) }
+        }
     }
 }
