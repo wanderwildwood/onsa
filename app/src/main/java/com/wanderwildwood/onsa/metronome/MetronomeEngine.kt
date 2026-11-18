@@ -108,6 +108,15 @@ class MetronomeEngine @Inject constructor(
         }
     }
 
+    /**
+     * Stops the clicks. Returns at once: the audio thread is not waited for. It sees that its
+     * run is over within a chunk, cuts its own sound and goes; a start that comes before it
+     * has gone gets a thread and a track of its own (see [MetronomeRuns]).
+     */
+    fun stop() {
+        runs.end()
+    }
+
     private class Voice(val data: FloatArray, val step: Float, val gain: Float, var delay: Int) {
         var pos = 0.0
         val done get() = pos.toInt() + 1 >= data.size
