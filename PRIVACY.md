@@ -44,7 +44,7 @@ exportable and deletable from within the app.
 
 Exports, saved recordings and Load from file go through the phone's own file picker, or through
 Cabinet when it is installed, and only when you ask. When Home is installed, the app asks it
-only whether its dark mode switch is on, and sends it nothing.
+only whether its dark mode switch is on, and sends it nothing. The app can also see which browsers the phone has, so a link in About opens in a real one. It sends them nothing.
 
 ## No analytics
 
