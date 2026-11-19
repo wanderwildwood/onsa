@@ -6,6 +6,8 @@ import com.wanderwildwood.onsa.notenames.MusicalNote
 import com.wanderwildwood.onsa.notenames.NoteModifier
 import com.wanderwildwood.onsa.ui.tuning.ShownReading
 import com.wanderwildwood.onsa.ui.tuning.ShownReadingGate
+import com.wanderwildwood.onsa.ui.tuning.ReadingWindow
+import com.wanderwildwood.onsa.ui.tuning.looksLike
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -80,5 +82,61 @@ class ShownReadingGateTest {
         val gate = ShownReadingGate(reading(0f))
         gate.showNow(reading(0f, e4))
         assertNull(gate.take())
+    }
+
+    @Test fun theWindowGivesTheMedian() {
+        val w = ReadingWindow()
+        assertNull(w.median())
+        listOf(440f, 500f, 430f, 0f, -1f).forEach { w.add(it) }
+        assertEquals(440f, w.median())
+        w.add(450f)
+        assertEquals(445f, w.median())
+        w.clear()
+        assertNull(w.median())
+    }
+
+    @Test fun twoCentsApartLooksTheSame() {
+        assertTrue(reading(10f).looksLike(reading(12f)))
+        assertTrue(!reading(10f).looksLike(reading(13f)))
+        assertTrue(!reading(0f).looksLike(reading(0f, e4)))
+        val silent = ShownReading(a4, TuningState.Unknown, null)
+        assertTrue(silent.looksLike(silent))
+        assertTrue(!silent.looksLike(reading(0f)))
+    }
+
+    /** A steady note heard badly: every reading off by up to six cents. Taking the last reading
+     * of each half second redraws nearly every tick; the median with the deadband a few times. */
+    @Test fun aNoisySteadyNoteHoldsStill() {
+        val rnd = java.util.Random(7)
+        val dt = 4096 * 0.25f / 44100f
+        val tick = ShownReadingGate.INTERVAL_MS / 1000f
+
+        fun run(useMedian: Boolean): Int {
+            val gate = ShownReadingGate(ShownReading(a4, TuningState.Unknown, null)) { a, b ->
+                if (useMedian) a.looksLike(b) else a == b
+            }
+            val window = ReadingWindow()
+            var t = 0f
+            var nextTick = tick
+            var count = 0
+            var last = 440f
+            while (t < 10f) {
+                last = hz(-12f + 6f * (2f * rnd.nextFloat() - 1f))
+                window.add(last)
+                t += dt
+                if (t >= nextTick) {
+                    val f = if (useMedian) window.median()!! else last
+                    window.clear()
+                    gate.offer(ShownReading.of(a4, TuningState.TooLow, f, 440f))
+                    if (gate.take() != null) count++
+                    nextTick += tick
+                }
+            }
+            return count
+        }
+        val before = run(useMedian = false)
+        val after = run(useMedian = true)
+        assertTrue("last reading: $before redraws in 10 s", before >= 12)
+        assertTrue("median: $after against $before redraws in 10 s", after * 3 <= before)
     }
 }

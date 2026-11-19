@@ -44,6 +44,8 @@ import com.wanderwildwood.onsa.ui.screens.InstrumentTunerData
 import com.wanderwildwood.onsa.ui.tuning.PitchHistoryState
 import com.wanderwildwood.onsa.ui.tuning.ShownReading
 import com.wanderwildwood.onsa.ui.tuning.ShownReadingGate
+import com.wanderwildwood.onsa.ui.tuning.ReadingWindow
+import com.wanderwildwood.onsa.ui.tuning.looksLike
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
@@ -84,7 +86,11 @@ class InstrumentTunerViewModel @Inject constructor (
     override var targetNote by mutableStateOf(autodetectedTargetNote)
         private set
 
-    private val shownGate = ShownReadingGate(liveReading())
+    private val heard = ReadingWindow()
+    private val shownGate = ShownReadingGate(liveReading()) { a, b -> a.looksLike(b) }
+
+    override var shownCents by mutableStateOf<Int?>(null)
+        private set
     private var shownClock: Job? = null
     override var targetNoteForLockButton: MusicalNote by mutableStateOf(autodetectedTargetNote)
         private set
@@ -132,13 +138,17 @@ class InstrumentTunerViewModel @Inject constructor (
                     pitchHistoryState.record(result.smoothedFrequency)
                     currentSmoothedFrequency = result.smoothedFrequency
 
+                    val noteBefore = liveTargetNote
                     result.target?.let { tuningTarget ->
                         handleTargetNoteOnAutodetectChange(tuningTarget.note)
                     }
+                    // A median across two notes means nothing: start again on the new one.
+                    if (liveTargetNote != noteBefore)
+                        heard.clear()
+                    heard.add(result.smoothedFrequency)
                 }
                 //Log.v("Tuner", "ScientificTunerViewModel: dt = ${result.timeSinceThereIsNoFrequencyDetectionResult}")
                 resetTuningState(result.timeSinceThereIsNoFrequencyDetectionResult)
-                shownGate.offer(liveReading())
             }
         }
     )
@@ -175,6 +185,8 @@ class InstrumentTunerViewModel @Inject constructor (
             shownClock = viewModelScope.launch {
                 while (isActive) {
                     delay(ShownReadingGate.INTERVAL_MS)
+                    shownGate.offer(windowReading())
+                    heard.clear()
                     shownGate.take()?.let { show(it) }
                 }
             }
@@ -196,14 +208,28 @@ class InstrumentTunerViewModel @Inject constructor (
         )
     }
 
+    /** The half second just heard, as one reading: its median against the note aimed at. */
+    private fun windowReading(): ShownReading {
+        val frequency = heard.median() ?: return liveReading()
+        val scale = musicalScale.value
+        val targetFrequency = scale.getNoteFrequency(scale.getNoteIndex2(liveTargetNote))
+        val state = if (liveTuningState == TuningState.Unknown)
+            TuningState.Unknown
+        else
+            checkTuning(frequency, targetFrequency, toleranceInCents.value.toFloat())
+        return ShownReading.of(liveTargetNote, state, frequency, targetFrequency)
+    }
+
     private fun show(reading: ShownReading) {
         targetNote = reading.targetNote
         tuningState = reading.tuningState
+        shownCents = reading.cents
         pitchHistoryState.publish()
     }
 
     /** A tap on a string or the lock button: shown at once, not on the next tick. */
     private fun showNow() {
+        heard.clear()
         val reading = liveReading()
         shownGate.showNow(reading)
         show(reading)
