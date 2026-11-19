@@ -42,6 +42,13 @@ and says it confidently. Both are black here, and the reading is carried by wher
 needle sits against the center line — which is how a mechanical tuner did it before anyone
 had a color display.
 
+**A readout to tune by.** Below the strings, the note in large type, how many cents flat or
+sharp it is and which way to turn, and a scale from −50 to +50 cents with a dot where the pitch
+sits. It shows the middle of each half second's readings and redraws only when that moves three
+cents or more, so a held note holds still instead of flickering. When the string dies away the
+last reading stays, greyed. A tap swaps it for upstream's pitch graph, and a tap on the graph
+brings it back.
+
 **The screen stays on by default.** Upstream makes this a setting and defaults it off; it is
 still a setting, and it now starts on. A tuner sits on a music stand and is glanced at
 between phrases, and you cannot put down a bow to wake a phone.
