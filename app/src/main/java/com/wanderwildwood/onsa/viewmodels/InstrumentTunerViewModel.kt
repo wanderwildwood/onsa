@@ -226,7 +226,7 @@ class InstrumentTunerViewModel @Inject constructor (
     }
 
     private fun show(reading: ShownReading) {
-        // When the string dies away the last reading stays (greyed by the screen), until a
+        // When the string dies away the last reading stays (grayed by the screen), until a
         // new note is aimed at: cents from another note would mean nothing.
         if (reading.cents != null)
             shownCents = reading.cents

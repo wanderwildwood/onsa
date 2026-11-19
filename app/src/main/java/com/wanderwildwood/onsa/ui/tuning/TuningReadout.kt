@@ -36,7 +36,7 @@ private const val SCALE_CENTS = 50
  * The reading in large type, for a phone on a music stand: the note aimed at, how many cents
  * off it is and which way to turn, and a scale from -50 to +50 cents with a dot where the
  * pitch sits. It grows to fill the space it is given. When the string dies away the last
- * reading stays, greyed, so it can still be read after the note has gone.
+ * reading stays, grayed, so it can still be read after the note has gone.
  */
 @Composable
 fun TuningReadout(

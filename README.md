@@ -46,7 +46,7 @@ had a color display.
 sharp it is and which way to turn, and a scale from −50 to +50 cents with a dot where the pitch
 sits. It shows the middle of each half second's readings and redraws only when that moves three
 cents or more, so a held note holds still instead of flickering. When the string dies away the
-last reading stays, greyed. A tap swaps it for upstream's pitch graph, and a tap on the graph
+last reading stays, grayed. A tap swaps it for upstream's pitch graph, and a tap on the graph
 brings it back.
 
 **The screen stays on by default.** Upstream makes this a setting and defaults it off; it is
