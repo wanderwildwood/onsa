@@ -71,6 +71,14 @@ class PreferenceResources @Inject constructor(
         turnWithPhonePref.set(turnWithPhone)
     }
 
+    // The tuning screen shows the big readout, or the pitch graph in its place; a tap on
+    // either switches. The readout by default.
+    private val showPitchGraphPref = createPreference("showpitchgraph", false)
+    val showPitchGraph = showPitchGraphPref.asStateFlow()
+    fun writeShowPitchGraph(showPitchGraph: Boolean) {
+        showPitchGraphPref.set(showPitchGraph)
+    }
+
     // display on lock screen
     private val displayOnLockScreenPref = createPreference("onlockscreen", false)
     val displayOnLockScreen = displayOnLockScreenPref.asStateFlow()

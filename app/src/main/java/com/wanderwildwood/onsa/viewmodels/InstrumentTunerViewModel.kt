@@ -91,6 +91,11 @@ class InstrumentTunerViewModel @Inject constructor (
 
     override var shownCents by mutableStateOf<Int?>(null)
         private set
+
+    override val showPitchGraph: StateFlow<Boolean> get() = pref.showPitchGraph
+    override fun toggleReadoutAndGraph() {
+        pref.writeShowPitchGraph(!pref.showPitchGraph.value)
+    }
     private var shownClock: Job? = null
     override var targetNoteForLockButton: MusicalNote by mutableStateOf(autodetectedTargetNote)
         private set
@@ -221,9 +226,14 @@ class InstrumentTunerViewModel @Inject constructor (
     }
 
     private fun show(reading: ShownReading) {
+        // When the string dies away the last reading stays (greyed by the screen), until a
+        // new note is aimed at: cents from another note would mean nothing.
+        if (reading.cents != null)
+            shownCents = reading.cents
+        else if (reading.targetNote != targetNote)
+            shownCents = null
         targetNote = reading.targetNote
         tuningState = reading.tuningState
-        shownCents = reading.cents
         pitchHistoryState.publish()
     }
 

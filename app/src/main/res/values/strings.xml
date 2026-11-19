@@ -59,7 +59,8 @@
     <string name="scientific_mode">Scientific mode</string>
     <string name="tolerance_in_cents">Tolerance</string>
     <string name="readout_listening">listening…</string>
-    <string name="readout_in_tune">in tune</string>
+    <string name="readout_in_tune">in tune · %1$s ¢</string>
+    <string name="readout_tap_for_graph">tap for the graph</string>
     <string name="readout_flat">%1$d ¢ flat · tune up</string>
     <string name="readout_sharp">%1$d ¢ sharp · tune down</string>
     <string name="tolerance_summary" translatable="false">±%d ¢</string>

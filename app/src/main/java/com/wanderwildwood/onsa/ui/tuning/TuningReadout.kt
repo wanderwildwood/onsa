@@ -2,8 +2,9 @@ package com.wanderwildwood.onsa.ui.tuning
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.coerceIn
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mudita.mmd.components.text.TextMMD
@@ -34,7 +35,8 @@ private const val SCALE_CENTS = 50
 /**
  * The reading in large type, for a phone on a music stand: the note aimed at, how many cents
  * off it is and which way to turn, and a scale from -50 to +50 cents with a dot where the
- * pitch sits. The graph below shows how the pitch got there; this says what to do now.
+ * pitch sits. It grows to fill the space it is given. When the string dies away the last
+ * reading stays, greyed, so it can still be read after the note has gone.
  */
 @Composable
 fun TuningReadout(
@@ -43,49 +45,60 @@ fun TuningReadout(
     tuningState: TuningState,
     toleranceInCents: Int,
     notePrintOptions: NotePrintOptions2,
-    modifier: Modifier = Modifier,
-    scaleHeight: Dp = 36.dp
+    modifier: Modifier = Modifier
 ) {
     val ink = MaterialTheme.colorScheme.onSurface
     val faint = MaterialTheme.colorScheme.outline
-    val heard = cents != null && tuningState != TuningState.Unknown
+    val heardNow = tuningState != TuningState.Unknown
+    val color = if (heardNow && cents != null) ink else faint
+    val inTune = cents != null && abs(cents) <= toleranceInCents
 
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+    BoxWithConstraints(modifier = modifier) {
+        val h = maxHeight
+        val noteSize = (h.value * 0.42f).coerceIn(40f, 120f).sp
+        val lineSize = (h.value * 0.12f).coerceIn(20f, 30f).sp
+        val scaleHeight = (h * 0.16f).coerceIn(36.dp, 64.dp)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Note(
                 targetNote,
                 notePrintOptions = notePrintOptions,
-                fontSize = 44.sp,
+                fontSize = noteSize,
                 fontWeight = FontWeight.Bold,
-                color = if (heard) ink else faint
+                color = color
             )
             TextMMD(
-                text = readoutLine(cents, tuningState),
-                fontSize = 22.sp,
-                fontWeight = if (tuningState == TuningState.InTune) FontWeight.Bold else null,
-                color = if (heard) ink else faint
+                text = readoutLine(cents, inTune),
+                fontSize = lineSize,
+                fontWeight = if (inTune && heardNow) FontWeight.Bold else null,
+                color = color
+            )
+            CentsScale(
+                cents = cents,
+                toleranceInCents = toleranceInCents,
+                ink = color,
+                faint = faint,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(scaleHeight)
+                    .padding(horizontal = 8.dp)
+            )
+            TextMMD(
+                text = stringResource(R.string.readout_tap_for_graph),
+                style = MaterialTheme.typography.bodySmall,
+                color = faint
             )
         }
-        CentsScale(
-            cents = if (heard) cents else null,
-            toleranceInCents = toleranceInCents,
-            ink = ink,
-            faint = faint,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(scaleHeight)
-                .padding(horizontal = 8.dp)
-        )
     }
 }
 
 @Composable
-private fun readoutLine(cents: Int?, tuningState: TuningState): String = when {
-    cents == null || tuningState == TuningState.Unknown -> stringResource(R.string.readout_listening)
-    tuningState == TuningState.InTune -> stringResource(R.string.readout_in_tune)
+private fun readoutLine(cents: Int?, inTune: Boolean): String = when {
+    cents == null -> stringResource(R.string.readout_listening)
+    inTune -> stringResource(R.string.readout_in_tune, if (cents == 0) "0" else "%+d".format(cents))
     cents < 0 -> stringResource(R.string.readout_flat, abs(cents))
     else -> stringResource(R.string.readout_sharp, cents)
 }
