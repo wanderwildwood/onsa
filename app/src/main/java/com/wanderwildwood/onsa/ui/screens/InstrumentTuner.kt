@@ -340,10 +340,11 @@ fun InstrumentTunerPortrait(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) {
-                            if (data.pitchHistoryGestureBasedViewPort.isActive)
-                                scope.launch { data.pitchHistoryGestureBasedViewPort.finish() }
-                            else
-                                data.toggleReadoutAndGraph()
+                            // A finger's tap often drifts enough to count as a small
+                            // drag, which leaves the graph in its own zoom: a tap still
+                            // goes back to the readout, and ends that zoom on the way.
+                            scope.launch { data.pitchHistoryGestureBasedViewPort.finish() }
+                            data.toggleReadoutAndGraph()
                         },
                     gestureBasedViewPort = data.pitchHistoryGestureBasedViewPort,
                     tuningState = data.tuningState,
@@ -452,10 +453,11 @@ fun InstrumentTunerLandscape(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) {
-                            if (data.pitchHistoryGestureBasedViewPort.isActive)
-                                scope.launch { data.pitchHistoryGestureBasedViewPort.finish() }
-                            else
-                                data.toggleReadoutAndGraph()
+                            // A finger's tap often drifts enough to count as a small
+                            // drag, which leaves the graph in its own zoom: a tap still
+                            // goes back to the readout, and ends that zoom on the way.
+                            scope.launch { data.pitchHistoryGestureBasedViewPort.finish() }
+                            data.toggleReadoutAndGraph()
                         },
                     gestureBasedViewPort = data.pitchHistoryGestureBasedViewPort,
                     tuningState = data.tuningState,
