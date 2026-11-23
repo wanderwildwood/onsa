@@ -21,6 +21,7 @@ package com.wanderwildwood.onsa.ui.misc
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.unit.dp
@@ -224,7 +225,9 @@ fun TunerScaffoldWithoutBottomBar(
                 }
             )
         },
-        floatingActionButton = floatingActionButton,
+        // 3 dp above the Scaffold's own 16, so the add button sits at the height of Messaging's
+        // pencil, which rests on a 3 dp rule (23 Nov 2026).
+        floatingActionButton = { Box(Modifier.padding(bottom = 3.dp)) { floatingActionButton() } },
         floatingActionButtonPosition = floatingActionBarPosition,
         snackbarHost = snackbarHost
     ) { paddingValues ->

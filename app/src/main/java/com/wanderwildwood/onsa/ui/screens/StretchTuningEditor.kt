@@ -178,6 +178,8 @@ private fun StretchTuningPortrait(
         },
         floatingActionButton = {
             FloatingActionButtonMMD(
+                // 3 dp up: the height of Messaging's pencil (see TunerScaffoldWithoutBottomBar).
+                modifier = Modifier.padding(bottom = 3.dp),
                 onClick = {
                     state.addLine()
                 }
@@ -329,6 +331,8 @@ private fun StretchTuningLandscape(
         },
         floatingActionButton = {
             FloatingActionButtonMMD(
+                // 3 dp up: the height of Messaging's pencil (see TunerScaffoldWithoutBottomBar).
+                modifier = Modifier.padding(bottom = 3.dp),
                 onClick = {
                     state.addLine()
                 }
