@@ -8,10 +8,13 @@ import org.junit.Test
 
 class ReferenceFrequencyRangeTest {
     @Test
-    fun concertPitchAllows400To480() {
+    fun concertPitchAllows350To500() {
         val range = referenceFrequencyRange(440f)
-        assertEquals(400f, range.start, 1e-3f)
-        assertEquals(480f, range.endInclusive, 1e-3f)
+        assertEquals(350f, range.start, 1e-3f)
+        assertEquals(500f, range.endInclusive, 1e-3f)
+        assertTrue(380f in range)
+        assertTrue(392f in range)
+        assertTrue(415f in range)
         assertTrue(440f in range)
         assertTrue(432f in range)
         assertTrue(466f in range)
@@ -31,6 +34,6 @@ class ReferenceFrequencyRangeTest {
         val range = referenceFrequencyRange(261.63f)
         assertTrue(261.63f in range)
         assertFalse(440f in range)
-        assertEquals(261.63f * 400f / 440f, range.start, 1e-3f)
+        assertEquals(261.63f * 350f / 440f, range.start, 1e-3f)
     }
 }

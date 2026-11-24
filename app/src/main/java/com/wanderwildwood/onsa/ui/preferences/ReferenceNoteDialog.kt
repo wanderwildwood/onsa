@@ -95,13 +95,14 @@ private fun DecimalFormat.toFloatOrNull(string: String): Float? {
     }
 }
 
-/** Range which the reference frequency of a note may have: a little over a semitone either side
- * of the pitch the note has in standard tuning (A = 440 Hz), so A allows 400 to 480 Hz.
+/** Range which the reference frequency of a note may have, scaled from the pitch the note has in
+ * standard tuning (A = 440 Hz): A allows 350 to 500 Hz. Low enough for French Baroque (A = 392) and
+ * the lower early-music pitches below it, high enough for Venetian and Chorton (around 466).
  * @param standardFrequency Frequency of the note when the default reference note has 440 Hz.
  * @return Allowed frequencies, both ends included.
  */
 fun referenceFrequencyRange(standardFrequency: Float): ClosedFloatingPointRange<Float> {
-    return (standardFrequency * 400f / 440f)..(standardFrequency * 480f / 440f)
+    return (standardFrequency * 350f / 440f)..(standardFrequency * 500f / 440f)
 }
 
 /** Interface for frequency detector as used by the RereferenceNoteDialog. */
