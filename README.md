@@ -10,7 +10,7 @@ sixteen grays, a slow redraw, and is read at arm's length on a music stand.
 
 | | | | |
 |---|---|---|---|
-| ![Tuner](screenshots/01-tuner.png) | ![Instruments](screenshots/02-instruments.png) | ![Temperaments](screenshots/03-temperaments.png) | ![Settings](screenshots/04-settings.png) |
+| ![The tuner, chromatic](screenshots/1-chromatic.png) | ![Tuning a guitar](screenshots/2-guitar.png) | ![Instruments and their tunings](screenshots/3-instruments.png) | ![The metronome](screenshots/4-metronome.png) |
 
 ## What it is
 
